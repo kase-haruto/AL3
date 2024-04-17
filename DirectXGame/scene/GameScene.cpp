@@ -3,6 +3,8 @@
 #include "ImGuiManager.h"
 #include "TextureManager.h"
 #include <cassert>
+#include"PrimitiveDrawer.h"
+
 
 #include "ImGuiManager.h"
 
@@ -32,15 +34,16 @@ void GameScene::Initialize() {
 	// 再生
 	audio_->PlayWave(soundDataHandle_);
 
-	PrimitiveDrawer::GetInstance()->Initialize();
-	PrimitiveDrawer::GetInstance()->SetViewProjection(&viewProjection_);
+	
 
 	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
-
 	// 軸法く表示の表示をゆうこうにする
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());
+
+	PrimitiveDrawer::GetInstance()->Initialize();
+	PrimitiveDrawer::GetInstance()->SetViewProjection(&debugCamera_->GetViewProjection());
 }
 
 void GameScene::Update() {
@@ -52,6 +55,8 @@ void GameScene::Update() {
 	ImGui::ShowDemoWindow();
 	ImGui::End();
 #endif // _DEBUG
+
+	
 
 	// スプライトの座標を取得
 	Vector2 pos = sprite_->GetPosition();
@@ -99,15 +104,17 @@ void GameScene::Draw() {
 	/// </summary>
 	model_->Draw(worldTransform_, debugCamera_->GetViewProjection(), textureHandle_);
 
+	PrimitiveDrawer::GetInstance()->DrawLine3d({0.0f, 0.0f, 0.0f}, {5.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f});
+	PrimitiveDrawer::GetInstance()->DrawLine3d({0.0f, 0.0f, 0.0f}, {0.0f, 5.0f, 0.0f}, {0.0f, 1.0f, 0.0f, 1.0f});
+	PrimitiveDrawer::GetInstance()->DrawLine3d({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 5.0f}, {0.0f, 0.0f, 1.0f, 1.0f});
+
+
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 	
 #pragma endregion
 
-	PrimitiveDrawer::GetInstance()->DrawLine3d({0.0f, 0.0f, 0.0f}, {5.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f});
-	PrimitiveDrawer::GetInstance()->DrawLine3d({0.0f, 0.0f, 0.0f}, {0.0f, 5.0f, 0.0f}, {0.0f, 1.0f, 0.0f, 1.0f});
-	PrimitiveDrawer::GetInstance()->DrawLine3d({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 5.0f}, {0.0f, 0.0f, 1.0f, 1.0f});
-
+	
 #pragma region 前景スプライト描画
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(commandList);
