@@ -2,10 +2,13 @@
 #include "AxisIndicator.h"
 #include "DirectXCommon.h"
 #include "GameScene.h"
-#include "ImGuiManager.h"
+
 #include "PrimitiveDrawer.h"
 #include "TextureManager.h"
 #include "WinApp.h"
+
+#include "ImGuiManager.h"
+
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -31,6 +34,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	ImGuiManager* imguiManager = ImGuiManager::GetInstance();
 	imguiManager->Initialize(win, dxCommon);
 
+
+	
 	// 入力の初期化
 	input = Input::GetInstance();
 	input->Initialize();
