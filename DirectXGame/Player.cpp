@@ -1,6 +1,12 @@
 #include "Player.h"
 #include "Input.h"
+
+#ifdef _DEBUG
 #include <imgui.h>
+#endif // _DEBUG
+
+
+
 Player::Player() {
 	model_ = Model::Create();
 	textuerHandle_ = TextureManager::Load("./Resources/uvChecker.png");
