@@ -30,6 +30,7 @@ public:
 	WorldTransform() = default;
 	~WorldTransform() = default;
 
+	
 	/// <summary>
 	/// 初期化
 	/// </summary>
