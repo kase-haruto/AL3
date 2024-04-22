@@ -1,9 +1,13 @@
 #pragma once
 #include "Actor.h"
+#include"Input.h"
+
 class Player : 
 	public Actor {
 private:
 	Vector3 velocity_;
+
+	Input* input_ = nullptr;
 
 private://メンバ関数
 	void Move();

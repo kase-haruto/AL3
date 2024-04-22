@@ -1,10 +1,11 @@
 #include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
+#include"AxisIndicator.h"
 
-GameScene::GameScene() { }
+GameScene::GameScene() {}
 
-GameScene::~GameScene() { delete player_; }
+GameScene::~GameScene() { delete player_, debugCamera_; }
 
 void GameScene::Initialize() {
 
@@ -15,11 +16,42 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 
 	player_ = new Player();
-	player_->Init({1.0f,1.0f,1.0f});
+	player_->Init({1.0f, 1.0f, 1.0f});
+
+	// デバッグ用のカメラ
+	debugCamera_ = new DebugCamera(1280, 720);
+	//軸方向表示を有効にする
+	AxisIndicator::GetInstance()->SetVisible(true);
+	//軸方向表示が参照するプロジェクションを指定する(アドレス渡し)
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 }
 
-void GameScene::Update() { 
+void GameScene::Update() {
 	player_->Update();
+
+
+	
+
+#ifdef _DEBUG
+	
+	// デバッグ用のカメラ
+	debugCamera_->Update();
+
+	if (isDebugCameraActive_) {
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+		viewProjection_.TransferMatrix();
+	} else {
+		viewProjection_.UpdateMatrix();
+	}
+
+	//カメラの切り替え
+	if (input_->TriggerKey(DIK_RETURN)) {
+		isDebugCameraActive_ = !isDebugCameraActive_;
+	}
+
+#endif // _DEBUG
+	
 }
 
 void GameScene::Draw() {
@@ -49,7 +81,6 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	player_->Draw(viewProjection_);
-
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

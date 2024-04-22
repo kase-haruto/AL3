@@ -7,7 +7,7 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-
+#include"DebugCamera.h"
 #include"Player.h"
 
 /// <summary>
@@ -51,4 +51,10 @@ private: // メンバ変数
 	/// </summary>
 	ViewProjection viewProjection_;
 	Player* player_;
+
+	/// <summary>
+	/// デバッグ用
+	/// </summary>
+	bool isDebugCameraActive_ = false;
+	DebugCamera* debugCamera_ = nullptr;
 };

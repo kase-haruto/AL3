@@ -1,6 +1,5 @@
 #include "Player.h"
-#include "Input.h"
-
+#include <algorithm>
 #ifdef _DEBUG
 #include <imgui.h>
 #endif // _DEBUG
@@ -12,7 +11,7 @@ Player::Player() {
 	textuerHandle_ = TextureManager::Load("./Resources/uvChecker.png");
 }
 
-Player::~Player() { delete model_; }
+Player::~Player() { }
 
 /// <summary>
 /// 初期化を行います
@@ -21,25 +20,37 @@ void Player::Init(Vector3 velocity) {
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = {0.0f,0.0f,0.0f};
 	velocity_ = velocity;
+
+	input_ = Input::GetInstance();
 }
 
 /// <summary>
 /// 移動を行います
 /// </summary>
 void Player::Move() {
-	Input* input = Input::GetInstance();
+	Vector3 move = {0, 0, 0};
 
-	if (input->PushKey(DIK_A)) {
-		worldTransform_.translation_.x -= velocity_.x;
-	} else if (input->PushKey(DIK_D)) {
-		worldTransform_.translation_.x += velocity_.x;
+	if (input_->PushKey(DIK_A)) {
+		move.x -= velocity_.x;
+	} else if (input_->PushKey(DIK_D)) {
+		move.x += velocity_.x;
 	}
 
-	if (input->PushKey(DIK_S)) {
-		worldTransform_.translation_.y -= velocity_.y;
-	} else if (input->PushKey(DIK_W)) {
-		worldTransform_.translation_.y += velocity_.y;
+	if (input_->PushKey(DIK_S)) {
+		move.y -= velocity_.y;
+	} else if (input_->PushKey(DIK_W)) {
+		move.y += velocity_.y;
 	}
+
+	worldTransform_.translation_ += move;
+
+	//移動限界座標
+	const float kMoveLimitX = 32.0f;
+	const float kMoveLimitY = 16.0f;
+
+	worldTransform_.translation_.x = std::clamp(worldTransform_.translation_.x, -kMoveLimitX, kMoveLimitX);
+	worldTransform_.translation_.y = std::clamp(worldTransform_.translation_.y, -kMoveLimitY, kMoveLimitY);
+
 	worldTransform_.matWorld_ = Matrix4x4::MakeAffineMatrix(worldTransform_.scale_,
 															worldTransform_.rotation_,
 															worldTransform_.translation_);

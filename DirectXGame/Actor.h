@@ -12,7 +12,7 @@ protected: // メンバ変数
 
 	//======================
 	//	3d関連
-	Model* model_ = nullptr;	
+	Model* model_ = nullptr;
 	WorldTransform worldTransform_;
 
 public: // メンバ関数
