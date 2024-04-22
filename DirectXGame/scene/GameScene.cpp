@@ -5,7 +5,7 @@
 
 GameScene::GameScene() {}
 
-GameScene::~GameScene() { delete player_, debugCamera_; }
+GameScene::~GameScene() { delete player_, debugCamera_,model_; }
 
 void GameScene::Initialize() {
 
@@ -15,8 +15,10 @@ void GameScene::Initialize() {
 
 	viewProjection_.Initialize();
 
+	model_ = Model::Create();
+
 	player_ = new Player();
-	player_->Init({1.0f, 1.0f, 1.0f});
+	player_->Init(model_);
 
 	// デバッグ用のカメラ
 	debugCamera_ = new DebugCamera(1280, 720);

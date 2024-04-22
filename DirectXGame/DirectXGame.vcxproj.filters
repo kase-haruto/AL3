@@ -67,6 +67,18 @@
     <Filter Include="ソース ファイル\3d">
       <UniqueIdentifier>{0e61c11d-6108-4a27-8d99-1ef904bcc353}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Object">
+      <UniqueIdentifier>{5ace796b-c844-4347-81df-23d08e589ac1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Object\Bullet">
+      <UniqueIdentifier>{6883ca8c-bf4e-4c1f-a305-524a0c12c122}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Object\Bullet\BulletBase">
+      <UniqueIdentifier>{7c53568e-7eb8-4f00-b214-ec6c77ad89eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Object\Bullet\PlayerBullet">
+      <UniqueIdentifier>{9a1f603e-f09a-4354-8a5d-3b24f4df1edd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -98,6 +110,15 @@
     </ClCompile>
     <ClCompile Include="Vector3.cpp">
       <Filter>ソース ファイル\math</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Game\Object\Bullet\BulletBase</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerBullet.cpp">
+      <Filter>Game\Object\Bullet\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="worldTransformEx.cpp">
+      <Filter>ソース ファイル\3d</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +214,12 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Game\Entity\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Game\Object\Bullet\BulletBase</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerBullet.h">
+      <Filter>Game\Object\Bullet\PlayerBullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

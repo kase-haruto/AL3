@@ -16,11 +16,12 @@ protected: // メンバ変数
 	WorldTransform worldTransform_;
 
 public: // メンバ関数
-	virtual ~Actor() { delete model_; }
+	virtual ~Actor() {}
 
-	virtual void Init(){};
+
+	void Init();
 	virtual void Update() = 0;
-	virtual void Draw(ViewProjection& viewprojection) = 0;
+	virtual void Draw(ViewProjection& viewprojection);
 
 	//=====================
 	//	アクセッサ

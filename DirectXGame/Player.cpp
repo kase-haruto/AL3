@@ -6,39 +6,55 @@
 
 
 
-Player::Player() {
-	model_ = Model::Create();
-	textuerHandle_ = TextureManager::Load("./Resources/uvChecker.png");
+Player::Player(){
+	
 }
 
-Player::~Player() { }
+Player::~Player(){
+	delete bullet_;
+}
 
 /// <summary>
 /// 初期化を行います
 /// </summary>
-void Player::Init(Vector3 velocity) {
+void Player::Init(Model* model){
+	assert(model);
+	model_ = model;
+	textuerHandle_ = TextureManager::Load("./Resources/uvChecker.png");
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = {0.0f,0.0f,0.0f};
-	velocity_ = velocity;
+	velocity_ = {0.4f, 0.4f, 0.4f};
 
 	input_ = Input::GetInstance();
 }
 
+void Player::Shoot(){
+	if (input_->PushKey(DIK_SPACE)){
+		//弾を生成
+		PlayerBullet* newBullet = new PlayerBullet();
+		newBullet->Initialize(model_, worldTransform_.translation_);
+
+		//弾を登録
+		bullet_ = newBullet;
+	}
+}
+
+
 /// <summary>
 /// 移動を行います
 /// </summary>
-void Player::Move() {
+void Player::Move(){
 	Vector3 move = {0, 0, 0};
 
-	if (input_->PushKey(DIK_A)) {
+	if (input_->PushKey(DIK_A)){
 		move.x -= velocity_.x;
-	} else if (input_->PushKey(DIK_D)) {
+	} else if (input_->PushKey(DIK_D)){
 		move.x += velocity_.x;
 	}
 
-	if (input_->PushKey(DIK_S)) {
+	if (input_->PushKey(DIK_S)){
 		move.y -= velocity_.y;
-	} else if (input_->PushKey(DIK_W)) {
+	} else if (input_->PushKey(DIK_W)){
 		move.y += velocity_.y;
 	}
 
@@ -51,33 +67,45 @@ void Player::Move() {
 	worldTransform_.translation_.x = std::clamp(worldTransform_.translation_.x, -kMoveLimitX, kMoveLimitX);
 	worldTransform_.translation_.y = std::clamp(worldTransform_.translation_.y, -kMoveLimitY, kMoveLimitY);
 
-	worldTransform_.matWorld_ = Matrix4x4::MakeAffineMatrix(worldTransform_.scale_,
-															worldTransform_.rotation_,
-															worldTransform_.translation_);
-	// 行列を定数バッファに転送
-	worldTransform_.TransferMatrix();
+	worldTransform_.UpdateMatrix();
 }
 
-/// <summary>
-/// 更新処理を行います
-/// </summary>
-void Player::Update() {
+void Player::Rotate(){
+	//回転の速さ
+	const float kRotSpeed = 0.02f;
+	if (input_->PushKey(DIK_RIGHT)){
+		worldTransform_.rotation_.y += kRotSpeed;
+	} else if (input_->PushKey(DIK_LEFT)){
+		worldTransform_.rotation_.y -= kRotSpeed;
+	}
+}
+
+
+void Player::Update(){
 
 #ifdef _DEBUG
 	ImGui::Begin("player");
-	ImGui::DragFloat3("translate",&worldTransform_.translation_.x, 0.01f);
+	ImGui::DragFloat3("translate", &worldTransform_.translation_.x, 0.01f);
 	ImGui::End();
 #endif // _DEBUG
 
+	Rotate();
 	Move();
-	
+	Shoot();
+
+	//弾更新
+	if (bullet_){
+		bullet_->Update();
+	}
+
 }
 
 /// <summary>
-/// 描画処理を行いmス
+/// 描画処理を行
 /// </summary>
-void Player::Draw(ViewProjection& viewprojection) { 
-	model_->Draw(worldTransform_,
-				 viewprojection,
-				 textuerHandle_);
+void Player::Draw(ViewProjection& viewprojection){
+	Actor::Draw(viewprojection);
+	if (bullet_){
+		bullet_->Draw(viewprojection);
+	}
 }

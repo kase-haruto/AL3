@@ -51,6 +51,7 @@ private: // メンバ変数
 	/// </summary>
 	ViewProjection viewProjection_;
 	Player* player_;
+	Model* model_;
 
 	/// <summary>
 	/// デバッグ用
