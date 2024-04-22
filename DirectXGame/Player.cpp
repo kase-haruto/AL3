@@ -7,11 +7,13 @@
 
 
 Player::Player(){
-	
+
 }
 
 Player::~Player(){
-	delete bullet_;
+	for (PlayerBullet* bullet : bullets_){
+		delete bullet;
+	}
 }
 
 /// <summary>
@@ -29,13 +31,16 @@ void Player::Init(Model* model){
 }
 
 void Player::Shoot(){
-	if (input_->PushKey(DIK_SPACE)){
+	if (input_->TriggerKey(DIK_SPACE)){
+		//自キャラの座標をコピー
+		Vector3 pos = worldTransform_.translation_;
+
 		//弾を生成
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_);
+		newBullet->Initialize(model_, pos);
 
 		//弾を登録
-		bullet_ = newBullet;
+		bullets_.push_back(newBullet);
 	}
 }
 
@@ -94,8 +99,8 @@ void Player::Update(){
 	Shoot();
 
 	//弾更新
-	if (bullet_){
-		bullet_->Update();
+	for (PlayerBullet* bullet : bullets_){
+		bullet->Update();
 	}
 
 }
@@ -105,7 +110,7 @@ void Player::Update(){
 /// </summary>
 void Player::Draw(ViewProjection& viewprojection){
 	Actor::Draw(viewprojection);
-	if (bullet_){
-		bullet_->Draw(viewprojection);
+	for (PlayerBullet* bullet : bullets_){
+		bullet->Draw(viewprojection);
 	}
 }

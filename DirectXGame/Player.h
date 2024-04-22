@@ -2,16 +2,17 @@
 #include "Actor.h"
 #include"Input.h"
 #include"PlayerBullet.h"
+#include<list>
 
 class Player : 
 	public Actor {
 private:
 	Vector3 velocity_;
 	//弾
-	PlayerBullet* bullet_ = nullptr;
+	std::list<PlayerBullet*> bullets_;
 
 	Input* input_ = nullptr;
-
+	
 private://メンバ関数
 	/// <summary>
 	/// playerの移動処理を行います
