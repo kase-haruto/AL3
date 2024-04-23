@@ -7,6 +7,14 @@ class PlayerBullet
 private:
 	Vector3 velocity_;
 
+	//寿命
+	static const int32_t kLifeTime = 60 * 5;
+
+	//デスタイマー
+	int32_t deathTimer_ = kLifeTime;
+	//ですフラグ
+	bool isDead_ = false;
+
 public:
 
 	/// <summary>
@@ -31,5 +39,6 @@ public:
 	/// アクセッサー
 	/// =======================
 	Vector3 GetVelocity()const{ return velocity_; }
+	bool GetIsDead()const{ return isDead_; }
 
 };

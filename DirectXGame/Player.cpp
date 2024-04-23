@@ -10,11 +10,7 @@ Player::Player(){
 
 }
 
-Player::~Player(){
-	for (PlayerBullet* bullet : bullets_){
-		delete bullet;
-	}
-}
+Player::~Player(){}
 
 /// <summary>
 /// 初期化を行います
@@ -30,28 +26,42 @@ void Player::Init(Model* model){
 	input_ = Input::GetInstance();
 }
 
+void Player::DeleteBullet(){
+	// 生存フラグがfalseの弾を削除
+	bullets_.remove_if([] (const std::unique_ptr<PlayerBullet>& bullet){
+		if (bullet->GetIsDead()){
+			return true;
+		}
+		return false;
+					   });
+}
+
 void Player::Shoot(){
 	if (input_->TriggerKey(DIK_SPACE)){
-		//自キャラの座標をコピー
+		// 自キャラの座標をコピー
 		Vector3 pos = worldTransform_.translation_;
-		//弾の速度
+
+		// 弾の速度
 		const float kBulletSpeed = 1.0f;
-		Vector3 BulletVel = {0,0,kBulletSpeed};
+		Vector3 BulletVel = {0, 0, kBulletSpeed};
 
-		//弾を生成
-		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, pos,BulletVel);
+		// 速度ベクトルを自キャラの向きに合わせて回転
+		BulletVel = Vector3::TransformNormal(BulletVel, this->worldTransform_.matWorld_);
 
-		//弾を登録
-		bullets_.push_back(newBullet);
+		// 弾を生成してユニークポインタにラップ
+		std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
+		newBullet->Initialize(model_, pos, BulletVel);
+
+		// 弾を登録
+		bullets_.push_back(std::move(newBullet));
 	}
 
-	//弾更新
-	for (PlayerBullet* bullet : bullets_){
+	// 弾の更新
+	for (auto& bullet : bullets_){
 		bullet->Update();
 	}
-
 }
+
 
 
 /// <summary>
@@ -102,7 +112,7 @@ void Player::Update(){
 	ImGui::DragFloat3("translate", &worldTransform_.translation_.x, 0.01f);
 	ImGui::End();
 #endif // _DEBUG
-
+	DeleteBullet();
 	Rotate();
 	Move();
 	Shoot();
@@ -113,8 +123,7 @@ void Player::Update(){
 /// </summary>
 void Player::Draw(ViewProjection& viewprojection){
 	Actor::Draw(viewprojection);
-	for (PlayerBullet* bullet : bullets_){
+	for (auto& bullet : bullets_){
 		bullet->Draw(viewprojection);
 	}
-	
 }

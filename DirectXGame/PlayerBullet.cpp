@@ -11,6 +11,11 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vecto
 void PlayerBullet::Update(){
 	worldTransform_.translation_ += velocity_;
 	worldTransform_.UpdateMatrix();
+
+	//時間経過でデス
+	if (--deathTimer_ <= 0){
+		isDead_ = true;
+	}
 }
 
 void PlayerBullet::Draw(const ViewProjection& viewProcetion){

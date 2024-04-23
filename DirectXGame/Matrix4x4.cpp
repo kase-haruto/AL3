@@ -2,6 +2,7 @@
 #include<cmath>
 #include<assert.h>
 #include"Vector4.h"
+#include"Vector3.h"
 
 float cot(float angle) { return 1 / std::tan(angle); }
 
