@@ -5,7 +5,7 @@ class PlayerBullet
 	: public Bullet {
 
 private:
-
+	Vector3 velocity_;
 
 public:
 
@@ -14,7 +14,7 @@ public:
 	/// </summary>
 	/// <param name="model"></param>
 	/// <param name="position"></param>
-	void Initialize ( Model* model, const Vector3& position );
+	void Initialize ( Model* model, const Vector3& position,const Vector3& velocity );
 	
 	/// <summary>
 	/// 更新
@@ -26,5 +26,10 @@ public:
 	/// </summary>
 	/// <param name="viewProjection"></param>
 	void Draw (const ViewProjection& viewProjection);
+
+	///========================
+	/// アクセッサー
+	/// =======================
+	Vector3 GetVelocity()const{ return velocity_; }
 
 };

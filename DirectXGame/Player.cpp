@@ -34,14 +34,23 @@ void Player::Shoot(){
 	if (input_->TriggerKey(DIK_SPACE)){
 		//自キャラの座標をコピー
 		Vector3 pos = worldTransform_.translation_;
+		//弾の速度
+		const float kBulletSpeed = 1.0f;
+		Vector3 BulletVel = {0,0,kBulletSpeed};
 
 		//弾を生成
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, pos);
+		newBullet->Initialize(model_, pos,BulletVel);
 
 		//弾を登録
 		bullets_.push_back(newBullet);
 	}
+
+	//弾更新
+	for (PlayerBullet* bullet : bullets_){
+		bullet->Update();
+	}
+
 }
 
 
@@ -97,12 +106,6 @@ void Player::Update(){
 	Rotate();
 	Move();
 	Shoot();
-
-	//弾更新
-	for (PlayerBullet* bullet : bullets_){
-		bullet->Update();
-	}
-
 }
 
 /// <summary>
@@ -113,4 +116,5 @@ void Player::Draw(ViewProjection& viewprojection){
 	for (PlayerBullet* bullet : bullets_){
 		bullet->Draw(viewprojection);
 	}
+	
 }
