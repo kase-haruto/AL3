@@ -20,7 +20,7 @@ void Player::Init(Model* model){
 	model_ = model;
 	textuerHandle_ = TextureManager::Load("./Resources/uvChecker.png");
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = {0.0f,0.0f,0.0f};
+	worldTransform_.translation_ = {0.0f,0.0f,10.0f};
 	velocity_ = {0.4f, 0.4f, 0.4f};
 
 	input_ = Input::GetInstance();

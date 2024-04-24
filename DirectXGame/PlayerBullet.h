@@ -33,7 +33,7 @@ public:
 	/// 描画
 	/// </summary>
 	/// <param name="viewProjection"></param>
-	void Draw (const ViewProjection& viewProjection);
+	void Draw (const ViewProjection& viewProjection)override;
 
 	///========================
 	/// アクセッサー

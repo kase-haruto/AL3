@@ -5,4 +5,5 @@ void Actor::Draw (ViewProjection& viewProjection) {
 				  viewProjection,
 				  textuerHandle_
 	);
+	
 }

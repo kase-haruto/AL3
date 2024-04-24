@@ -3,11 +3,11 @@
 #include <cassert>
 #include"AxisIndicator.h"
 
-GameScene::GameScene() {}
+GameScene::GameScene(){}
 
-GameScene::~GameScene() { delete player_, debugCamera_,model_; }
+GameScene::~GameScene(){ delete player_, debugCamera_, model_; }
 
-void GameScene::Initialize() {
+void GameScene::Initialize(){
 
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
@@ -20,6 +20,9 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	player_->Init(model_);
 
+	enemy_ = std::make_unique<Enemy>();
+	enemy_->Init(model_);
+
 	// デバッグ用のカメラ
 	debugCamera_ = new DebugCamera(1280, 720);
 	//軸方向表示を有効にする
@@ -28,35 +31,43 @@ void GameScene::Initialize() {
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 }
 
-void GameScene::Update() {
+void GameScene::Update(){
 	player_->Update();
 
+	if (enemy_){
+		/*if (input_->TriggerKey(DIK_SPACE)){
+			enemy_->SetIsMove(true);
+		}*/
+		enemy_->Update();
 
-	
+	}
+
+
+
 
 #ifdef _DEBUG
-	
+
 	// デバッグ用のカメラ
 	debugCamera_->Update();
 
-	if (isDebugCameraActive_) {
+	if (isDebugCameraActive_){
 		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
 		viewProjection_.TransferMatrix();
-	} else {
+	} else{
 		viewProjection_.UpdateMatrix();
 	}
 
 	//カメラの切り替え
-	if (input_->TriggerKey(DIK_RETURN)) {
+	if (input_->TriggerKey(DIK_RETURN)){
 		isDebugCameraActive_ = !isDebugCameraActive_;
 	}
 
 #endif // _DEBUG
-	
+
 }
 
-void GameScene::Draw() {
+void GameScene::Draw(){
 
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
@@ -82,6 +93,9 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+
+	enemy_->Draw(viewProjection_);
+
 	player_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理

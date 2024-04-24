@@ -4,6 +4,7 @@
 #include "WorldTransform.h"
 #include"TextureManager.h"
 #include <stdint.h>
+
 class Actor {
 protected: // メンバ変数
 	uint32_t color_;

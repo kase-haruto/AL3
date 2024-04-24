@@ -32,5 +32,5 @@ public: // メンバ関数
 	/// <summary>
 	/// 描画処理
 	/// </summary>
-	virtual void Draw(const ViewProjection& viewProject);
+	virtual void Draw(const ViewProjection& viewProjection);
 };

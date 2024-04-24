@@ -79,6 +79,12 @@
     <Filter Include="Game\Object\Bullet\PlayerBullet">
       <UniqueIdentifier>{9a1f603e-f09a-4354-8a5d-3b24f4df1edd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Entity\Enemy">
+      <UniqueIdentifier>{5fbcbdae-deb9-4074-978b-1795eb207b67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Object\Bullet\EnemyBullet">
+      <UniqueIdentifier>{39aa3cdb-bbb5-4f5d-89ab-f8c48ba4af02}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -119,6 +125,12 @@
     </ClCompile>
     <ClCompile Include="worldTransformEx.cpp">
       <Filter>ソース ファイル\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Game\Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBullet.cpp">
+      <Filter>Game\Object\Bullet\EnemyBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -220,6 +232,12 @@
     </ClInclude>
     <ClInclude Include="PlayerBullet.h">
       <Filter>Game\Object\Bullet\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Game\Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBullet.h">
+      <Filter>Game\Object\Bullet\EnemyBullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

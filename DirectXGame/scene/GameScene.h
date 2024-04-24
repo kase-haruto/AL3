@@ -9,6 +9,8 @@
 #include "WorldTransform.h"
 #include"DebugCamera.h"
 #include"Player.h"
+#include"Enemy.h"
+#include<memory>
 
 /// <summary>
 /// ゲームシーン
@@ -51,6 +53,7 @@ private: // メンバ変数
 	/// </summary>
 	ViewProjection viewProjection_;
 	Player* player_;
+	std::unique_ptr<Enemy> enemy_;
 	Model* model_;
 
 	/// <summary>
