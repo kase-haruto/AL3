@@ -35,9 +35,9 @@ private://メンバ関数
 	void ApproachPhase();
 
 	/// <summary>
-	/// 行動フェーズの切り替え
+	/// 離脱フェーズ
 	/// </summary>
-	void SwitchPhase();
+	void LeavePhase();
 
 	/// <summary>
 	/// 弾を撃つ
