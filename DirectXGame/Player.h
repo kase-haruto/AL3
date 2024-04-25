@@ -34,6 +34,7 @@ private://メンバ関数
 	/// </summary>
 	void DeleteBullet();
 
+
 public://メンバ関数
 
 	Player();

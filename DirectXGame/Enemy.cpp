@@ -62,35 +62,23 @@ void Enemy::Shoot(){
 	newBullet->Init(model_, pos, bulletVel);
 
 	// 弾を登録
-	bullets_.push_back(std::move(newBullet));
-
-	
+	bullets_.push_back(std::move(newBullet));	
 }
 
-void Enemy::SwitchPhase(){
-	switch (phase_){
-		case Phase::Approach:
-		default:
 
-			//接近フェーズ
-			ApproachPhase();
-
-			break;
-		case Phase::Leave:
-
-			//離脱フェーズ
-			LeavePhase();
-
-			break;
-
-	}
-}
+void(Enemy::*Enemy::spFuncTable[])() = {
+	&Enemy::ApproachPhase,
+	&Enemy::LeavePhase
+};
 
 void Enemy::Update(){
 	if (isMove){
 
 	}
-	SwitchPhase();
+	
+	//SwitchPhase();
+	(this->*spFuncTable[static_cast<size_t>(phase_)])();
+	 
 	// 弾の更新
 	for (auto& bullet : bullets_){
 		bullet->Update();
