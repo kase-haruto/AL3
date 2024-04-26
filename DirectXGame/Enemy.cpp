@@ -1,5 +1,7 @@
 #include "Enemy.h"
 #include<cassert>
+#include"EnemyStateApproach.h"
+#include"EnemyStateLeave.h"
 
 Enemy::Enemy(){
 
@@ -17,35 +19,17 @@ void Enemy::Init(Model* model){
 	worldTransform_.translation_ = {5.0f,0.0f,50.0f};
 
 	ApproachInitialize();
+	//初期状態をセット
+	TransitionState(std::make_unique<EnemyStateApproach>(this));
 }
 
 void Enemy::ApproachInitialize(){
 	//タイマーの初期化
-	cooltimer = kShootInterval;
+	cooltime_ = kShootInterval;
 }
 
-void Enemy::ApproachPhase(){
-	velocity_ = {0.0f, 0.0f, -0.2f};
-	//移動
+void Enemy::Move(){
 	worldTransform_.translation_ += velocity_;
-	//既定の位置に達したら離脱
-	if (worldTransform_.translation_.z <= 0.0f){
-		phase_ = Phase::Leave;
-	}
-	worldTransform_.UpdateMatrix();
-
-	cooltimer--;
-	if (cooltimer <= 0){
-		Shoot();
-		//タイマーの初期化
-		cooltimer = kShootInterval;
-	}
-}
-
-void Enemy::LeavePhase(){
-	velocity_ = {0.2f, 0.2f, 0.0f};
-	worldTransform_.translation_ += velocity_;
-	worldTransform_.UpdateMatrix();
 }
 
 void Enemy::Shoot(){
@@ -62,23 +46,25 @@ void Enemy::Shoot(){
 	newBullet->Init(model_, pos, bulletVel);
 
 	// 弾を登録
-	bullets_.push_back(std::move(newBullet));	
+	bullets_.push_back(std::move(newBullet));
 }
 
+void Enemy::TransitionState(std::unique_ptr<BaseEnemyState>state){
+	state_ = std::move(state);
+}
 
-void(Enemy::*Enemy::spFuncTable[])() = {
-	&Enemy::ApproachPhase,
-	&Enemy::LeavePhase
-};
 
 void Enemy::Update(){
 	if (isMove){
 
 	}
-	
-	//SwitchPhase();
-	(this->*spFuncTable[static_cast<size_t>(phase_)])();
-	 
+
+	//状態ごとの更新処理
+	state_->Update();
+
+	//行列の更新
+	worldTransform_.UpdateMatrix();
+
 	// 弾の更新
 	for (auto& bullet : bullets_){
 		bullet->Update();
