@@ -18,18 +18,28 @@ void Enemy::Init(Model* model){
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = {5.0f,0.0f,50.0f};
 
+	currentPhase = Phase::Approach;
 	ApproachInitialize();
 	//初期状態をセット
 	TransitionState(std::make_unique<EnemyStateApproach>(this));
 }
 
+void Enemy::Approach2Leave(){
+	timedCalls_.clear();
+	currentPhase = Phase::Leave;
+}
+
 void Enemy::ApproachInitialize(){
 	//タイマーの初期化
-	cooltime_ = kShootInterval;
+	ShootAndLisetTimer();
 }
 
 void Enemy::Move(){
 	worldTransform_.translation_ += velocity_;
+}
+
+void Enemy::TransitionState(std::unique_ptr<BaseEnemyState>state){
+	state_ = std::move(state);
 }
 
 void Enemy::Shoot(){
@@ -49,10 +59,14 @@ void Enemy::Shoot(){
 	bullets_.push_back(std::move(newBullet));
 }
 
-void Enemy::TransitionState(std::unique_ptr<BaseEnemyState>state){
-	state_ = std::move(state);
+void Enemy::ShootAndLisetTimer(){
+	if (currentPhase == Phase::Approach){
+		Shoot();
+		//発射タイマーのセット
+		timedCalls_.push_back(
+			std::make_unique<TimedCall>(std::bind(&Enemy::ShootAndLisetTimer, this), kShootInterval));
+	}
 }
-
 
 void Enemy::Update(){
 	if (isMove){
@@ -64,6 +78,10 @@ void Enemy::Update(){
 
 	//行列の更新
 	worldTransform_.UpdateMatrix();
+
+	for (auto& timedCall : timedCalls_){
+		timedCall->Update();
+	}
 
 	// 弾の更新
 	for (auto& bullet : bullets_){
