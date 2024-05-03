@@ -74,6 +74,15 @@ cbuffer ObjectColor : register(b4)
 {
     float4 color; // オブジェクトのアルファ
 }
+//
+//// フォグのパラメータを定義
+//struct FogParameters{
+//	float4 fogColor;
+//	float fogStart;
+//	float fogEnd;
+//};
+//
+//ConstantBuffer<FogParameters> gFogParams : register(b5); // フォグのパラメータ用のバッファ
 
 // 頂点シェーダーからピクセルシェーダーへのやり取りに使用する構造体
 struct VSOutput {

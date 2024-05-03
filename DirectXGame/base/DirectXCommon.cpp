@@ -53,6 +53,8 @@ void DirectXCommon::Initialize(
 	// 深度バッファ生成
 	CreateDepthBuffer();
 
+
+
 	// フェンス生成
 	CreateFence();
 }
