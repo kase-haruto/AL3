@@ -20,5 +20,7 @@ public:
     void Init(Model* model,const Vector3& position,const Vector3& vel);
     void Update()override;
     void Draw(const ViewProjection& viewProjection)override;
+
+    void OnCollision()override;
 };
 

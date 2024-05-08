@@ -19,5 +19,11 @@ void PlayerBullet::Update(){
 }
 
 void PlayerBullet::Draw(const ViewProjection& viewProcetion){
-	Bullet::Draw(viewProcetion);
+	if (!isDead_){
+		Bullet::Draw(viewProcetion);
+	}
+}
+
+void PlayerBullet::OnCollision(){
+	isDead_ = true;
 }

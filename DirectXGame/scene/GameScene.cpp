@@ -21,6 +21,7 @@ void GameScene::Initialize(){
 	player_->Init(model_);
 
 	enemy_ = std::make_unique<Enemy>();
+	enemy_->SetPlayer(player_);
 	enemy_->Init(model_);
 
 	// デバッグ用のカメラ
@@ -35,9 +36,9 @@ void GameScene::Update(){
 	player_->Update();
 
 	if (enemy_){
-		/*if (input_->TriggerKey(DIK_SPACE)){
+		if (input_->TriggerKey(DIK_SPACE)){
 			enemy_->SetIsMove(true);
-		}*/
+		}
 		enemy_->Update();
 
 	}
@@ -115,3 +116,7 @@ void GameScene::Draw(){
 
 #pragma endregion
 }
+
+
+
+

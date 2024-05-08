@@ -33,4 +33,6 @@ public: // メンバ関数
 	/// 描画処理
 	/// </summary>
 	virtual void Draw(const ViewProjection& viewProjection);
+
+	virtual void OnCollision() =0;
 };

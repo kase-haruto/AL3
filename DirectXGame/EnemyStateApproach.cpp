@@ -9,7 +9,7 @@ EnemyStateApproach::EnemyStateApproach(Enemy* enemy)
 EnemyStateApproach::~EnemyStateApproach(){}
 
 void EnemyStateApproach::Update(){
-	enemy_->SetVelocity({0.0f, 0.0f, -0.2f});
+	enemy_->SetVelocity({0.0f, 0.0f, -0.1f});
 
 	//移動
 	enemy_->Move();
@@ -20,8 +20,6 @@ void EnemyStateApproach::Update(){
 		enemy_->TransitionState(std::make_unique<EnemyStateLeave>(enemy_));
 		return;
 	}
-
-	
 
 	// クールタイムが0になったら発射
 	//if (enemy_->GetCoolTime() <= 0){

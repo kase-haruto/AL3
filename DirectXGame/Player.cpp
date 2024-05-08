@@ -62,8 +62,6 @@ void Player::Shoot(){
 	}
 }
 
-
-
 /// <summary>
 /// 移動を行います
 /// </summary>
@@ -126,4 +124,15 @@ void Player::Draw(ViewProjection& viewprojection){
 	for (auto& bullet : bullets_){
 		bullet->Draw(viewprojection);
 	}
+}
+
+Vector3 Player::GetWorldPosition(){
+	Vector3 wPos;
+	//ワールド行列の平行移動成分を取得
+	wPos = worldTransform_.translation_;
+	return wPos;
+}
+
+void Player::OnCollision(){
+
 }

@@ -11,6 +11,7 @@ enum class Phase : uint32_t{
 	Leave,//離脱する
 };
 
+class Player;
 
 class Enemy :
 	public Actor{
@@ -23,6 +24,9 @@ class Enemy :
 	//次元発動のリスト
 	std::list<std::unique_ptr<TimedCall>> timedCalls_;
 	Phase currentPhase;
+
+	//自キャラ
+	Player* player_ = nullptr;
 
 private://メンバ関数
 	
@@ -39,6 +43,8 @@ public:
 	void Init(Model* model);
 	void Update()override;
 	void Draw(ViewProjection& viewprojection)override;
+
+	void OnCollision()override;
 
 	/// <summary>
 	/// 移動
@@ -70,5 +76,11 @@ public:
 	void SetPhase(const Phase& phase){ currentPhase = phase; }
 
 	uint32_t GetShootInterval()const{ return kShootInterval; }
+
+	void SetPlayer(Player* player){ player_ = player; }
+
+	Vector3 GetWorldPosition();
+
+	const std::list<std::unique_ptr<EnemyBullet>>GetBullets()const {return bullets_; }
 };
 

@@ -24,6 +24,9 @@ public: // メンバ関数
 	virtual void Update() = 0;
 	virtual void Draw(ViewProjection& viewprojection);
 
+	//衝突した際の関数
+	virtual void OnCollision() = 0;
+
 	//=====================
 	//	アクセッサ
 	//=====================

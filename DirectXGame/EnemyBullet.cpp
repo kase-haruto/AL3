@@ -27,5 +27,11 @@ void EnemyBullet::Update(){
 }
 
 void EnemyBullet::Draw(const ViewProjection& viewProjection){
-	Bullet::Draw(viewProjection);
+	if (!isDead_){
+		Bullet::Draw(viewProjection);
+	}
+}
+
+void EnemyBullet::OnCollision(){
+	isDead_ = true;
 }

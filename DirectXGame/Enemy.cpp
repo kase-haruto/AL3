@@ -2,6 +2,7 @@
 #include<cassert>
 #include"EnemyStateApproach.h"
 #include"EnemyStateLeave.h"
+#include"Player.h"
 
 Enemy::Enemy(){
 
@@ -17,6 +18,7 @@ void Enemy::Init(Model* model){
 	textuerHandle_ = TextureManager::Load("./Resources/cat.png");
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = {5.0f,0.0f,50.0f};
+	
 
 	currentPhase = Phase::Approach;
 	ApproachInitialize();
@@ -43,10 +45,21 @@ void Enemy::TransitionState(std::unique_ptr<BaseEnemyState>state){
 }
 
 void Enemy::Shoot(){
-
+	assert(player_);
+	
 	Vector3 pos = worldTransform_.translation_;
-	const float kBulletSpeed = -1.0f;
-	Vector3 bulletVel = {0, 0, kBulletSpeed};
+	const float kBulletSpeed = 1.0f;
+	Vector3 bulletVel;
+
+	//自キャラのワールド座標を取得する
+	Vector3 playerWPos = player_->GetWorldPosition();
+	//enemyのワールド座標
+	Vector3 wPos = GetWorldPosition();
+	//敵キャラと自キャラの差分ベクトルを求める
+	Vector3 differenceV = playerWPos - wPos;
+	differenceV = Vector3::Normalize(differenceV);
+	bulletVel = differenceV * kBulletSpeed;
+
 
 	//速度ベクトルを自キャラの向きに合わせて回転
 	bulletVel = Vector3::TransformNormal(bulletVel, this->worldTransform_.matWorld_);
@@ -70,11 +83,11 @@ void Enemy::ShootAndLisetTimer(){
 
 void Enemy::Update(){
 	if (isMove){
-
+		//状態ごとの更新処理
+		state_->Update();
 	}
 
-	//状態ごとの更新処理
-	state_->Update();
+	
 
 	//行列の更新
 	worldTransform_.UpdateMatrix();
@@ -89,6 +102,10 @@ void Enemy::Update(){
 	}
 }
 
+void Enemy::OnCollision(){
+
+}
+
 void Enemy::Draw(ViewProjection& viewProjection){
 	Actor::Draw(viewProjection);
 
@@ -96,4 +113,10 @@ void Enemy::Draw(ViewProjection& viewProjection){
 		bullet->Draw(viewProjection);
 	}
 
+}
+
+Vector3 Enemy::GetWorldPosition(){
+	Vector3 wPos;
+	wPos = worldTransform_.translation_;
+	return wPos;
 }
