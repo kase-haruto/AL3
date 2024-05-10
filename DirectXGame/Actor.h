@@ -9,7 +9,7 @@ class Actor {
 protected: // メンバ変数
 	uint32_t color_;
 	uint32_t textuerHandle_;
-
+	float radius_;
 
 	//======================
 	//	3d関連
@@ -42,4 +42,6 @@ public: // メンバ関数
 
 	uint32_t GetColor() const { return color_; }
 	void SetColor(const uint32_t color) { color_ = color; }
+
+	float GetRadius()const{ return radius_; }
 };

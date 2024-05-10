@@ -18,7 +18,7 @@ void Enemy::Init(Model* model){
 	textuerHandle_ = TextureManager::Load("./Resources/cat.png");
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = {5.0f,0.0f,50.0f};
-	
+	radius_ = 1.0f;
 
 	currentPhase = Phase::Approach;
 	ApproachInitialize();

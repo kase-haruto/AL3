@@ -7,7 +7,7 @@
 
 
 Player::Player(){
-
+	
 }
 
 Player::~Player(){}
@@ -22,6 +22,7 @@ void Player::Init(Model* model){
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = {0.0f,0.0f,10.0f};
 	velocity_ = {0.4f, 0.4f, 0.4f};
+	radius_ = 1.0f;
 
 	input_ = Input::GetInstance();
 }

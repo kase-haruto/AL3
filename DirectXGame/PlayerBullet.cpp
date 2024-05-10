@@ -6,6 +6,7 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vecto
 	worldTransform_.translation_ = position;
 	textuerHandle_ = TextureManager::Load("./Resources/white1x1.png");
 	velocity_ = velocity;
+	radius_ = 1.0f;
 }
 
 void PlayerBullet::Update(){

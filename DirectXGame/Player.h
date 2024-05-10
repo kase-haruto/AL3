@@ -54,6 +54,6 @@ public://メンバ関数
 	/// 弾のリストを取得
 	/// </summary>
 	/// <returns></returns>
-	const std::list<std::unique_ptr<PlayerBullet>> GetBullets()const{ return bullets_; }
+	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets()const{ return bullets_; }
 
 };

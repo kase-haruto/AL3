@@ -47,6 +47,9 @@ private:
 
 	void CheckAllCollisions();
 
+	float CheckDistance(Vector3 v1,Vector3 v2);
+	bool IsOnCollision(float distance,float radius1,float radius2);
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -56,7 +59,7 @@ private: // メンバ変数
 	/// ゲームシーン用
 	/// </summary>
 	ViewProjection viewProjection_;
-	Player* player_;
+	std::unique_ptr<Player> player_;
 	std::unique_ptr<Enemy> enemy_;
 	Model* model_;
 

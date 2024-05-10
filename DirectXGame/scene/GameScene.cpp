@@ -2,10 +2,11 @@
 #include "TextureManager.h"
 #include <cassert>
 #include"AxisIndicator.h"
+#include<cmath>
 
 GameScene::GameScene(){}
 
-GameScene::~GameScene(){ delete player_, debugCamera_, model_; }
+GameScene::~GameScene(){ delete debugCamera_, model_; }
 
 void GameScene::Initialize(){
 
@@ -17,11 +18,11 @@ void GameScene::Initialize(){
 
 	model_ = Model::Create();
 
-	player_ = new Player();
+	player_ = std::make_unique<Player>();
 	player_->Init(model_);
 
 	enemy_ = std::make_unique<Enemy>();
-	enemy_->SetPlayer(player_);
+	enemy_->SetPlayer(player_.get());
 	enemy_->Init(model_);
 
 	// デバッグ用のカメラ
@@ -43,7 +44,7 @@ void GameScene::Update(){
 
 	}
 
-
+	CheckAllCollisions();
 
 
 #ifdef _DEBUG
@@ -117,6 +118,89 @@ void GameScene::Draw(){
 #pragma endregion
 }
 
+void GameScene::CheckAllCollisions(){
+	//判定対象abの座標
+	Vector3 posA, posB;
+	float radiusA, radiusB;
+	float distance;
+	//自弾リストの取得
+	const std::list<std::unique_ptr<PlayerBullet>>& playerBullets = player_->GetBullets();
+	// 敵弾リストの取得
+	const std::list< std::unique_ptr<EnemyBullet>>& enemyBullets = enemy_->GetBullets();
 
+#pragma region 自キャラと敵弾の判定
+
+	//自キャラの座標
+	posA = player_->GetWorldPosition();
+	radiusA = player_->GetRadius();
+	//自キャラと敵弾すべての当たり判定
+	for (auto& bullet : enemyBullets){
+		posB = bullet->GetWorldPosition();
+		radiusB = bullet->GetRadius();
+
+		//衝突判定
+		distance = CheckDistance(posA, posB);
+		if (IsOnCollision(distance, radiusA, radiusB)){
+			player_->OnCollision();
+			bullet->OnCollision();
+		}
+	}
+
+#pragma endregion
+
+#pragma region 自弾と敵の当たり判定
+
+	//敵の情報
+	posA = enemy_->GetWorldPosition();
+	radiusA = enemy_->GetRadius();
+	for (auto& bullet : playerBullets){
+		posB = bullet->GetWorldPosition();
+		radiusB = bullet->GetRadius();
+
+		//衝突判定
+		distance = CheckDistance(posA, posB);
+		if (IsOnCollision(distance, radiusA, radiusB)){
+			enemy_->OnCollision();
+			bullet->OnCollision();
+		}
+	}
+
+#pragma endregion
+
+#pragma region 自弾と敵弾の判定
+
+	for (auto& playerBullet : playerBullets){
+		posA = playerBullet->GetWorldPosition();
+		radiusA = playerBullet->GetRadius();
+		for (auto& enemyBullet :enemyBullets){
+			posB = enemyBullet->GetWorldPosition();
+			radiusB = enemyBullet->GetRadius();
+
+			distance = CheckDistance(posA, posB);
+			if (IsOnCollision(distance,radiusA,radiusB)){
+				enemyBullet->OnCollision();
+				playerBullet->OnCollision();
+			}
+		}
+	}
+
+#pragma endregion
+
+}
+
+float GameScene::CheckDistance(Vector3 v1, Vector3 v2){
+	float distanceX, distanceY, distanceZ;
+	distanceX = v2.x - v1.x;
+	distanceY = v2.y - v1.y;
+	distanceZ = v2.z - v1.z;
+	return std::sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
+}
+
+bool GameScene::IsOnCollision(float distance, float radius1, float radius2){
+	if (distance <= radius1 + radius2){
+		return true;
+	}
+	return false;
+}
 
 

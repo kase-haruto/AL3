@@ -78,9 +78,9 @@ public:
 	uint32_t GetShootInterval()const{ return kShootInterval; }
 
 	void SetPlayer(Player* player){ player_ = player; }
-
+	 
 	Vector3 GetWorldPosition();
 
-	const std::list<std::unique_ptr<EnemyBullet>>GetBullets()const {return bullets_; }
+	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets()const {return bullets_; }
 };
 

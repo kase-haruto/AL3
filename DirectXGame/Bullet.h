@@ -13,6 +13,7 @@ protected:
 	Model* model_;
 	uint32_t textuerHandle_;
 
+	float radius_;
 public: // メンバ関数
 	Bullet(){ };
 	virtual ~Bullet(){};
@@ -35,4 +36,12 @@ public: // メンバ関数
 	virtual void Draw(const ViewProjection& viewProjection);
 
 	virtual void OnCollision() =0;
+
+	float GetRadius()const{ return radius_; }
+
+	Vector3 GetWorldPosition()const{
+		Vector3 wPos;
+		wPos = worldTransform_.translation_;
+		return wPos;
+	}
 };

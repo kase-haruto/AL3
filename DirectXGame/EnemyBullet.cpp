@@ -14,6 +14,7 @@ void EnemyBullet::Init(Model* model, const Vector3& position, const Vector3& vel
 	worldTransform_.translation_ = position;
 	textuerHandle_ = TextureManager::Load("./Resources/sample.png");
 	velocity_ = vel;
+	radius_ = 1.0f;
 }
 
 void EnemyBullet::Update(){
@@ -30,7 +31,7 @@ void EnemyBullet::Draw(const ViewProjection& viewProjection){
 	if (!isDead_){
 		Bullet::Draw(viewProjection);
 	}
-}
+}	
 
 void EnemyBullet::OnCollision(){
 	isDead_ = true;
