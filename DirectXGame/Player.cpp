@@ -1,5 +1,6 @@
 #include "Player.h"
 #include <algorithm>
+#include"MyFunc.h"
 #ifdef _DEBUG
 #include <imgui.h>
 #endif // _DEBUG
@@ -47,7 +48,7 @@ void Player::Shoot(){
 		Vector3 BulletVel = {0, 0, kBulletSpeed};
 
 		// 速度ベクトルを自キャラの向きに合わせて回転
-		BulletVel = Vector3::TransformNormal(BulletVel, this->worldTransform_.matWorld_);
+		BulletVel = TransformNormal(BulletVel, this->worldTransform_.matWorld_);
 
 		// 弾を生成してユニークポインタにラップ
 		std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();

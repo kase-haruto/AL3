@@ -82,5 +82,7 @@ public:
 	Vector3 GetWorldPosition();
 
 	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets()const {return bullets_; }
+
+
 };
 

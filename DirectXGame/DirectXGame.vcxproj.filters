@@ -88,6 +88,18 @@
     <Filter Include="MyFunc">
       <UniqueIdentifier>{e8ee26f5-dce8-4922-b0f3-48fc0f5e878d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Entity\Enemy\enemyState">
+      <UniqueIdentifier>{7b55ee69-3be0-474f-b522-da9db7bde470}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Entity\Enemy\enemyState\Approach">
+      <UniqueIdentifier>{20bb515b-840e-435a-97fc-b79425b7bce9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Entity\Enemy\enemyState\Leave">
+      <UniqueIdentifier>{c08fca68-f0f9-4d95-b9ce-60496622a99b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Entity\Enemy\enemyState\BaseEnemyState">
+      <UniqueIdentifier>{e20f2841-f31f-4e92-a633-1d61fbfdf3c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -135,20 +147,23 @@
     <ClCompile Include="EnemyBullet.cpp">
       <Filter>Game\Object\Bullet\EnemyBullet</Filter>
     </ClCompile>
-    <ClCompile Include="BaseEnemyState.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="ConvertString.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyStateApproach.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyStateLeave.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="TimedCall.cpp">
       <Filter>MyFunc</Filter>
+    </ClCompile>
+    <ClCompile Include="MyFunc.cpp">
+      <Filter>MyFunc</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyStateApproach.cpp">
+      <Filter>Game\Entity\Enemy\enemyState\Approach</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyStateLeave.cpp">
+      <Filter>Game\Entity\Enemy\enemyState\Leave</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseEnemyState.cpp">
+      <Filter>Game\Entity\Enemy\enemyState\BaseEnemyState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -257,20 +272,23 @@
     <ClInclude Include="EnemyBullet.h">
       <Filter>Game\Object\Bullet\EnemyBullet</Filter>
     </ClInclude>
-    <ClInclude Include="BaseEnemyState.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="ConvertString.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyStateApproach.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyStateLeave.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="TimedCall.h">
       <Filter>MyFunc</Filter>
+    </ClInclude>
+    <ClInclude Include="MyFunc.h">
+      <Filter>MyFunc</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyStateApproach.h">
+      <Filter>Game\Entity\Enemy\enemyState\Approach</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyStateLeave.h">
+      <Filter>Game\Entity\Enemy\enemyState\Leave</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseEnemyState.h">
+      <Filter>Game\Entity\Enemy\enemyState\BaseEnemyState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
