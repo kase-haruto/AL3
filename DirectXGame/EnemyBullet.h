@@ -17,7 +17,7 @@ class EnemyBullet :
     //ですフラグ
     bool isDead_ = false;
 
-    bool isHoming_ = true;
+    bool isHoming_ = false;
 
 #pragma region ホーミング用変数
     float speed_;
