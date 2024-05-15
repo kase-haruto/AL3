@@ -4,10 +4,13 @@
 #include"WorldTransform.h"
 #include"Model.h"
 #include"TextureManager.h"
+#include"Collider.h"
+
 /// <summary>
 /// 弾の基底クラス
 /// </summary>
-class Bullet{
+class Bullet
+:public Collider{
 protected:
 	WorldTransform worldTransform_;
 	Model* model_;
@@ -35,7 +38,6 @@ public: // メンバ関数
 	/// </summary>
 	virtual void Draw(const ViewProjection& viewProjection);
 
-	virtual void OnCollision() =0;
 
 	float GetRadius()const{ return radius_; }
 

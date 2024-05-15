@@ -28,3 +28,9 @@ void PlayerBullet::Draw(const ViewProjection& viewProcetion){
 void PlayerBullet::OnCollision(){
 	isDead_ = true;
 }
+
+Vector3 PlayerBullet::GetWorldPosition()const{
+	Vector3 wPos;
+	wPos = worldTransform_.translation_;
+	return wPos;
+}

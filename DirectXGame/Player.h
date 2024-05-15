@@ -48,7 +48,7 @@ public://メンバ関数
 
 	Vector3 GetVelocity() const { return velocity_; }
 	void SetVelocity(const Vector3 velocity) { velocity_ = velocity; }
-	Vector3 GetWorldPosition();
+	Vector3 GetWorldPosition()const override;
 
 	/// <summary>
 	/// 弾のリストを取得

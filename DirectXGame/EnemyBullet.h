@@ -21,7 +21,7 @@ public:
     void Update()override;
     void Draw(const ViewProjection& viewProjection)override;
 
-    
+    Vector3 GetWorldPosition()const override;
 
     void OnCollision()override;
 };

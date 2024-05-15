@@ -11,6 +11,7 @@
 #include"Player.h"
 #include"Enemy.h"
 #include<memory>
+#include"Collider.h"
 
 /// <summary>
 /// ゲームシーン
@@ -44,6 +45,12 @@ public: // メンバ関数
 	void Draw();
 
 private:
+	/// <summary>
+	/// コライダー2つの衝突判定と応答
+	/// </summary>
+	/// <param name="colliderA"></param>
+	/// <param name="colliderB"></param>
+	void CheckCollisionPair(Collider* colliderA,Collider* colliderB);
 
 	void CheckAllCollisions();
 

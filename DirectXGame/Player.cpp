@@ -127,7 +127,7 @@ void Player::Draw(ViewProjection& viewprojection){
 	}
 }
 
-Vector3 Player::GetWorldPosition(){
+Vector3 Player::GetWorldPosition()const{
 	Vector3 wPos;
 	//ワールド行列の平行移動成分を取得
 	wPos = worldTransform_.translation_;

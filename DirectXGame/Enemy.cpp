@@ -115,7 +115,7 @@ void Enemy::Draw(ViewProjection& viewProjection){
 
 }
 
-Vector3 Enemy::GetWorldPosition(){
+Vector3 Enemy::GetWorldPosition()const{
 	Vector3 wPos;
 	wPos = worldTransform_.translation_;
 	return wPos;

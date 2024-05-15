@@ -118,75 +118,58 @@ void GameScene::Draw(){
 #pragma endregion
 }
 
+
 void GameScene::CheckAllCollisions(){
-	//判定対象abの座標
-	Vector3 posA, posB;
-	float radiusA, radiusB;
-	float distance;
 	//自弾リストの取得
 	const std::list<std::unique_ptr<PlayerBullet>>& playerBullets = player_->GetBullets();
 	// 敵弾リストの取得
 	const std::list< std::unique_ptr<EnemyBullet>>& enemyBullets = enemy_->GetBullets();
+	
 
 #pragma region 自キャラと敵弾の判定
 
-	//自キャラの座標
-	posA = player_->GetWorldPosition();
-	radiusA = player_->GetRadius();
 	//自キャラと敵弾すべての当たり判定
 	for (auto& bullet : enemyBullets){
-		posB = bullet->GetWorldPosition();
-		radiusB = bullet->GetRadius();
-
-		//衝突判定
-		distance = CheckDistance(posA, posB);
-		if (IsOnCollision(distance, radiusA, radiusB)){
-			player_->OnCollision();
-			bullet->OnCollision();
-		}
+		CheckCollisionPair(player_.get(), bullet.get());
 	}
 
 #pragma endregion
 
 #pragma region 自弾と敵の当たり判定
 
-	//敵の情報
-	posA = enemy_->GetWorldPosition();
-	radiusA = enemy_->GetRadius();
+	//自キャラと敵弾すべての当たり判定
 	for (auto& bullet : playerBullets){
-		posB = bullet->GetWorldPosition();
-		radiusB = bullet->GetRadius();
-
-		//衝突判定
-		distance = CheckDistance(posA, posB);
-		if (IsOnCollision(distance, radiusA, radiusB)){
-			enemy_->OnCollision();
-			bullet->OnCollision();
-		}
+		CheckCollisionPair(enemy_.get(), bullet.get());
 	}
 
 #pragma endregion
 
 #pragma region 自弾と敵弾の判定
 
-	for (auto& playerBullet : playerBullets){
-		posA = playerBullet->GetWorldPosition();
-		radiusA = playerBullet->GetRadius();
-		for (auto& enemyBullet :enemyBullets){
-			posB = enemyBullet->GetWorldPosition();
-			radiusB = enemyBullet->GetRadius();
-
-			distance = CheckDistance(posA, posB);
-			if (IsOnCollision(distance,radiusA,radiusB)){
-				enemyBullet->OnCollision();
-				playerBullet->OnCollision();
-			}
+	//自キャラと敵弾すべての当たり判定
+	for (auto& p_bullet : playerBullets){
+		for (auto& e_bullet:enemyBullets ){
+			CheckCollisionPair(p_bullet.get(), e_bullet.get());
 		}
 	}
 
 #pragma endregion
 
 }
+
+void GameScene::CheckCollisionPair(Collider* colliderA, Collider* colliderB){
+	Vector3 colA_Pos = colliderA->GetWorldPosition();
+	Vector3 colB_Pos = colliderB->GetWorldPosition();
+	float colA_rad = colliderA->GetRadius();
+	float colB_rad = colliderB->GetRadius();
+	float distance = CheckDistance(colA_Pos, colB_Pos);
+	//球と球の当たり判定
+	if (IsOnCollision(distance, colA_rad, colB_rad)){
+		colliderA->OnCollision();
+		colliderB->OnCollision();
+	}
+}
+
 
 float GameScene::CheckDistance(Vector3 v1, Vector3 v2){
 	float distanceX, distanceY, distanceZ;

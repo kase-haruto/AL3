@@ -42,5 +42,6 @@ public:
 	/// =======================
 	Vector3 GetVelocity()const{ return velocity_; }
 	bool GetIsDead()const{ return isDead_; }
+	Vector3 GetWorldPosition()const override;
 
 };

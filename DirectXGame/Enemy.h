@@ -27,7 +27,6 @@ class Enemy :
 
 	//自キャラ
 	Player* player_ = nullptr;
-
 private://メンバ関数
 	
 	/// <summary>
@@ -79,7 +78,7 @@ public:
 
 	void SetPlayer(Player* player){ player_ = player; }
 	 
-	Vector3 GetWorldPosition();
+	Vector3 GetWorldPosition()const override;
 
 	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets()const {return bullets_; }
 };

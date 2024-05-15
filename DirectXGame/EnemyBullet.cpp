@@ -33,6 +33,12 @@ void EnemyBullet::Draw(const ViewProjection& viewProjection){
 	}
 }	
 
+Vector3 EnemyBullet::GetWorldPosition()const{
+	Vector3 wPos;
+	wPos = worldTransform_.translation_;
+	return wPos;
+}
+
 void EnemyBullet::OnCollision(){
 	isDead_ = true;
 }

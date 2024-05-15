@@ -4,8 +4,10 @@
 #include "WorldTransform.h"
 #include"TextureManager.h"
 #include <stdint.h>
+#include"Collider.h"
 
-class Actor {
+class Actor 
+	:public Collider{
 protected: // メンバ変数
 	uint32_t color_;
 	uint32_t textuerHandle_;
@@ -24,8 +26,6 @@ public: // メンバ関数
 	virtual void Update() = 0;
 	virtual void Draw(ViewProjection& viewprojection);
 
-	//衝突した際の関数
-	virtual void OnCollision() = 0;
 
 	//=====================
 	//	アクセッサ
