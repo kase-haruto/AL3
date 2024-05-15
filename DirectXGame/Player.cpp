@@ -25,6 +25,11 @@ void Player::Init(Model* model){
 	radius_ = 1.0f;
 
 	input_ = Input::GetInstance();
+	
+	//衝突属性を設定
+	const uint32_t kCollisionAttribute = 0b1;
+	SetCollisionAttribute(kCollisionAttribute);
+	SetCollisionMask(~kCollisionAttribute);
 }
 
 void Player::DeleteBullet(){
@@ -63,9 +68,6 @@ void Player::Shoot(){
 	}
 }
 
-/// <summary>
-/// 移動を行います
-/// </summary>
 void Player::Move(){
 	Vector3 move = {0, 0, 0};
 
@@ -103,7 +105,6 @@ void Player::Rotate(){
 	}
 }
 
-
 void Player::Update(){
 
 #ifdef _DEBUG
@@ -117,9 +118,6 @@ void Player::Update(){
 	Shoot();
 }
 
-/// <summary>
-/// 描画処理を行
-/// </summary>
 void Player::Draw(ViewProjection& viewprojection){
 	Actor::Draw(viewprojection);
 	for (auto& bullet : bullets_){

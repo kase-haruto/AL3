@@ -15,6 +15,10 @@ void EnemyBullet::Init(Model* model, const Vector3& position, const Vector3& vel
 	textuerHandle_ = TextureManager::Load("./Resources/sample.png");
 	velocity_ = vel;
 	radius_ = 1.0f;
+
+	const uint32_t kCollisionAttribute = 0b1 << 1;
+	SetCollisionAttribute(kCollisionAttribute);//敵陣営
+	SetCollisionMask(~kCollisionAttribute);//敵陣営以外
 }
 
 void EnemyBullet::Update(){

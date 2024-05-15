@@ -24,6 +24,10 @@ void Enemy::Init(Model* model){
 	ApproachInitialize();
 	//初期状態をセット
 	TransitionState(std::make_unique<EnemyStateApproach>(this));
+
+	const uint32_t kCollisionAttribute = 0b1 << 1;
+	SetCollisionAttribute(kCollisionAttribute);//敵陣営
+	SetCollisionMask(~kCollisionAttribute);//敵陣営以外
 }
 
 void Enemy::Approach2Leave(){

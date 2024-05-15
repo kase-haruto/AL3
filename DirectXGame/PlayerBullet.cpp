@@ -7,6 +7,10 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vecto
 	textuerHandle_ = TextureManager::Load("./Resources/white1x1.png");
 	velocity_ = velocity;
 	radius_ = 1.0f;
+	
+	const uint32_t kCollisionAttribute = 0b1;
+	SetCollisionAttribute(kCollisionAttribute);
+	SetCollisionMask(~kCollisionAttribute);
 }
 
 void PlayerBullet::Update(){
