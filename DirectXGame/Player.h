@@ -4,6 +4,7 @@
 #include"PlayerBullet.h"
 #include<list>
 #include<memory>
+
 class Player : 
 	public Actor {
 private:
@@ -28,12 +29,6 @@ private://メンバ関数
 	/// 弾を撃つ関数
 	/// </summary>
 	void Shoot ();
-	/// <summary>
-	/// 弾を消す関数
-	/// </summary>
-	void DeleteBullet();
-
-
 
 public://メンバ関数
 

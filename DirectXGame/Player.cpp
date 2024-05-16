@@ -3,18 +3,23 @@
 #ifdef _DEBUG
 #include <imgui.h>
 #endif // _DEBUG
-
+#include"CollisionManager.h"
 
 
 Player::Player(){
-	
+	//衝突属性
+	collisionAttribute_ = 0b1;
+	//衝突マスク(相手)
+	collisionMask_ = ~collisionAttribute_;
+	SetCollisionAttribute(collisionAttribute_);//敵陣営
+	SetCollisionMask(collisionMask_);//敵陣営以外
+
+	//コライダーリストに追加
+	CollisionManager::GetInstance()->SetCollider(this);
 }
 
 Player::~Player(){}
 
-/// <summary>
-/// 初期化を行います
-/// </summary>
 void Player::Init(Model* model){
 	assert(model);
 	model_ = model;
@@ -26,20 +31,7 @@ void Player::Init(Model* model){
 
 	input_ = Input::GetInstance();
 	
-	//衝突属性を設定
-	const uint32_t kCollisionAttribute = 0b1;
-	SetCollisionAttribute(kCollisionAttribute);
-	SetCollisionMask(~kCollisionAttribute);
-}
-
-void Player::DeleteBullet(){
-	// 生存フラグがfalseの弾を削除
-	bullets_.remove_if([] (const std::unique_ptr<PlayerBullet>& bullet){
-		if (bullet->GetIsDead()){
-			return true;
-		}
-		return false;
-					   });
+	
 }
 
 void Player::Shoot(){
@@ -62,10 +54,7 @@ void Player::Shoot(){
 		bullets_.push_back(std::move(newBullet));
 	}
 
-	// 弾の更新
-	for (auto& bullet : bullets_){
-		bullet->Update();
-	}
+	
 }
 
 void Player::Move(){
@@ -107,15 +96,31 @@ void Player::Rotate(){
 
 void Player::Update(){
 
+	Move();
+	Shoot();
+	Rotate();
+
+	// 弾の更新
+	for (auto& bullet : bullets_){
+		bullet->Update();
+	}
+
+	// 生存フラグがfalseの弾を削除
+	bullets_.remove_if([] (const std::unique_ptr<PlayerBullet>& bullet){
+		if (bullet->GetIsDead()){
+			//衝突判定リストから削除
+			CollisionManager::GetInstance()->RemoveCollider(bullet.get());
+			return true;
+		}
+		return false;
+					   });
+
+
 #ifdef _DEBUG
 	ImGui::Begin("player");
 	ImGui::DragFloat3("translate", &worldTransform_.translation_.x, 0.01f);
 	ImGui::End();
 #endif // _DEBUG
-	DeleteBullet();
-	Rotate();
-	Move();
-	Shoot();
 }
 
 void Player::Draw(ViewProjection& viewprojection){

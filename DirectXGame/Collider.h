@@ -2,11 +2,12 @@
 #include"Vector3.h"
 #include<stdint.h>
 
+
 /// <summary>
 /// 衝突判定オブジェクト
 /// </summary>
 class Collider{
-private:
+protected:
 	float radius_ = 1.0f;
 
 	//衝突属性
@@ -16,7 +17,7 @@ private:
 
 public:
 	Collider(){};
-	virtual ~Collider(){};
+	virtual ~Collider() = default;
 
 	float GetRadius()const{ return radius_; };
 	void SetRadius(const float radius){ radius_ = radius; }
@@ -30,6 +31,4 @@ public:
 
 	virtual void OnCollision()=0;
 	virtual Vector3 GetWorldPosition()const = 0;
-	
-
 };

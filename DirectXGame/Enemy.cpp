@@ -3,9 +3,18 @@
 #include"EnemyStateApproach.h"
 #include"EnemyStateLeave.h"
 #include"Player.h"
+#include"CollisionManager.h"
 
 Enemy::Enemy(){
+	//衝突属性
+	collisionAttribute_ = 0b1 << 1;
+	//衝突マスク(相手)
+	collisionMask_ = ~collisionAttribute_;
+	SetCollisionAttribute(collisionAttribute_);//敵陣営
+	SetCollisionMask(collisionMask_);//敵陣営以外
 
+	//コライダーリストに追加
+	CollisionManager::GetInstance()->SetCollider(this);
 }
 
 Enemy::~Enemy(){
@@ -24,10 +33,6 @@ void Enemy::Init(Model* model){
 	ApproachInitialize();
 	//初期状態をセット
 	TransitionState(std::make_unique<EnemyStateApproach>(this));
-
-	const uint32_t kCollisionAttribute = 0b1 << 1;
-	SetCollisionAttribute(kCollisionAttribute);//敵陣営
-	SetCollisionMask(~kCollisionAttribute);//敵陣営以外
 }
 
 void Enemy::Approach2Leave(){
@@ -50,7 +55,7 @@ void Enemy::TransitionState(std::unique_ptr<BaseEnemyState>state){
 
 void Enemy::Shoot(){
 	assert(player_);
-	
+
 	Vector3 pos = worldTransform_.translation_;
 	const float kBulletSpeed = 1.0f;
 	Vector3 bulletVel;
@@ -91,8 +96,6 @@ void Enemy::Update(){
 		state_->Update();
 	}
 
-	
-
 	//行列の更新
 	worldTransform_.UpdateMatrix();
 
@@ -104,6 +107,17 @@ void Enemy::Update(){
 	for (auto& bullet : bullets_){
 		bullet->Update();
 	}
+
+	// 弾の更新
+	bullets_.remove_if([] (const std::unique_ptr<EnemyBullet>& bullet){
+		if (bullet->GetIsDeth()){
+			//衝突判定リストから削除
+			CollisionManager::GetInstance()->RemoveCollider(bullet.get());
+			return true;
+		}
+		return false;
+					   });
+
 }
 
 void Enemy::OnCollision(){

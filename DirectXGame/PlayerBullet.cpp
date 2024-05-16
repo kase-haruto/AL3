@@ -1,4 +1,19 @@
 #include "PlayerBullet.h"
+#include"CollisionManager.h"
+
+PlayerBullet::PlayerBullet(){
+	//衝突属性
+	collisionAttribute_ = 0b1;
+	//衝突マスク(相手)
+	collisionMask_ = ~collisionAttribute_;
+	SetCollisionAttribute(collisionAttribute_);//敵陣営
+	SetCollisionMask(collisionMask_);//敵陣営以外
+
+	//コライダーリストに追加
+	CollisionManager::GetInstance()->SetCollider(this);
+}
+
+PlayerBullet::~PlayerBullet(){}
 
 void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vector3& velocity){
 	model_ = model;
@@ -6,11 +21,7 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vecto
 	worldTransform_.translation_ = position;
 	textuerHandle_ = TextureManager::Load("./Resources/white1x1.png");
 	velocity_ = velocity;
-	radius_ = 1.0f;
-	
-	const uint32_t kCollisionAttribute = 0b1;
-	SetCollisionAttribute(kCollisionAttribute);
-	SetCollisionMask(~kCollisionAttribute);
+	radius_ = 1.0f;	
 }
 
 void PlayerBullet::Update(){

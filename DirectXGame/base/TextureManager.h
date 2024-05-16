@@ -45,7 +45,7 @@ public:
 	/// シングルトンインスタンスの取得
 	/// </summary>
 	/// <returns>シングルトンインスタンス</returns>
-	static TextureManager* GetInstance();
+	static TextureManager* GetInstance();	
 
 	/// <summary>
 	/// システム初期化

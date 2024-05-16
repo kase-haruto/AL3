@@ -16,7 +16,8 @@ private:
 	bool isDead_ = false;
 
 public:
-
+	PlayerBullet();
+	~PlayerBullet();
 	/// <summary>
 	/// 初期化
 	/// </summary>

@@ -3,6 +3,7 @@
 #include <cassert>
 #include"AxisIndicator.h"
 #include<cmath>
+#include"CollisionManager.h"
 
 GameScene::GameScene(){}
 
@@ -44,8 +45,7 @@ void GameScene::Update(){
 
 	}
 
-	CheckAllCollisions();
-
+	CollisionManager::GetInstance()->Update();
 
 #ifdef _DEBUG
 
@@ -118,74 +118,6 @@ void GameScene::Draw(){
 #pragma endregion
 }
 
-void GameScene::CheckAllCollisions(){
-	//自弾リストの取得
-	const std::list<std::unique_ptr<PlayerBullet>>& playerBullets = player_->GetBullets();
-	// 敵弾リストの取得
-	const std::list< std::unique_ptr<EnemyBullet>>& enemyBullets = enemy_->GetBullets();
 
-	//コライダーのリスト
-	std::list<Collider*> colliders_;
-	colliders_.push_back(player_.get());
-	colliders_.push_back(enemy_.get());
-	for (auto& playerB : playerBullets){
-		colliders_.push_back(playerB.get());
-	}
-	for (auto& enemyB : enemyBullets){
-		colliders_.push_back(enemyB.get());
-	}
-
-
-	std::list<Collider*>::iterator itrA = colliders_.begin();
-	for (; itrA != colliders_.end(); ++itrA){
-		Collider* colA = *itrA;
-		std::list<Collider*>::iterator itrB = itrA;
-		itrB++;
-		//イテレータBはAの次の要素から回す
-		for (; itrB != colliders_.end(); ++itrB){
-			Collider* colB = *itrB;
-
-			CheckCollisionPair(colA, colB);
-		}
-	}
-
-}
-
-void GameScene::CheckCollisionPair(Collider* colliderA, Collider* colliderB){
-
-	Vector3 colA_Pos = colliderA->GetWorldPosition();
-	Vector3 colB_Pos = colliderB->GetWorldPosition();
-	float colA_rad = colliderA->GetRadius();
-	float colB_rad = colliderB->GetRadius();
-	float distance = CheckDistance(colA_Pos, colB_Pos);
-
-	// 衝突フィルタリング
-	if ((colliderA->GetCollisionAttribute() & colliderB->GetCollisionMask()) == 0 ||
-		(colliderB->GetCollisionAttribute() & colliderA->GetCollisionMask()) == 0){
-		return;
-	}
-
-	//球と球の当たり判定
-	if (IsOnCollision(distance, colA_rad, colB_rad)){
-		colliderA->OnCollision();
-		colliderB->OnCollision();
-	}
-
-}
-
-float GameScene::CheckDistance(Vector3 v1, Vector3 v2){
-	float distanceX, distanceY, distanceZ;
-	distanceX = v2.x - v1.x;
-	distanceY = v2.y - v1.y;
-	distanceZ = v2.z - v1.z;
-	return std::sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
-}
-
-bool GameScene::IsOnCollision(float distance, float radius1, float radius2){
-	if (distance <= radius1 + radius2){
-		return true;
-	}
-	return false;
-}
 
 

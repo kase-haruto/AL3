@@ -1,7 +1,15 @@
 #include "EnemyBullet.h"
-
+#include"CollisionManager.h"
 EnemyBullet::EnemyBullet(){
+	//衝突属性
+	collisionAttribute_ = 0b1 << 1;;
+	//衝突マスク(相手)
+	collisionMask_ = ~collisionAttribute_;
+	SetCollisionAttribute(collisionAttribute_);//敵陣営
+	SetCollisionMask(collisionMask_);//敵陣営以外
 
+	//コライダーリストに追加
+	CollisionManager::GetInstance()->SetCollider(this);
 }
 
 EnemyBullet::~EnemyBullet(){
@@ -15,10 +23,6 @@ void EnemyBullet::Init(Model* model, const Vector3& position, const Vector3& vel
 	textuerHandle_ = TextureManager::Load("./Resources/sample.png");
 	velocity_ = vel;
 	radius_ = 1.0f;
-
-	const uint32_t kCollisionAttribute = 0b1 << 1;
-	SetCollisionAttribute(kCollisionAttribute);//敵陣営
-	SetCollisionMask(~kCollisionAttribute);//敵陣営以外
 }
 
 void EnemyBullet::Update(){
@@ -32,9 +36,7 @@ void EnemyBullet::Update(){
 }
 
 void EnemyBullet::Draw(const ViewProjection& viewProjection){
-	if (!isDead_){
 		Bullet::Draw(viewProjection);
-	}
 }	
 
 Vector3 EnemyBullet::GetWorldPosition()const{

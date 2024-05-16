@@ -45,17 +45,7 @@ public: // メンバ関数
 	void Draw();
 
 private:
-	/// <summary>
-	/// コライダー2つの衝突判定と応答
-	/// </summary>
-	/// <param name="colliderA"></param>
-	/// <param name="colliderB"></param>
-	void CheckCollisionPair(Collider* colliderA,Collider* colliderB);
 
-	void CheckAllCollisions();
-
-	float CheckDistance(Vector3 v1,Vector3 v2);
-	bool IsOnCollision(float distance,float radius1,float radius2);
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -69,6 +59,7 @@ private: // メンバ変数
 	std::unique_ptr<Player> player_;
 	std::unique_ptr<Enemy> enemy_;
 	Model* model_;
+
 
 	/// <summary>
 	/// デバッグ用

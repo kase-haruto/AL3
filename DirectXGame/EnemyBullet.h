@@ -4,8 +4,6 @@
 class EnemyBullet :
     public Bullet{
     Vector3 velocity_;
-
-
     //寿命
     static const int32_t kLifeTime = 60 * 5;
 
@@ -22,7 +20,7 @@ public:
     void Draw(const ViewProjection& viewProjection)override;
 
     Vector3 GetWorldPosition()const override;
-
+    bool GetIsDeth()const{ return isDead_; }
     void OnCollision()override;
 };
 
