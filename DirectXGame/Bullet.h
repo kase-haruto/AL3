@@ -6,6 +6,8 @@
 #include"TextureManager.h"
 #include"Collider.h"
 
+#include"MyFunc.h"
+
 /// <summary>
 /// 弾の基底クラス
 /// </summary>
@@ -18,7 +20,7 @@ protected:
 
 	float radius_;
 public: // メンバ関数
-	Bullet(){ };
+	Bullet(){};
 	virtual ~Bullet(){};
 
 	/// <summary>

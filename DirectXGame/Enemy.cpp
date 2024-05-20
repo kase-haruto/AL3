@@ -3,6 +3,7 @@
 #include"EnemyStateApproach.h"
 #include"EnemyStateLeave.h"
 #include"Player.h"
+#include"MyFunc.h"
 #include"CollisionManager.h"
 
 Enemy::Enemy(){
@@ -66,16 +67,18 @@ void Enemy::Shoot(){
 	Vector3 wPos = GetWorldPosition();
 	//敵キャラと自キャラの差分ベクトルを求める
 	Vector3 differenceV = playerWPos - wPos;
-	differenceV = Vector3::Normalize(differenceV);
+	differenceV = Normalize(differenceV);
 	bulletVel = differenceV * kBulletSpeed;
 
 
 	//速度ベクトルを自キャラの向きに合わせて回転
-	bulletVel = Vector3::TransformNormal(bulletVel, this->worldTransform_.matWorld_);
+	bulletVel = TransformNormal(bulletVel, this->worldTransform_.matWorld_);
 
 	// 弾を生成してユニークポインタにラップ
 	std::unique_ptr<EnemyBullet> newBullet = std::make_unique<EnemyBullet>();
 	newBullet->Init(model_, pos, bulletVel);
+	newBullet->SetPlayer(player_);
+	newBullet->HomingInit(kBulletSpeed);
 
 	// 弾を登録
 	bullets_.push_back(std::move(newBullet));

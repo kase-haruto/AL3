@@ -81,5 +81,7 @@ public:
 	Vector3 GetWorldPosition()const override;
 
 	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets()const {return bullets_; }
+
+
 };
 
