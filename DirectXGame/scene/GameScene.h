@@ -12,6 +12,7 @@
 #include"Enemy.h"
 #include<memory>
 #include"Collider.h"
+#include"Skydome.h"
 
 /// <summary>
 /// ゲームシーン
@@ -58,6 +59,8 @@ private: // メンバ変数
 	ViewProjection viewProjection_;
 	std::unique_ptr<Player> player_;
 	std::unique_ptr<Enemy> enemy_;
+	std::unique_ptr<Skydome>skydome_;
+	Model* modelSkydome_ = nullptr;
 	Model* model_;
 
 
