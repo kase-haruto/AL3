@@ -7,7 +7,7 @@
 
 GameScene::GameScene(){}
 
-GameScene::~GameScene(){ delete debugCamera_, model_; }
+GameScene::~GameScene(){ delete debugCamera_, model_,modelSkydome_; }
 
 void GameScene::Initialize(){
 
@@ -16,6 +16,11 @@ void GameScene::Initialize(){
 	audio_ = Audio::GetInstance();
 
 	viewProjection_.Initialize();
+
+	
+	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+	skydome_ = std::make_unique<Skydome>(modelSkydome_);
+	skydome_->Initialize();
 
 	model_ = Model::Create();
 
@@ -96,6 +101,8 @@ void GameScene::Draw(){
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
+	skydome_->Draw(viewProjection_);
+
 	enemy_->Draw(viewProjection_);
 
 	player_->Draw(viewProjection_);
@@ -117,7 +124,3 @@ void GameScene::Draw(){
 
 #pragma endregion
 }
-
-
-
-
