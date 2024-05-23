@@ -51,36 +51,190 @@ Matrix4x4 Matrix4x4::MakeAffineMatrix(const Vector3& scale, const Vector3& rotat
 	return affineMatrix;
 }
 
-Matrix4x4 Matrix4x4::Inverse(const Matrix4x4& m) {
+Matrix4x4 Matrix4x4::Inverse(const Matrix4x4& mat) {
 	Matrix4x4 result;
 
-	// 行列Aを複製する
-	Matrix4x4 temp = m;
+	//行列式を求める
+#pragma region 行列式
+	float bottom =
+		mat.m[0][0] * mat.m[1][1] * mat.m[2][2] * mat.m[3][3] +
+		mat.m[0][0] * mat.m[1][2] * mat.m[2][3] * mat.m[3][1] +
+		mat.m[0][0] * mat.m[1][3] * mat.m[2][1] * mat.m[3][2] -
 
-	// ガウス・ジョルダン法を用いて逆行列を計算
-	for (int i = 0; i < 4; ++i) {
-		// 対角要素を1にする
-		float divisor = temp.m[i][i];
-		for (int j = 0; j < 4; ++j) {
-			temp.m[i][j] /= divisor;
-			result.m[i][j] /= divisor;
-		}
+		mat.m[0][0] * mat.m[1][3] * mat.m[2][2] * mat.m[3][1] -
+		mat.m[0][0] * mat.m[1][2] * mat.m[2][1] * mat.m[3][3] -
+		mat.m[0][0] * mat.m[1][1] * mat.m[2][3] * mat.m[3][2] -
 
-		// 対角要素以外を0にする
-		for (int k = 0; k < 4; ++k) {
-			if (k != i) {
-				float multiplier = temp.m[k][i];
-				for (int j = 0; j < 4; ++j) {
-					temp.m[k][j] -= temp.m[i][j] * multiplier;
-					result.m[k][j] -= result.m[i][j] * multiplier;
-				}
-			}
-		}
-	}
+		mat.m[0][1] * mat.m[1][0] * mat.m[2][2] * mat.m[3][3] -
+		mat.m[0][2] * mat.m[1][0] * mat.m[2][3] * mat.m[3][1] -
+		mat.m[0][3] * mat.m[1][0] * mat.m[2][1] * mat.m[3][2] +
+
+		mat.m[0][3] * mat.m[1][0] * mat.m[2][2] * mat.m[3][1] +
+		mat.m[0][2] * mat.m[1][0] * mat.m[2][1] * mat.m[3][3] +
+		mat.m[0][1] * mat.m[1][0] * mat.m[2][3] * mat.m[3][2] +
+
+		mat.m[0][1] * mat.m[1][2] * mat.m[2][0] * mat.m[3][3] +
+		mat.m[0][2] * mat.m[1][3] * mat.m[2][0] * mat.m[3][1] +
+		mat.m[0][3] * mat.m[1][1] * mat.m[2][0] * mat.m[3][2] -
+
+		mat.m[0][3] * mat.m[1][2] * mat.m[2][0] * mat.m[3][1] -
+		mat.m[0][2] * mat.m[1][1] * mat.m[2][0] * mat.m[3][3] -
+		mat.m[0][1] * mat.m[1][3] * mat.m[2][0] * mat.m[3][2] -
+
+		mat.m[0][1] * mat.m[1][2] * mat.m[2][3] * mat.m[3][0] -
+		mat.m[0][2] * mat.m[1][3] * mat.m[2][1] * mat.m[3][0] -
+		mat.m[0][3] * mat.m[1][1] * mat.m[2][2] * mat.m[3][0] +
+
+		mat.m[0][3] * mat.m[1][2] * mat.m[2][1] * mat.m[3][0] +
+		mat.m[0][2] * mat.m[1][1] * mat.m[2][3] * mat.m[3][0] +
+		mat.m[0][1] * mat.m[1][3] * mat.m[2][2] * mat.m[3][0];
+#pragma endregion
+
+	float determinant = 1 / bottom;
+
+	//逆行列を求める
+#pragma region 1行目
+	//======================================================
+	result.m[0][0] =
+		(mat.m[1][1] * mat.m[2][2] * mat.m[3][3] +
+		 mat.m[1][2] * mat.m[2][3] * mat.m[3][1] +
+		 mat.m[1][3] * mat.m[2][1] * mat.m[3][2] -
+		 mat.m[1][3] * mat.m[2][2] * mat.m[3][1] -
+		 mat.m[1][2] * mat.m[2][1] * mat.m[3][3] -
+		 mat.m[1][1] * mat.m[2][3] * mat.m[3][2]) * determinant;
+
+	result.m[0][1] =
+		(-mat.m[0][1] * mat.m[2][2] * mat.m[3][3] -
+		 mat.m[0][2] * mat.m[2][3] * mat.m[3][1] -
+		 mat.m[0][3] * mat.m[2][1] * mat.m[3][2] +
+		 mat.m[0][3] * mat.m[2][2] * mat.m[3][1] +
+		 mat.m[0][2] * mat.m[2][1] * mat.m[3][3] +
+		 mat.m[0][1] * mat.m[2][3] * mat.m[3][2]) * determinant;
+
+	result.m[0][2] =
+		(mat.m[0][1] * mat.m[1][2] * mat.m[3][3] +
+		 mat.m[0][2] * mat.m[1][3] * mat.m[3][1] +
+		 mat.m[0][3] * mat.m[1][1] * mat.m[3][2] -
+		 mat.m[0][3] * mat.m[1][2] * mat.m[3][1] -
+		 mat.m[0][2] * mat.m[1][1] * mat.m[3][3] -
+		 mat.m[0][1] * mat.m[1][3] * mat.m[3][2]) * determinant;
+
+	result.m[0][3] =
+		(-mat.m[0][1] * mat.m[1][2] * mat.m[2][3] -
+		 mat.m[0][2] * mat.m[1][3] * mat.m[2][1] -
+		 mat.m[0][3] * mat.m[1][1] * mat.m[2][2] +
+		 mat.m[0][3] * mat.m[1][2] * mat.m[2][1] +
+		 mat.m[0][2] * mat.m[1][1] * mat.m[2][3] +
+		 mat.m[0][1] * mat.m[1][3] * mat.m[2][2]) * determinant;
+#pragma endregion
+
+#pragma region 2行目
+	//======================================================
+	result.m[1][0] =
+		(-mat.m[1][0] * mat.m[2][2] * mat.m[3][3] -
+		 mat.m[1][2] * mat.m[2][3] * mat.m[3][0] -
+		 mat.m[1][3] * mat.m[2][0] * mat.m[3][2] +
+		 mat.m[1][3] * mat.m[2][2] * mat.m[3][0] +
+		 mat.m[1][2] * mat.m[2][0] * mat.m[3][3] +
+		 mat.m[1][0] * mat.m[2][3] * mat.m[3][2]) * determinant;
+
+	result.m[1][1] =
+		(mat.m[0][0] * mat.m[2][2] * mat.m[3][3] +
+		 mat.m[0][2] * mat.m[2][3] * mat.m[3][0] +
+		 mat.m[0][3] * mat.m[2][0] * mat.m[3][2] -
+		 mat.m[0][3] * mat.m[2][2] * mat.m[3][0] -
+		 mat.m[0][2] * mat.m[2][0] * mat.m[3][3] -
+		 mat.m[0][0] * mat.m[2][3] * mat.m[3][2]) * determinant;
+
+	result.m[1][2] =
+		(-mat.m[0][0] * mat.m[1][2] * mat.m[3][3] -
+		 mat.m[0][2] * mat.m[1][3] * mat.m[3][0] -
+		 mat.m[0][3] * mat.m[1][0] * mat.m[3][2] +
+		 mat.m[0][3] * mat.m[1][2] * mat.m[3][0] +
+		 mat.m[0][2] * mat.m[1][0] * mat.m[3][3] +
+		 mat.m[0][0] * mat.m[1][3] * mat.m[3][2]) * determinant;
+
+	result.m[1][3] =
+		(mat.m[0][0] * mat.m[1][2] * mat.m[2][3] +
+		 mat.m[0][2] * mat.m[1][3] * mat.m[2][0] +
+		 mat.m[0][3] * mat.m[1][0] * mat.m[2][2] -
+		 mat.m[0][3] * mat.m[1][2] * mat.m[2][0] -
+		 mat.m[0][2] * mat.m[1][0] * mat.m[2][3] -
+		 mat.m[0][0] * mat.m[1][3] * mat.m[2][2]) * determinant;
+#pragma endregion
+
+#pragma region 3行目
+	//======================================================
+	result.m[2][0] =
+		(mat.m[1][0] * mat.m[2][1] * mat.m[3][3] +
+		 mat.m[1][1] * mat.m[2][3] * mat.m[3][0] +
+		 mat.m[1][3] * mat.m[2][0] * mat.m[3][1] -
+		 mat.m[1][3] * mat.m[2][1] * mat.m[3][0] -
+		 mat.m[1][1] * mat.m[2][0] * mat.m[3][3] -
+		 mat.m[1][0] * mat.m[2][3] * mat.m[3][1]) * determinant;
+
+	result.m[2][1] =
+		(-mat.m[0][0] * mat.m[2][1] * mat.m[3][3] -
+		 mat.m[0][1] * mat.m[2][3] * mat.m[3][0] -
+		 mat.m[0][3] * mat.m[2][0] * mat.m[3][1] +
+		 mat.m[0][3] * mat.m[2][1] * mat.m[3][0] +
+		 mat.m[0][1] * mat.m[2][0] * mat.m[3][3] +
+		 mat.m[0][0] * mat.m[2][3] * mat.m[3][1]) * determinant;
+
+	result.m[2][2] =
+		(mat.m[0][0] * mat.m[1][1] * mat.m[3][3] +
+		 mat.m[0][1] * mat.m[1][3] * mat.m[3][0] +
+		 mat.m[0][3] * mat.m[1][0] * mat.m[3][1] -
+		 mat.m[0][3] * mat.m[1][1] * mat.m[3][0] -
+		 mat.m[0][1] * mat.m[1][0] * mat.m[3][3] -
+		 mat.m[0][0] * mat.m[1][3] * mat.m[3][1]) * determinant;
+
+	result.m[2][3] =
+		(-mat.m[0][0] * mat.m[1][1] * mat.m[2][3] -
+		 mat.m[0][1] * mat.m[1][3] * mat.m[2][0] -
+		 mat.m[0][3] * mat.m[1][0] * mat.m[2][1] +
+		 mat.m[0][3] * mat.m[1][1] * mat.m[2][0] +
+		 mat.m[0][1] * mat.m[1][0] * mat.m[2][3] +
+		 mat.m[0][0] * mat.m[1][3] * mat.m[2][1]) * determinant;
+#pragma endregion
+
+#pragma region 4行目
+	//======================================================
+	result.m[3][0] =
+		(-mat.m[1][0] * mat.m[2][1] * mat.m[3][2] -
+		 mat.m[1][1] * mat.m[2][2] * mat.m[3][0] -
+		 mat.m[1][2] * mat.m[2][0] * mat.m[3][1] +
+		 mat.m[1][2] * mat.m[2][1] * mat.m[3][0] +
+		 mat.m[1][1] * mat.m[2][0] * mat.m[3][2] +
+		 mat.m[1][0] * mat.m[2][2] * mat.m[3][1]) * determinant;
+
+	result.m[3][1] =
+		(mat.m[0][0] * mat.m[2][1] * mat.m[3][2] +
+		 mat.m[0][1] * mat.m[2][2] * mat.m[3][0] +
+		 mat.m[0][2] * mat.m[2][0] * mat.m[3][1] -
+		 mat.m[0][2] * mat.m[2][1] * mat.m[3][0] -
+		 mat.m[0][1] * mat.m[2][0] * mat.m[3][2] -
+		 mat.m[0][0] * mat.m[2][2] * mat.m[3][1]) * determinant;
+
+	result.m[3][2] =
+		(-mat.m[0][0] * mat.m[1][1] * mat.m[3][2] -
+		 mat.m[0][1] * mat.m[1][2] * mat.m[3][0] -
+		 mat.m[0][2] * mat.m[1][0] * mat.m[3][1] +
+		 mat.m[0][2] * mat.m[1][1] * mat.m[3][0] +
+		 mat.m[0][1] * mat.m[1][0] * mat.m[3][2] +
+		 mat.m[0][0] * mat.m[1][2] * mat.m[3][1]) * determinant;
+
+	result.m[3][3] =
+		(mat.m[0][0] * mat.m[1][1] * mat.m[2][2] +
+		 mat.m[0][1] * mat.m[1][2] * mat.m[2][0] +
+		 mat.m[0][2] * mat.m[1][0] * mat.m[2][1] -
+		 mat.m[0][2] * mat.m[1][1] * mat.m[2][0] -
+		 mat.m[0][1] * mat.m[1][0] * mat.m[2][2] -
+		 mat.m[0][0] * mat.m[1][2] * mat.m[2][1]) * determinant;
+#pragma endregion
 
 	return result;
 }
-
 // 座標系変換
 Vector3 Matrix4x4::Transform(const Vector3& vector, const Matrix4x4& matrix) {
 	Vector3 result = {0, 0, 0};

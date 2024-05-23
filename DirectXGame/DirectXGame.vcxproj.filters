@@ -106,6 +106,9 @@
     <Filter Include="Game\Entity\Enemy\enemyState\BaseEnemyState">
       <UniqueIdentifier>{e20f2841-f31f-4e92-a633-1d61fbfdf3c0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\RailCamera">
+      <UniqueIdentifier>{5165e65c-b30a-44a9-ab00-c234a17e7f39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -176,6 +179,12 @@
     </ClCompile>
     <ClCompile Include="CollisionManager.cpp">
       <Filter>MyManager\CollisionManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Skydome.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="RailCamera.cpp">
+      <Filter>Game\RailCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -307,6 +316,12 @@
     </ClInclude>
     <ClInclude Include="CollisionManager.h">
       <Filter>MyManager\CollisionManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Skydome.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="RailCamera.h">
+      <Filter>Game\RailCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

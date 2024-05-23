@@ -5,15 +5,14 @@
 #include<list>
 #include<memory>
 
+
 class Player : 
 	public Actor {
 private:
 	Vector3 velocity_;
 	//弾
-	//std::list<PlayerBullet*> bullets_;
 	std::list<std::unique_ptr<PlayerBullet>> bullets_;
 	Input* input_ = nullptr;
-	
 	
 
 private://メンバ関数
@@ -35,7 +34,7 @@ public://メンバ関数
 	Player();
 	~Player ()override;
 
-	void Init(Model* model);
+	void Init(Model* model,Vector3 pos);
 	void Update() override;
 	void Draw(ViewProjection& viewprojection) override;
 
@@ -51,4 +50,6 @@ public://メンバ関数
 	/// <returns></returns>
 	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets()const{ return bullets_; }
 
+
+	void SetParent(const WorldTransform* parent);
 };

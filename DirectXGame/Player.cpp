@@ -21,12 +21,12 @@ Player::Player(){
 
 Player::~Player(){}
 
-void Player::Init(Model* model){
+void Player::Init(Model* model,Vector3 pos){
 	assert(model);
 	model_ = model;
 	textuerHandle_ = TextureManager::Load("./Resources/uvChecker.png");
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = {0.0f,0.0f,10.0f};
+	worldTransform_.translation_ = pos;
 	velocity_ = {0.4f, 0.4f, 0.4f};
 	radius_ = 1.0f;
 
@@ -49,7 +49,7 @@ void Player::Shoot(){
 
 		// 弾を生成してユニークポインタにラップ
 		std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
-		newBullet->Initialize(model_, pos, BulletVel);
+		newBullet->Initialize(model_, GetWorldPosition(), BulletVel);
 
 		// 弾を登録
 		bullets_.push_back(std::move(newBullet));
@@ -134,10 +134,17 @@ void Player::Draw(ViewProjection& viewprojection){
 Vector3 Player::GetWorldPosition()const{
 	Vector3 wPos;
 	//ワールド行列の平行移動成分を取得
-	wPos = worldTransform_.translation_;
+	wPos.x = worldTransform_.matWorld_.m[3][0];
+	wPos.y = worldTransform_.matWorld_.m[3][1];
+	wPos.z = worldTransform_.matWorld_.m[3][2];
 	return wPos;
 }
 
 void Player::OnCollision(){
 
+}
+
+void Player::SetParent(const WorldTransform* parent){
+	//親子関係を結ぶ
+	worldTransform_.parent_ = parent;
 }

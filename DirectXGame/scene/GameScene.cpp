@@ -4,10 +4,11 @@
 #include"AxisIndicator.h"
 #include<cmath>
 #include"CollisionManager.h"
+#include<imgui.h>
 
 GameScene::GameScene(){}
 
-GameScene::~GameScene(){ delete debugCamera_, model_,modelSkydome_; }
+GameScene::~GameScene(){ delete model_, modelSkydome_; }
 
 void GameScene::Initialize(){
 
@@ -15,9 +16,20 @@ void GameScene::Initialize(){
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
+	//軸方向表示を有効にする
+	AxisIndicator::GetInstance()->SetVisible(true);
+	//軸方向表示が参照するプロジェクションを指定する(アドレス渡し)
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+
+	// デバッグ用のカメラ
+	debugCamera_ = std::make_unique<DebugCamera>(1280, 720);
+	
 	viewProjection_.Initialize();
 
-	
+	//レールカメラ
+	railCamera_ = std::make_unique<RailCamera>();
+	railCamera_->Initialize(viewProjection_.GetWorldPosition());
+
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 	skydome_ = std::make_unique<Skydome>(modelSkydome_);
 	skydome_->Initialize();
@@ -25,23 +37,29 @@ void GameScene::Initialize(){
 	model_ = Model::Create();
 
 	player_ = std::make_unique<Player>();
-	player_->Init(model_);
+	Vector3 playerPos = {0.0f,0.0f,30.0f};
+	player_->Init(model_,playerPos);
+	player_->SetParent(&railCamera_->GetWorldTransform());
 
 	enemy_ = std::make_unique<Enemy>();
 	enemy_->SetPlayer(player_.get());
 	enemy_->Init(model_);
 
-	// デバッグ用のカメラ
-	debugCamera_ = new DebugCamera(1280, 720);
-	//軸方向表示を有効にする
-	AxisIndicator::GetInstance()->SetVisible(true);
-	//軸方向表示が参照するプロジェクションを指定する(アドレス渡し)
-	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+	
+	
+	
 }
 
 void GameScene::Update(){
+	//=========================================================
+	//	 playerの更新処理
+	//=========================================================
 	player_->Update();
 
+
+	//=========================================================
+	//	 enemyの更新処理
+	//=========================================================
 	if (enemy_){
 		if (input_->TriggerKey(DIK_SPACE)){
 			enemy_->SetIsMove(true);
@@ -49,21 +67,39 @@ void GameScene::Update(){
 		enemy_->Update();
 
 	}
+	
 
+	//=========================================================
+	//	 衝突判定
+	//=========================================================
 	CollisionManager::GetInstance()->Update();
+
+
+	//=========================================================
+	//	カメラの更新処理
+	//=========================================================
+	railCamera_->Update();
 
 #ifdef _DEBUG
 
-	// デバッグ用のカメラ
-	debugCamera_->Update();
-
 	if (isDebugCameraActive_){
+		// デバッグ用のカメラ
+		debugCamera_->Update();
+		//情報の受け渡し
 		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-		viewProjection_.TransferMatrix();
+		//転送
 	} else{
-		viewProjection_.UpdateMatrix();
+		//情報の受け渡し
+		viewProjection_.matView = railCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+		//更新と転送
 	}
+	viewProjection_.TransferMatrix();
+
+#endif // _DEBUG
+
+#ifdef _DEBUG
 
 	//カメラの切り替え
 	if (input_->TriggerKey(DIK_RETURN)){
@@ -71,7 +107,6 @@ void GameScene::Update(){
 	}
 
 #endif // _DEBUG
-
 }
 
 void GameScene::Draw(){
@@ -101,10 +136,19 @@ void GameScene::Draw(){
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
+	//=========================================================
+	//	天球の描画
+	//=========================================================
 	skydome_->Draw(viewProjection_);
 
+	//=========================================================
+	//	enemyの描画
+	//=========================================================
 	enemy_->Draw(viewProjection_);
 
+	//=========================================================
+	//	playerの描画
+	//=========================================================
 	player_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理

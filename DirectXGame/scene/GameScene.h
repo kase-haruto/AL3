@@ -12,6 +12,8 @@
 #include"Enemy.h"
 #include<memory>
 #include"Collider.h"
+#include"Skydome.h"
+#include"RailCamera.h"
 
 /// <summary>
 /// ゲームシーン
@@ -55,15 +57,18 @@ private: // メンバ変数
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
+	std::unique_ptr<RailCamera> railCamera_ = nullptr;
 	ViewProjection viewProjection_;
-	std::unique_ptr<Player> player_;
-	std::unique_ptr<Enemy> enemy_;
-	Model* model_;
+	std::unique_ptr<Player> player_ = nullptr;
+	std::unique_ptr<Enemy> enemy_ = nullptr;
+	std::unique_ptr<Skydome>skydome_ = nullptr;
+	Model* modelSkydome_ = nullptr;
+	Model* model_ = nullptr;
 
 
 	/// <summary>
 	/// デバッグ用
 	/// </summary>
 	bool isDebugCameraActive_ = false;
-	DebugCamera* debugCamera_ = nullptr;
+	std::unique_ptr<DebugCamera> debugCamera_ = nullptr;
 };

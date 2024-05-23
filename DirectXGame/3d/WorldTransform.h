@@ -56,7 +56,7 @@ public:
 	/// <summary>
 	/// 行列を計算・転送する
 	/// </summary>
-	void UpdateMatrix();
+	void UpdateMatrix(bool isTransfer = true);
 
 private:
 	// 定数バッファ

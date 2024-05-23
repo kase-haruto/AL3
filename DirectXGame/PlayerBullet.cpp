@@ -46,6 +46,9 @@ void PlayerBullet::OnCollision(){
 
 Vector3 PlayerBullet::GetWorldPosition()const{
 	Vector3 wPos;
-	wPos = worldTransform_.translation_;
+	//ワールド行列の平行移動成分を取得
+	wPos.x = worldTransform_.matWorld_.m[3][0];
+	wPos.y = worldTransform_.matWorld_.m[3][1];
+	wPos.z = worldTransform_.matWorld_.m[3][2];
 	return wPos;
 }
