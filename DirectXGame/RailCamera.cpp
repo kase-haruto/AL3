@@ -18,7 +18,7 @@ void RailCamera::Update(){
 	ImGui::DragFloat3("rotation", &wTransform_.rotation_.x, 0.01f);
 	ImGui::End();
 
-	wTransform_.translation_.z += -0.001f;
+	wTransform_.translation_.z += 0.1f;
 	wTransform_.UpdateMatrix(false);
 	viewProjection_.matView = Matrix4x4::Inverse(wTransform_.matWorld_);
 }

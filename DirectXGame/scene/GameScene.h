@@ -14,11 +14,13 @@
 #include"Collider.h"
 #include"Skydome.h"
 #include"RailCamera.h"
+#include"EnemyBullet.h"
+#include<sstream>
 
 /// <summary>
 /// ゲームシーン
 /// </summary>
-class GameScene {
+class GameScene{
 
 public: // メンバ関数
 	/// <summary>
@@ -46,8 +48,28 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-private:
+	/// <summary>
+	/// 敵の球の設定
+	/// </summary>
+	void SetEnemyBullet(std::unique_ptr<EnemyBullet> enemyBullet);
 
+private:
+	/// <summary>
+	/// 敵の球の更新
+	/// </summary>
+	void EnemyBulletUpdate();
+	/// <summary>
+	/// 敵発生データの読み込み
+	/// </summary>
+	void LoadEnemyPopData();
+	/// <summary>
+	/// 敵発生データの更新
+	/// </summary>
+	void UpdateEnemyPopData();
+	/// <summary>
+	/// 敵発生
+	/// </summary>
+	void PopEnemy(Vector3 pos);
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -60,10 +82,15 @@ private: // メンバ変数
 	std::unique_ptr<RailCamera> railCamera_ = nullptr;
 	ViewProjection viewProjection_;
 	std::unique_ptr<Player> player_ = nullptr;
-	std::unique_ptr<Enemy> enemy_ = nullptr;
+	std::list<std::unique_ptr<Enemy>> enemies_;
+	std::list < std::unique_ptr<EnemyBullet>>enemyBullet_;
 	std::unique_ptr<Skydome>skydome_ = nullptr;
 	Model* modelSkydome_ = nullptr;
 	Model* model_ = nullptr;
+
+	//===============
+	//敵発生コマンド
+	std::stringstream enemyPopCommands;
 
 
 	/// <summary>

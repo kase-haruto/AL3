@@ -5,6 +5,7 @@
 #include"Player.h"
 #include"MyFunc.h"
 #include"CollisionManager.h"
+#include"GameScene.h"
 
 Enemy::Enemy(){
 	//衝突属性
@@ -22,18 +23,21 @@ Enemy::~Enemy(){
 
 }
 
-void Enemy::Init(Model* model){
+void Enemy::Init(Vector3 pos,Model* model, GameScene* gameScene){
+	assert(gameScene);
 	assert(model);
+	gameScene_ = gameScene;
 	model_ = model;
 	textuerHandle_ = TextureManager::Load("./Resources/cat.png");
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = {5.0f,0.0f,50.0f};
+	worldTransform_.translation_ = pos;
 	radius_ = 1.0f;
 
 	currentPhase = Phase::Approach;
 	ApproachInitialize();
 	//初期状態をセット
 	TransitionState(std::make_unique<EnemyStateApproach>(this));
+
 }
 
 void Enemy::Approach2Leave(){
@@ -57,7 +61,6 @@ void Enemy::TransitionState(std::unique_ptr<BaseEnemyState>state){
 void Enemy::Shoot(){
 	assert(player_);
 
-	Vector3 pos = worldTransform_.translation_;
 	const float kBulletSpeed = 1.0f;
 	Vector3 bulletVel;
 
@@ -75,13 +78,14 @@ void Enemy::Shoot(){
 	bulletVel = TransformNormal(bulletVel, this->worldTransform_.matWorld_);
 
 	// 弾を生成してユニークポインタにラップ
-	std::unique_ptr<EnemyBullet> newBullet = std::make_unique<EnemyBullet>();
-	newBullet->Init(model_, pos, bulletVel);
+	//EnemyBullet* newBullet = new EnemyBullet;
+	auto newBullet = std::make_unique<EnemyBullet>();
+	newBullet->Init(model_, wPos, bulletVel);
 	newBullet->SetPlayer(player_);
 	newBullet->HomingInit(kBulletSpeed);
 
 	// 弾を登録
-	bullets_.push_back(std::move(newBullet));
+	gameScene_->SetEnemyBullet(std::move(newBullet));
 }
 
 void Enemy::ShootAndLisetTimer(){
@@ -105,22 +109,6 @@ void Enemy::Update(){
 	for (auto& timedCall : timedCalls_){
 		timedCall->Update();
 	}
-
-	// 弾の更新
-	for (auto& bullet : bullets_){
-		bullet->Update();
-	}
-
-	// 弾の更新
-	bullets_.remove_if([] (const std::unique_ptr<EnemyBullet>& bullet){
-		if (bullet->GetIsDeth()){
-			//衝突判定リストから削除
-			CollisionManager::GetInstance()->RemoveCollider(bullet.get());
-			return true;
-		}
-		return false;
-					   });
-
 }
 
 void Enemy::OnCollision(){
@@ -129,11 +117,6 @@ void Enemy::OnCollision(){
 
 void Enemy::Draw(ViewProjection& viewProjection){
 	Actor::Draw(viewProjection);
-
-	for (auto& bullet : bullets_){
-		bullet->Draw(viewProjection);
-	}
-
 }
 
 Vector3 Enemy::GetWorldPosition()const{

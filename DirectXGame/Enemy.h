@@ -1,6 +1,5 @@
 #pragma once
 #include "Actor.h"
-#include"EnemyBullet.h"
 #include<memory>
 #include"BaseEnemyState.h"
 #include"TimedCall.h"
@@ -12,6 +11,7 @@ enum class Phase : uint32_t{
 };
 
 class Player;
+class GameScene;
 
 class Enemy :
 	public Actor{
@@ -19,7 +19,6 @@ class Enemy :
 	bool isMove = false;
 	const uint32_t kShootInterval = 60;
 
-	std::list<std::unique_ptr<EnemyBullet>> bullets_;
 	std::unique_ptr<BaseEnemyState> state_;
 	//次元発動のリスト
 	std::list<std::unique_ptr<TimedCall>> timedCalls_;
@@ -27,6 +26,8 @@ class Enemy :
 
 	//自キャラ
 	Player* player_ = nullptr;
+	GameScene* gameScene_;
+
 private://メンバ関数
 	
 	/// <summary>
@@ -39,7 +40,7 @@ public:
 	Enemy();
 	~Enemy()override;
 
-	void Init(Model* model);
+	void Init(Vector3 pos,Model* model, GameScene* gameScene);
 	void Update()override;
 	void Draw(ViewProjection& viewprojection)override;
 
@@ -79,9 +80,6 @@ public:
 	void SetPlayer(Player* player){ player_ = player; }
 	 
 	Vector3 GetWorldPosition()const override;
-
-	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets()const {return bullets_; }
-
 
 };
 
