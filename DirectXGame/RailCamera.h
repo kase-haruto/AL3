@@ -10,6 +10,8 @@ private:
 	WorldTransform wTransform_;
 	ViewProjection viewProjection_;
 
+	Vector3 scrollVal_;
+
 public:
 	RailCamera();
 	~RailCamera();
@@ -33,12 +35,17 @@ public:
 	/// <returns></returns>
 	Vector3 GetWorldPosition(){
 		Vector3 wPos;
-		wPos = wTransform_.translation_;
+		//ワールド行列の平行移動成分を取得
+		wPos.x = wTransform_.matWorld_.m[3][0];
+		wPos.y = wTransform_.matWorld_.m[3][1];
+		wPos.z = wTransform_.matWorld_.m[3][2];
 		return wPos;
 	}
 
 	const WorldTransform &GetWorldTransform()const { return wTransform_; }
 
 	const ViewProjection& GetViewProjection()const{ return viewProjection_; }
+
+	Vector3 GetScrollVal()const{ return scrollVal_; }
 };
 

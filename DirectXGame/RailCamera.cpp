@@ -10,6 +10,7 @@ void RailCamera::Initialize(Vector3 wPos){
 	wTransform_.scale_ = {1.0f,1.0f,1.0f};
 
 	viewProjection_.Initialize();
+	wTransform_.UpdateMatrix(false);
 }
 
 void RailCamera::Update(){
@@ -19,6 +20,7 @@ void RailCamera::Update(){
 	ImGui::End();
 
 	wTransform_.translation_.z += 0.1f;
+	scrollVal_.z += 0.1f;
 	wTransform_.UpdateMatrix(false);
 	viewProjection_.matView = Matrix4x4::Inverse(wTransform_.matWorld_);
 }

@@ -41,7 +41,7 @@ public:
 	~Enemy()override;
 
 	void Init(Vector3 pos,Model* model, GameScene* gameScene);
-	void Update()override;
+	void Update();
 	void Draw(ViewProjection& viewprojection)override;
 
 	void OnCollision()override;

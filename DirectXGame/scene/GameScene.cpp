@@ -50,8 +50,8 @@ void GameScene::Update(){
 	//=========================================================
 	//	 playerの更新処理
 	//=========================================================
-	player_->Update();
-
+	player_->Update(viewProjection_);
+	player_->setScrollVal(railCamera_->GetScrollVal());
 
 	//=========================================================
 	//	 enemyの更新処理
@@ -82,6 +82,7 @@ void GameScene::Update(){
 		//情報の受け渡し
 		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+		
 		//転送
 	} else{
 		//情報の受け渡し
@@ -90,6 +91,8 @@ void GameScene::Update(){
 		//更新と転送
 	}
 	viewProjection_.TransferMatrix();
+	
+
 
 #endif // _DEBUG
 
@@ -116,7 +119,8 @@ void GameScene::Draw(){
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
 
-	// スプライト描画後処理
+
+	// スプライト描画後処理　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
 	Sprite::PostDraw();
 	// 深度バッファクリア
 	dxCommon_->ClearDepthBuffer();
@@ -161,6 +165,8 @@ void GameScene::Draw(){
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+
+	player_->DrawUi();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();

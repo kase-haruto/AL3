@@ -23,7 +23,7 @@ public: // メンバ関数
 
 
 	void Init();
-	virtual void Update() = 0;
+	void Update();
 	virtual void Draw(ViewProjection& viewprojection);
 
 
