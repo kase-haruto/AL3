@@ -8,6 +8,7 @@
 #include"WinApp.h"
 #include"ViewProjection.h"
 
+
 Player::Player(){
 	//衝突属性
 	collisionAttribute_ = 0b1;
@@ -20,7 +21,12 @@ Player::Player(){
 	CollisionManager::GetInstance()->SetCollider(this);
 }
 
-Player::~Player(){ delete sprite2DReticle_; }
+Player::~Player(){ 
+	delete sprite2DReticle_;
+	for (auto &bullet:bullets_){
+		bullet.reset();
+	}
+}
 
 void Player::Init(Model* model, Vector3 pos){
 	assert(model);
@@ -46,21 +52,8 @@ void Player::Init(Model* model, Vector3 pos){
 }
 
 void Player::Update(const ViewProjection& viewProjection){
-
-	Move();
-	Shoot();
-	Rotate();
-	worldTransform_.UpdateMatrix();
-
-	ReticleUpdate(viewProjection);
-
-
-	// 弾の更新
-	for (auto& bullet : bullets_){
-		bullet->Update();
-	}
-
-	// 生存フラグがfalseの弾を削除
+	///==============================
+	//古い球の削除
 	bullets_.remove_if([] (const std::unique_ptr<PlayerBullet>& bullet){
 		if (bullet->GetIsDead()){
 			//衝突判定リストから削除
@@ -69,6 +62,21 @@ void Player::Update(const ViewProjection& viewProjection){
 		}
 		return false;
 					   });
+
+	//===============================
+
+	Move();
+	Shoot();
+	Rotate();
+	worldTransform_.UpdateMatrix();
+
+	ReticleUpdate(viewProjection);
+
+	// 弾の更新
+	for (auto& bullet : bullets_){
+		bullet->Update();
+	}
+
 
 
 #ifdef _DEBUG
@@ -85,50 +93,46 @@ void Player::ReticleUpdate(const ViewProjection& viewProjection){
 	ImGui::End();
 #endif // _DEBUG
 
-	Matrix4x4 m = viewProjection.matView;
 
-	///================================================================
-	///	3dレティクル
-	///=================================================================
+	//===============================
+	// マウス座標を取得
+	POINT mousePoint;
+	GetCursorPos(&mousePoint);
 
-	//レールカメラを考慮しないプレイヤーの座標
-	Matrix4x4 playerMatWorld = Matrix4x4::MakeAffineMatrix(worldTransform_.scale_,
-														   worldTransform_.rotation_,
-														   worldTransform_.translation_);
-	// 自機からレティクルへの距離
-	float kDistancePlayerTo3DReticle = 50.0f;
-	// 自機からレティクルへのオフセット(z+向き)
-	Vector3 offset = {0, 0, 1.0f};
-	offset = Matrix4x4::Transform(offset, playerMatWorld);
+	// クライアント座標に変換
+	HWND hwnd = WinApp::GetInstance()->GetHwnd();
+	ScreenToClient(hwnd, &mousePoint);
+	Vector2 mousePos = {static_cast< float >(mousePoint.x), static_cast< float >(mousePoint.y)};
+	sprite2DReticle_->SetPosition(mousePos);
+	//===============================
 
-	// ベクトルの長さを整える
-	offset = Normalize(offset) * kDistancePlayerTo3DReticle;
+	//================================
+	// ビュープロジェクションビューポート合成行列
+	Matrix4x4 matViewport = Matrix4x4::MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
+	Matrix4x4 matVPV = Matrix4x4::Multiply(Matrix4x4::Multiply(viewProjection.matView, viewProjection.matProjection), matViewport);
+	// 合成行列の逆行列
+	Matrix4x4 matInverseVPV = Matrix4x4::Inverse(matVPV);
 
-	auto GetPos = [] (const Matrix4x4& matrix) -> Vector3{
-		return Vector3 {matrix.m[3][0], matrix.m[3][1], matrix.m[3][2]};
-	};
+	// スクリーン座標
+	Vector3 posNear = Vector3(mousePos.x, mousePos.y, 0);
+	Vector3 posFar = Vector3(mousePos.x, mousePos.y, 1);
 
-	Vector3 playerWorldPos = GetPos(playerMatWorld);
+	// スクリーン座標系からワールド座標系
+	posNear = Matrix4x4::Transform(posNear, matInverseVPV);
+	posFar = Matrix4x4::Transform(posFar, matInverseVPV);
+	//==================================
 
-	wTransform3DReticle_.translation_ = playerWorldPos + offset + railScrollVal_;
+	//====================================
+	// 3Dレティクルの座標計算
+	// マウスレイの方向
+	Vector3 mouseDirection = posFar - posNear;
+	mouseDirection = Normalize(mouseDirection);
+
+	// カメラから参照オブジェクトの距離
+	const float kDistanceTestObject = 70.0f;
+	wTransform3DReticle_.translation_ = posNear + (mouseDirection * kDistanceTestObject);
 	wTransform3DReticle_.UpdateMatrix();
-
-
-	///================================================================
-	///	2dレティクル
-	///=================================================================
-
-	//3dレティクルのワールド座標から2dレティクルのスクリーン座標を計算
-	Vector3 reticlePos = GetPos(wTransform3DReticle_.matWorld_);
-	//ビューポート処理
-	Matrix4x4 matViewPort = Matrix4x4::MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
-	//ビュー行列とプロジェクション行列、ビューポート行列を合成する
-	Matrix4x4 matViewProjectionViewport = Matrix4x4::Multiply(matViewPort, Matrix4x4::Multiply(viewProjection.matView, viewProjection.matProjection));
-	//ワールドからスクリーン座標に変換
-	reticlePos = Matrix4x4::Transform(reticlePos, matViewProjectionViewport);
-	sprite2DReticle_->SetPosition(Vector2(
-								  reticlePos.x + 1280 * 0.5f,
-								  reticlePos.y + 720 * 0.5f));
+	//====================================
 }
 
 void Player::Draw(ViewProjection& viewprojection){
@@ -136,7 +140,6 @@ void Player::Draw(ViewProjection& viewprojection){
 	for (auto& bullet : bullets_){
 		bullet->Draw(viewprojection);
 	}
-
 	model_->Draw(wTransform3DReticle_, viewprojection);
 }
 
@@ -153,8 +156,13 @@ void Player::Shoot(){
 		const float kBulletSpeed = 1.0f;
 		Vector3 BulletVel = {0, 0, kBulletSpeed};
 
-		// 速度ベクトルを自キャラの向きに合わせて回転
-		BulletVel = TransformNormal(BulletVel, this->worldTransform_.matWorld_);
+		auto GetWpos = [] (const Matrix4x4& matrix) ->Vector3{
+			return Vector3 {matrix.m[3][0],matrix.m[3][1],matrix.m[3][2]};
+		};
+
+		// 自機から照準オブジェクトのベクトル
+		BulletVel = GetWpos(wTransform3DReticle_.matWorld_) - GetWorldPosition();
+		BulletVel = Normalize(BulletVel) * kBulletSpeed;
 
 		// 弾を生成してユニークポインタにラップ
 		std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();

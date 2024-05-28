@@ -10,7 +10,9 @@
 
 GameScene::GameScene(){}
 
-GameScene::~GameScene(){ delete model_, modelSkydome_; player_.reset(); }
+GameScene::~GameScene(){
+	delete model_, modelSkydome_;
+}
 
 void GameScene::Initialize(){
 
@@ -82,7 +84,7 @@ void GameScene::Update(){
 		//情報の受け渡し
 		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-		
+
 		//転送
 	} else{
 		//情報の受け渡し
@@ -91,7 +93,7 @@ void GameScene::Update(){
 		//更新と転送
 	}
 	viewProjection_.TransferMatrix();
-	
+
 
 
 #endif // _DEBUG
@@ -120,7 +122,7 @@ void GameScene::Draw(){
 	/// </summary>
 
 
-	// スプライト描画後処理　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
 	dxCommon_->ClearDepthBuffer();
