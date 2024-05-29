@@ -19,6 +19,8 @@ class Enemy :
 	bool isMove = false;
 	const uint32_t kShootInterval = 60;
 
+	bool isDead_ = false;
+
 	std::unique_ptr<BaseEnemyState> state_;
 	//次元発動のリスト
 	std::list<std::unique_ptr<TimedCall>> timedCalls_;

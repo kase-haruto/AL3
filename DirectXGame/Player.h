@@ -21,6 +21,8 @@ private:
 	WorldTransform wTransform3DReticle_;
 	Vector3 railScrollVal_;
 
+	bool isPad_ = false;
+
 private://メンバ関数
 	/// <summary>
 	/// playerの移動処理を行います

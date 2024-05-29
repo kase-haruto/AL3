@@ -112,11 +112,13 @@ void Enemy::Update(){
 }
 
 void Enemy::OnCollision(){
-
+	isDead_ = true;
 }
 
 void Enemy::Draw(ViewProjection& viewProjection){
-	Actor::Draw(viewProjection);
+	if (!isDead_){
+		Actor::Draw(viewProjection);
+	}
 }
 
 Vector3 Enemy::GetWorldPosition()const{

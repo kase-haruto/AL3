@@ -21,9 +21,9 @@ Player::Player(){
 	CollisionManager::GetInstance()->SetCollider(this);
 }
 
-Player::~Player(){ 
+Player::~Player(){
 	delete sprite2DReticle_;
-	for (auto &bullet:bullets_){
+	for (auto& bullet : bullets_){
 		bullet.reset();
 	}
 }
@@ -38,7 +38,7 @@ void Player::Init(Model* model, Vector3 pos){
 	radius_ = 1.0f;
 	input_ = Input::GetInstance();
 	wTransform3DReticle_.Initialize();
-
+	wTransform3DReticle_.translation_ = this->worldTransform_.translation_;
 	//レティクル用テクスチャの取得
 	uint32_t textureReticle = TextureManager::Load("./Resources/reticle.png");
 	//スプライト生成
@@ -48,6 +48,7 @@ void Player::Init(Model* model, Vector3 pos){
 									  wTransform3DReticle_.translation_.y),
 									  spriteColor,
 									  {0.5f,0.5f});
+
 	sprite2DReticle_->SetSize({64.0f,64.0f});
 }
 
@@ -94,6 +95,28 @@ void Player::ReticleUpdate(const ViewProjection& viewProjection){
 #endif // _DEBUG
 
 
+	// スプライトの現在の座標を取得
+	Vector2 spritePosition = sprite2DReticle_->GetPosition();
+	XINPUT_STATE joyState;
+
+	// ジョイスティック状態の取得
+	if (Input::GetInstance()->GetJoystickState(0, joyState)){
+		// ジョイスティックの入力を正規化
+		float joyX = static_cast< float >(joyState.Gamepad.sThumbRX) / SHRT_MAX;
+		float joyY = static_cast< float >(joyState.Gamepad.sThumbRY) / SHRT_MAX;
+
+		// デッドゾーンの設定
+		const float deadZone = 0.2f;
+
+		// ジョイスティックのデッドゾーンを考慮
+		if (fabs(joyX) > deadZone){
+			spritePosition.x += joyX * 5.0f;
+		}
+		if (fabs(joyY) > deadZone){
+			spritePosition.y -= joyY * 5.0f;
+		}
+	}
+
 	//===============================
 	// マウス座標を取得
 	POINT mousePoint;
@@ -104,7 +127,9 @@ void Player::ReticleUpdate(const ViewProjection& viewProjection){
 	ScreenToClient(hwnd, &mousePoint);
 	Vector2 mousePos = {static_cast< float >(mousePoint.x), static_cast< float >(mousePoint.y)};
 	sprite2DReticle_->SetPosition(mousePos);
-	//===============================
+	//================================
+
+	sprite2DReticle_->SetPosition(isPad_ ? spritePosition : mousePos);
 
 	//================================
 	// ビュープロジェクションビューポート合成行列
@@ -114,8 +139,8 @@ void Player::ReticleUpdate(const ViewProjection& viewProjection){
 	Matrix4x4 matInverseVPV = Matrix4x4::Inverse(matVPV);
 
 	// スクリーン座標
-	Vector3 posNear = Vector3(mousePos.x, mousePos.y, 0);
-	Vector3 posFar = Vector3(mousePos.x, mousePos.y, 1);
+	Vector3 posNear = Vector3(spritePosition.x, spritePosition.y, 0);
+	Vector3 posFar = Vector3(spritePosition.x, spritePosition.y, 1);
 
 	// スクリーン座標系からワールド座標系
 	posNear = Matrix4x4::Transform(posNear, matInverseVPV);
@@ -124,15 +149,17 @@ void Player::ReticleUpdate(const ViewProjection& viewProjection){
 
 	//====================================
 	// 3Dレティクルの座標計算
-	// マウスレイの方向
-	Vector3 mouseDirection = posFar - posNear;
-	mouseDirection = Normalize(mouseDirection);
+	// レティクルレイの方向
+	Vector3 reticleDirection = posFar - posNear;
+	reticleDirection = Normalize(reticleDirection);
 
 	// カメラから参照オブジェクトの距離
 	const float kDistanceTestObject = 70.0f;
-	wTransform3DReticle_.translation_ = posNear + (mouseDirection * kDistanceTestObject);
+	wTransform3DReticle_.translation_ = posNear + (reticleDirection * kDistanceTestObject);
 	wTransform3DReticle_.UpdateMatrix();
 	//====================================
+
+
 }
 
 void Player::Draw(ViewProjection& viewprojection){
@@ -148,7 +175,15 @@ void Player::DrawUi(){
 }
 
 void Player::Shoot(){
-	if (input_->TriggerKey(DIK_SPACE)){
+
+	XINPUT_STATE joyState;
+
+	if (!Input::GetInstance()->GetJoystickState(0, joyState)){
+		isPad_ = false;
+	}
+
+	if (input_->TriggerKey(DIK_SPACE) ||
+		joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER){
 		// 自キャラの座標をコピー
 		Vector3 pos = worldTransform_.translation_;
 
@@ -171,13 +206,26 @@ void Player::Shoot(){
 		// 弾を登録
 		bullets_.push_back(std::move(newBullet));
 	}
-
-
 }
 
 void Player::Move(){
+	const float kCharacterSpeed = 1.0f;
 	Vector3 move = {0, 0, 0};
 
+	//ゲームパッドの状態を得る変数
+	XINPUT_STATE joyState;
+
+	///==================================
+	///	ゲームパッドの移動処理
+	if (Input::GetInstance()->GetJoystickState(0, joyState)){
+		move.x += ( float ) joyState.Gamepad.sThumbLX / SHRT_MAX * kCharacterSpeed;
+		move.y += ( float ) joyState.Gamepad.sThumbLY / SHRT_MAX * kCharacterSpeed;
+	}
+	///==================================
+
+
+	///==================================
+	///	キーボードの移動処理
 	if (input_->PushKey(DIK_A)){
 		move.x -= velocity_.x;
 	} else if (input_->PushKey(DIK_D)){
@@ -189,6 +237,8 @@ void Player::Move(){
 	} else if (input_->PushKey(DIK_W)){
 		move.y += velocity_.y;
 	}
+	///==================================
+
 
 	worldTransform_.translation_ += move;
 

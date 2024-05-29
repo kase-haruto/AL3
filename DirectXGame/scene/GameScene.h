@@ -53,6 +53,9 @@ public: // メンバ関数
 	/// </summary>
 	void SetEnemyBullet(std::unique_ptr<EnemyBullet> enemyBullet);
 
+
+	bool GetIsPad()const{ return isPad_; }
+
 private:
 	/// <summary>
 	/// 敵の球の更新
@@ -75,6 +78,8 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
+
+	bool isPad_ = false;
 
 	/// <summary>
 	/// ゲームシーン用
