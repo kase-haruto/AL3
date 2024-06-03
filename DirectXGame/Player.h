@@ -16,7 +16,6 @@ private:
 	
 	//2dレティクル用スプライト
 	Sprite* sprite2DReticle_ = nullptr;
-
 	//3Dレティクル用ワールドトランスフォーム
 	WorldTransform wTransform3DReticle_;
 	Vector3 railScrollVal_;

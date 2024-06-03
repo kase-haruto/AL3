@@ -20,15 +20,15 @@ Vector3 CatmullRomInterpolation(
 Vector3 CatmullRomPosition(const std::vector<Vector3>& points, float t){
 	assert(points.size() >= 4 && "制御点は4以上が必要です");
 
-	size_t segmentCount = points.size() - 1; // 区間数は制御点の数 - 3
-	float areaWidth = 1.0f / segmentCount; // 各区間の長さ
+	size_t division = points.size() - 1; // 区間数は制御点の数 - 3
+	float areaWidth = 1.0f / division; // 各区間の長さ
 
 	// 区間番号
-	float t_2 = std::fmod(t, areaWidth) * segmentCount;
+	float t_2 = std::fmod(t, areaWidth) * division;
 	t_2 = std::clamp(t_2, 0.0f, 1.0f);
 
 	size_t index = static_cast< size_t >(t / areaWidth);
-	index = std::clamp(int(index), 0, int(segmentCount - 1));
+	index = std::clamp(int(index), 0, int(division - 1));
 
 	// 4つの制御点のインデックス
 	size_t index0 = index - 1;
@@ -36,12 +36,22 @@ Vector3 CatmullRomPosition(const std::vector<Vector3>& points, float t){
 	size_t index2 = index + 1;
 	size_t index3 = index + 2;
 
+
+	//最初の区間のp0はp1を重複使用する
+	if (index == 0){
+		index0 = index1;
+	}
+	//最後の区間のp3はp2を重複使用する
+	if (index3 >= points.size()){
+		index3 = index2;
+	}
+
 	// インデックスが範囲を超えないようにする
 	index0 = std::clamp(index0, size_t(0), points.size() - 1);
 	index1 = std::clamp(index1, size_t(0), points.size() - 1);
 	index2 = std::clamp(index2, size_t(0), points.size() - 1);
 	index3 = std::clamp(index3, size_t(0), points.size() - 1);
-
+	
 	const Vector3& p0 = points[index0];
 	const Vector3& p1 = points[index1];
 	const Vector3& p2 = points[index2];

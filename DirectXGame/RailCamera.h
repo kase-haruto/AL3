@@ -3,6 +3,8 @@
 #include"ViewProjection.h"
 #include<memory>
 #include<vector>
+#include"Model.h"
+
 /// <summary>
 /// レールカメラ
 /// </summary>
@@ -12,10 +14,10 @@ private:
 	ViewProjection viewProjection_;
 
 	Vector3 scrollVal_;
+	float t_;
 
 	std::vector<Vector3>ctrlPoints_;
 	
-
 public:
 	RailCamera();
 	~RailCamera();
@@ -50,10 +52,16 @@ public:
 		return wPos;
 	}
 
+	/// <summary>
+	/// 描画
+	/// </summary>
+	void Draw();
+
 	const WorldTransform &GetWorldTransform()const { return wTransform_; }
 
 	const ViewProjection& GetViewProjection()const{ return viewProjection_; }
 
 	Vector3 GetScrollVal()const{ return scrollVal_; }
+
 };
 

@@ -22,12 +22,14 @@ void EnemyBullet::Init(Model* model, const Vector3& position, const Vector3& vel
 	velocity_ = vel;
 	worldTransform_.Initialize();
 	//弾を長細くする
-	/*worldTransform_.scale_.x = 0.5f;
+	worldTransform_.scale_.x = 0.5f;
 	worldTransform_.scale_.y = 0.5f;
-	worldTransform_.scale_.z = 3.0f;*/
+	worldTransform_.scale_.z = 3.0f;
 	//y軸周りの角度
+
 	worldTransform_.rotation_.y = std::atan2(vel.x,vel.z);
-	worldTransform_.rotation_.x = std::atan2(vel.y,vel.z);
+	float horizontalDistance = sqrtf(vel.x * vel.x + vel.z * vel.z);
+	worldTransform_.rotation_.x = std::atan2(-vel.y, horizontalDistance);
 	worldTransform_.translation_ = position;
 	
 	radius_ = 1.0f;

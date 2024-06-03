@@ -30,18 +30,18 @@ void GameScene::Initialize(){
 
 	viewProjection_.Initialize();
 	viewProjection_.UpdateMatrix();
-	//レールカメラ
-	railCamera_ = std::make_unique<RailCamera>();
-	railCamera_->Initialize(viewProjection_.GetWorldPosition());
+	
 
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 	skydome_ = std::make_unique<Skydome>(modelSkydome_);
 	skydome_->Initialize();
 
 	model_ = Model::Create();
-
+	//レールカメラ
+	railCamera_ = std::make_unique<RailCamera>();
+	railCamera_->Initialize(viewProjection_.GetWorldPosition());
 	player_ = std::make_unique<Player>();
-	Vector3 playerPos = {0.0f,0.0f,30.0f};
+	Vector3 playerPos = {0.0f,0.0f,20.0f};
 	player_->Init(model_, playerPos);
 	player_->SetParent(&railCamera_->GetWorldTransform());
 
