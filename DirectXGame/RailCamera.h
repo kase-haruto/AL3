@@ -2,6 +2,7 @@
 #include"WorldTransform.h"
 #include"ViewProjection.h"
 #include<memory>
+#include<vector>
 /// <summary>
 /// レールカメラ
 /// </summary>
@@ -11,6 +12,9 @@ private:
 	ViewProjection viewProjection_;
 
 	Vector3 scrollVal_;
+
+	std::vector<Vector3>ctrlPoints_;
+	
 
 public:
 	RailCamera();
@@ -24,6 +28,10 @@ public:
 	/// 更新
 	/// </summary>
 	void Update();
+	/// <summary>
+	/// 線の描画
+	/// </summary>
+	void DrawLine(ViewProjection& viewProjection);
 	/// <summary>
 	/// ビュープロジェクションを取得
 	/// </summary>

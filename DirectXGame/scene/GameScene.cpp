@@ -29,7 +29,7 @@ void GameScene::Initialize(){
 	debugCamera_ = std::make_unique<DebugCamera>(1280, 720);
 
 	viewProjection_.Initialize();
-
+	viewProjection_.UpdateMatrix();
 	//レールカメラ
 	railCamera_ = std::make_unique<RailCamera>();
 	railCamera_->Initialize(viewProjection_.GetWorldPosition());
@@ -136,6 +136,7 @@ void GameScene::Draw(){
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
+
 	//=========================================================
 	//	天球の描画
 	//=========================================================
@@ -156,8 +157,12 @@ void GameScene::Draw(){
 	//=========================================================
 	player_->Draw(viewProjection_);
 
+
+
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
+	railCamera_->DrawLine(viewProjection_);
+
 #pragma endregion
 
 #pragma region 前景スプライト描画

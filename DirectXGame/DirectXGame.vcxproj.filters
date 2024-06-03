@@ -109,6 +109,18 @@
     <Filter Include="Game\RailCamera">
       <UniqueIdentifier>{5165e65c-b30a-44a9-ab00-c234a17e7f39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utity">
+      <UniqueIdentifier>{3d4c7f43-f0b0-4c20-8068-6e8970608f53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utity\MyMath">
+      <UniqueIdentifier>{2aa7ab44-1009-4cad-9786-2d44a7207c5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Object\Collider">
+      <UniqueIdentifier>{7e0ca017-d747-4979-8230-a7cfe4cf8a15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Object\Skydome">
+      <UniqueIdentifier>{7b624949-f913-4be6-a467-7b9ee30ca192}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -174,17 +186,20 @@
     <ClCompile Include="BaseEnemyState.cpp">
       <Filter>Game\Entity\Enemy\enemyState\BaseEnemyState</Filter>
     </ClCompile>
-    <ClCompile Include="Collider.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="CollisionManager.cpp">
       <Filter>MyManager\CollisionManager</Filter>
     </ClCompile>
-    <ClCompile Include="Skydome.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="RailCamera.cpp">
       <Filter>Game\RailCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="MyMath.cpp">
+      <Filter>Utity\MyMath</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Game\Object\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Skydome.cpp">
+      <Filter>Game\Object\Skydome</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -311,17 +326,20 @@
     <ClInclude Include="BaseEnemyState.h">
       <Filter>Game\Entity\Enemy\enemyState\BaseEnemyState</Filter>
     </ClInclude>
-    <ClInclude Include="Collider.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionManager.h">
       <Filter>MyManager\CollisionManager</Filter>
     </ClInclude>
-    <ClInclude Include="Skydome.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="RailCamera.h">
       <Filter>Game\RailCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="MyMath.h">
+      <Filter>Utity\MyMath</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Game\Object\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Skydome.h">
+      <Filter>Game\Object\Skydome</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

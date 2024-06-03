@@ -77,8 +77,6 @@ void Player::Update(const ViewProjection& viewProjection){
 		bullet->Update();
 	}
 
-
-
 #ifdef _DEBUG
 	ImGui::Begin("player");
 	ImGui::DragFloat3("translate", &worldTransform_.translation_.x, 0.01f);
