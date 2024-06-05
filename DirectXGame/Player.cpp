@@ -7,7 +7,8 @@
 #include"CollisionManager.h"
 #include"WinApp.h"
 #include"ViewProjection.h"
-
+#include<cmath>
+#include"MyMath.h"
 
 Player::Player(){
 	//衝突属性
@@ -21,9 +22,9 @@ Player::Player(){
 	CollisionManager::GetInstance()->SetCollider(this);
 }
 
-Player::~Player(){ 
+Player::~Player(){
 	delete sprite2DReticle_;
-	for (auto &bullet:bullets_){
+	for (auto& bullet : bullets_){
 		bullet.reset();
 	}
 }
@@ -85,9 +86,12 @@ void Player::Update(const ViewProjection& viewProjection){
 }
 
 void Player::ReticleUpdate(const ViewProjection& viewProjection){
+
 #ifdef _DEBUG
 	ImGui::Begin("reticle");
 	ImGui::DragFloat3("translate", &wTransform3DReticle_.translation_.x, 0.01f);
+	ImGui::Text("2DreticlePos:(%f,%f)", sprite2DReticle_->GetPosition().x, sprite2DReticle_->GetPosition().y);
+	ImGui::Text("isLockOn:(%d)", isLockOn);
 	ImGui::End();
 #endif // _DEBUG
 
@@ -131,6 +135,30 @@ void Player::ReticleUpdate(const ViewProjection& viewProjection){
 	wTransform3DReticle_.translation_ = posNear + (mouseDirection * kDistanceTestObject);
 	wTransform3DReticle_.UpdateMatrix();
 	//====================================
+
+	LockOn(viewProjection);
+}
+
+void Player::LockOn(const ViewProjection& viewProjection){
+	// レティクルから敵までの距離を計算し、レティクルの位置を更新
+	Vector2 reticlePos = sprite2DReticle_->GetPosition();
+	float reticleSize = 32.0f;
+	bool foundTarget = false;
+	for (const auto& targetPos : targetPos_){
+		Vector3 scTargetPos = WorldToScreen(targetPos, viewProjection);
+
+		float dx = scTargetPos.x - reticlePos.x;
+		float dy = scTargetPos.y - reticlePos.y;
+		float dist = sqrtf(dx * dx + dy * dy);
+
+		if (dist <= reticleSize){
+			sprite2DReticle_->SetPosition({scTargetPos.x, scTargetPos.y});
+			lockOnTargetPos_ = targetPos;
+			foundTarget = true;
+			break;
+		}
+	}
+	isLockOn = foundTarget;
 }
 
 void Player::Draw(ViewProjection& viewprojection){
@@ -147,9 +175,6 @@ void Player::DrawUi(){
 
 void Player::Shoot(){
 	if (input_->TriggerKey(DIK_SPACE)){
-		// 自キャラの座標をコピー
-		Vector3 pos = worldTransform_.translation_;
-
 		// 弾の速度
 		const float kBulletSpeed = 1.0f;
 		Vector3 BulletVel = {0, 0, kBulletSpeed};
@@ -158,19 +183,19 @@ void Player::Shoot(){
 			return Vector3 {matrix.m[3][0],matrix.m[3][1],matrix.m[3][2]};
 		};
 
-		// 自機から照準オブジェクトのベクトル
-		BulletVel = GetWpos(wTransform3DReticle_.matWorld_) - GetWorldPosition();
+		// 弾の速度を設定
+		Vector3 targetPos = isLockOn ? lockOnTargetPos_ : GetWpos(wTransform3DReticle_.matWorld_);
+
+		BulletVel = targetPos - this->GetWorldPosition();
 		BulletVel = Normalize(BulletVel) * kBulletSpeed;
 
 		// 弾を生成してユニークポインタにラップ
 		std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
-		newBullet->Initialize(model_, GetWorldPosition(), BulletVel);
+		newBullet->Initialize(model_, this->GetWorldPosition(), BulletVel);
 
 		// 弾を登録
 		bullets_.push_back(std::move(newBullet));
 	}
-
-
 }
 
 void Player::Move(){
@@ -218,11 +243,13 @@ Vector3 Player::GetWorldPosition()const{
 	return wPos;
 }
 
-void Player::OnCollision(){
-
-}
+void Player::OnCollision(){}
 
 void Player::SetParent(const WorldTransform* parent){
 	//親子関係を結ぶ
 	worldTransform_.parent_ = parent;
+}
+
+void Player::SetTargetPos(const std::vector<Vector3>& targetPos){
+	targetPos_ = targetPos;
 }

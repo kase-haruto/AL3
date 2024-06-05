@@ -5,7 +5,7 @@
 #include<list>
 #include<memory>
 #include"Sprite.h"
-
+#include<vector>
 class Player : 
 	public Actor {
 private:
@@ -20,6 +20,11 @@ private:
 	WorldTransform wTransform3DReticle_;
 	Vector3 railScrollVal_;
 
+	//targetの座標
+	std::vector<Vector3>targetPos_;
+	Vector3 lockOnTargetPos_;
+	bool isLockOn = false;
+
 private://メンバ関数
 	/// <summary>
 	/// playerの移動処理を行います
@@ -33,7 +38,11 @@ private://メンバ関数
 	/// 弾を撃つ関数
 	/// </summary>
 	void Shoot ();
-
+	/// <summary>
+	/// ロックオン
+	/// </summary>
+	/// <returns></returns>
+	void LockOn(const ViewProjection& viewProjection);
 public://メンバ関数
 
 	Player();
@@ -75,7 +84,11 @@ public://メンバ関数
 	/// </summary>
 	/// <returns></returns>
 	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets()const{ return bullets_; }
-
+	/// <summary>
+	/// targetの座標を取得
+	/// </summary>
+	/// <param name="targetPos"></param>
+	void SetTargetPos(const std::vector<Vector3>& targetPos);
 
 	void SetParent(const WorldTransform* parent);
 };

@@ -1,6 +1,7 @@
 #include "MyFunc.h"
 #include<cmath>
 #include<algorithm>
+#include"WinApp.h"
 
 float Dot(const Vector3& v1, const Vector3& v2){
 	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
@@ -64,4 +65,18 @@ Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m){
 		v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1],
 		v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2]};
 	return result;
+}
+
+Vector3 WorldToScreen(const Vector3& wPos, const ViewProjection& viewPro){
+	// ワールド座標をスクリーン座標に変換
+	Matrix4x4 matViewProjection = Matrix4x4::Multiply(viewPro.matView, viewPro.matProjection);
+
+	// ビューポート行列の作成
+	Matrix4x4 matViewport = Matrix4x4::MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
+
+	// ビュー、プロジェクション、ビューポート行列を合成
+	Matrix4x4 matVPV = Matrix4x4::Multiply(matViewProjection, matViewport);
+
+	// ワールド座標をスクリーン座標に変換
+	return Matrix4x4::Transform(wPos, matVPV);
 }
