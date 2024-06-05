@@ -59,16 +59,9 @@ void GameScene::Update(){
 	//	 enemyの更新処理
 	//=========================================================
 	UpdateEnemyPopData();
-	ImGui::Begin("Enemy");
-	std::vector<Vector3> enemyScPositions;
 	for (auto& enemy : enemies_){
-		ImGui::Text("enemyPos:(%f,%f,%f)", enemy->GetWorldPosition().x, enemy->GetWorldPosition().y, enemy->GetWorldPosition().z);
 		enemy->Update();
-		//敵のスクリーン座標を取得
-		enemyScPositions.push_back(WorldToScreen(enemy->GetWorldPosition(), viewProjection_));
 	}
-	player_->SetTargetPos(enemyScPositions);
-	ImGui::End();
 	EnemyBulletUpdate();
 
 
