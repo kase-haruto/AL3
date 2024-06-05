@@ -7,7 +7,7 @@
 #include"CollisionManager.h"
 #include"WinApp.h"
 #include"ViewProjection.h"
-
+#include<cmath>
 
 Player::Player(){
 	//衝突属性
@@ -21,9 +21,9 @@ Player::Player(){
 	CollisionManager::GetInstance()->SetCollider(this);
 }
 
-Player::~Player(){ 
+Player::~Player(){
 	delete sprite2DReticle_;
-	for (auto &bullet:bullets_){
+	for (auto& bullet : bullets_){
 		bullet.reset();
 	}
 }
@@ -85,9 +85,14 @@ void Player::Update(const ViewProjection& viewProjection){
 }
 
 void Player::ReticleUpdate(const ViewProjection& viewProjection){
+
 #ifdef _DEBUG
 	ImGui::Begin("reticle");
 	ImGui::DragFloat3("translate", &wTransform3DReticle_.translation_.x, 0.01f);
+	ImGui::Text("2DreticlePos:(%f,%f)", sprite2DReticle_->GetPosition().x, sprite2DReticle_->GetPosition().y);
+	for (const auto& enemyPos : enemyPos_){
+		ImGui::Text("enemyPos:(%f,%f,%f)", enemyPos.x, enemyPos.y, enemyPos.z);
+	}
 	ImGui::End();
 #endif // _DEBUG
 
@@ -131,6 +136,25 @@ void Player::ReticleUpdate(const ViewProjection& viewProjection){
 	wTransform3DReticle_.translation_ = posNear + (mouseDirection * kDistanceTestObject);
 	wTransform3DReticle_.UpdateMatrix();
 	//====================================
+
+	LockOn();
+}
+
+void Player::LockOn(){
+	//distance_.resize(enemyPos_.size());
+	// レティクルから敵までの距離を計算し、レティクルの位置を更新
+	Vector2 reticlePos = sprite2DReticle_->GetPosition();
+	float reticleSize = 32.0f;
+
+	for (const auto& targetPos : targetPos_){
+		float dx = targetPos.x - reticlePos.x;
+		float dy = targetPos.y - reticlePos.y;
+		float dist = sqrtf(dx * dx + dy * dy);
+
+		if (dist <= reticleSize){
+			sprite2DReticle_->SetPosition({targetPos.x, targetPos.y});
+		}
+	}
 }
 
 void Player::Draw(ViewProjection& viewprojection){
@@ -218,11 +242,13 @@ Vector3 Player::GetWorldPosition()const{
 	return wPos;
 }
 
-void Player::OnCollision(){
-
-}
+void Player::OnCollision(){}
 
 void Player::SetParent(const WorldTransform* parent){
 	//親子関係を結ぶ
 	worldTransform_.parent_ = parent;
+}
+
+void Player::SetTargetPos(const std::vector<Vector3>& targetPos){
+	targetPos_ = targetPos;
 }

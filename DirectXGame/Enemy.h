@@ -15,8 +15,8 @@ class GameScene;
 
 class Enemy :
 	public Actor{
-	Vector3 velocity_;
-	bool isMove = false;
+	Vector3 velocity_ = {0.0f,0.0f,-0.01f};
+	bool isMove = true;
 	const uint32_t kShootInterval = 60;
 
 	std::unique_ptr<BaseEnemyState> state_;

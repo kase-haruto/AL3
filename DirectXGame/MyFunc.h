@@ -1,7 +1,7 @@
 #pragma once
 #include"Vector3.h"
 #include"Matrix4x4.h"
-
+#include"ViewProjection.h"
 /// <summary>
 /// 内積
 /// </summary>
@@ -46,3 +46,9 @@ Vector3 Normalize(const Vector3& v);
 float Norm(Vector3 v);
 
 Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
+
+/// <summary>
+/// ワールド座標からスクリーン座標に変換
+/// </summary>
+/// <returns></returns>
+Vector3 WorldToScreen(const Vector3& wPos,const ViewProjection& viewPro);

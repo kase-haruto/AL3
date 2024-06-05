@@ -5,20 +5,25 @@
 #include<list>
 #include<memory>
 #include"Sprite.h"
+#include<vector>
 
-class Player : 
-	public Actor {
+class Player :
+	public Actor{
 private:
 	Vector3 velocity_;
 	//弾
 	std::list<std::unique_ptr<PlayerBullet>> bullets_;
 	Input* input_ = nullptr;
-	
+
 	//2dレティクル用スプライト
 	Sprite* sprite2DReticle_ = nullptr;
 	//3Dレティクル用ワールドトランスフォーム
 	WorldTransform wTransform3DReticle_;
 	Vector3 railScrollVal_;
+	
+	//レティクルロックオン用の敵座標
+	std::vector<Vector3>enemyPos_;
+	std::vector<Vector3> targetPos_;
 
 private://メンバ関数
 	/// <summary>
@@ -32,17 +37,22 @@ private://メンバ関数
 	/// <summary>
 	/// 弾を撃つ関数
 	/// </summary>
-	void Shoot ();
+	void Shoot();
+	/// <summary>
+	/// ロックオン
+	/// </summary>
+	/// <returns></returns>
+	void LockOn();
 
 public://メンバ関数
 
 	Player();
-	~Player ()override;
+	~Player()override;
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Init(Model* model,Vector3 pos);
+	void Init(Model* model, Vector3 pos);
 	/// <summary>
 	/// 更新
 	/// </summary>
@@ -64,11 +74,13 @@ public://メンバ関数
 	/// </summary>
 	void OnCollision()override;
 
-	Vector3 GetVelocity() const { return velocity_; }
-	void SetVelocity(const Vector3 velocity) { velocity_ = velocity; }
+	Vector3 GetVelocity() const{ return velocity_; }
+	void SetVelocity(const Vector3 velocity){ velocity_ = velocity; }
 	Vector3 GetWorldPosition()const override;
 
 	void setScrollVal(const Vector3 scrollVal){ railScrollVal_ = scrollVal; }
+
+	void SetTargetPos(const std::vector<Vector3>& targetPos);
 
 	/// <summary>
 	/// 弾のリストを取得
