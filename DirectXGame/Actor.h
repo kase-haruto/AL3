@@ -12,6 +12,7 @@ protected: // メンバ変数
 	uint32_t color_;
 	uint32_t textuerHandle_;
 	float radius_;
+	bool isAlive_ = true;
 
 	//======================
 	//	3d関連
@@ -44,4 +45,6 @@ public: // メンバ関数
 	void SetColor(const uint32_t color) { color_ = color; }
 
 	float GetRadius()const{ return radius_; }
+
+	bool GetIsAlive()const{ return isAlive_; }
 };

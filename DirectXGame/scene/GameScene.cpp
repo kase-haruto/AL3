@@ -60,14 +60,30 @@ void GameScene::Update(){
 	//=========================================================
 	UpdateEnemyPopData();
 	ImGui::Begin("Enemy");
-	std::vector<Vector3> enemyScPositions;
-	for (auto& enemy : enemies_){
+	std::vector<Vector3> targetPositions;
+	std::vector<bool> isAlive;
+	targetPositions.resize(enemies_.size());
+	isAlive.resize(enemies_.size());
+	
+	for (const auto& enemy : enemies_){
 		ImGui::Text("enemyPos:(%f,%f,%f)", enemy->GetWorldPosition().x, enemy->GetWorldPosition().y, enemy->GetWorldPosition().z);
 		enemy->Update();
-		//敵のスクリーン座標を取得
-		enemyScPositions.push_back(enemy->GetWorldPosition());
 	}
-	player_->SetTargetPos(enemyScPositions);
+	//// 敵が死んでいるかどうかをチェックして削除
+	//enemies_.erase(
+	//	std::remove_if(enemies_.begin(), enemies_.end(), [] (const std::unique_ptr<Enemy>& enemy){
+	//		return !enemy->GetIsAlive();
+	//	}),
+	//	enemies_.end()
+	//		);
+
+	for (int i = 0; i < targetPositions.size(); i++){
+		targetPositions[i] = enemies_[i]->GetWorldPosition();
+		isAlive[i] = enemies_[i]->GetIsAlive();
+	}
+
+	player_->SetTargetPos(targetPositions);
+	player_->SetTargetIsAlive(isAlive);
 	ImGui::End();
 	EnemyBulletUpdate();
 
@@ -76,7 +92,6 @@ void GameScene::Update(){
 	//	 衝突判定
 	//=========================================================
 	CollisionManager::GetInstance()->Update();
-
 
 	//=========================================================
 	//	カメラの更新処理

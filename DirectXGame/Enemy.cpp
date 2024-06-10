@@ -98,25 +98,29 @@ void Enemy::ShootAndLisetTimer(){
 }
 
 void Enemy::Update(){
-	if (isMove){
-		//状態ごとの更新処理
-		state_->Update();
-	}
+	if (isAlive_){
+		if (isMove){
+			//状態ごとの更新処理
+			state_->Update();
+		}
 
-	//行列の更新
-	worldTransform_.UpdateMatrix();
+		//行列の更新
+		worldTransform_.UpdateMatrix();
 
-	for (auto& timedCall : timedCalls_){
-		timedCall->Update();
+		for (auto& timedCall : timedCalls_){
+			timedCall->Update();
+		}
 	}
 }
 
 void Enemy::OnCollision(){
-
+	isAlive_ = false;
 }
 
 void Enemy::Draw(ViewProjection& viewProjection){
-	Actor::Draw(viewProjection);
+	if (isAlive_){
+		Actor::Draw(viewProjection);
+	}
 }
 
 Vector3 Enemy::GetWorldPosition()const{

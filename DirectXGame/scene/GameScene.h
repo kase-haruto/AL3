@@ -82,7 +82,7 @@ private: // メンバ変数
 	std::unique_ptr<RailCamera> railCamera_ = nullptr;
 	ViewProjection viewProjection_;
 	std::unique_ptr<Player> player_ = nullptr;
-	std::list<std::unique_ptr<Enemy>> enemies_;
+	std::vector<std::unique_ptr<Enemy>> enemies_;
 	std::list < std::unique_ptr<EnemyBullet>>enemyBullet_;
 	std::unique_ptr<Skydome>skydome_ = nullptr;
 	Model* modelSkydome_ = nullptr;

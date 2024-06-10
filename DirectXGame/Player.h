@@ -6,8 +6,17 @@
 #include<memory>
 #include"Sprite.h"
 #include<vector>
+#include <unordered_map>
 class Player : 
 	public Actor {
+
+	struct Target{
+		Vector3 pos;
+		Sprite* marker;
+		bool isLockOn = false;
+		bool isAlive = true;
+	};
+
 private:
 	Vector3 velocity_;
 	//弾
@@ -19,12 +28,14 @@ private:
 	//3Dレティクル用ワールドトランスフォーム
 	WorldTransform wTransform3DReticle_;
 	Vector3 railScrollVal_;
+	uint32_t textureReticle_ = TextureManager::Load("./Resources/reticle.png");
 
 	//targetの座標
 	std::vector<Vector3>targetPos_;
 	Vector3 lockOnTargetPos_;
 	bool isLockOn = false;
-
+	std::vector<Target> target_;
+	
 private://メンバ関数
 	/// <summary>
 	/// playerの移動処理を行います
@@ -39,10 +50,25 @@ private://メンバ関数
 	/// </summary>
 	void Shoot ();
 	/// <summary>
+	/// マルチロックオン時の発射処理
+	/// </summary>
+	void MultiLockOnShoot();
+	/// <summary>
+	/// シングルロックオン時の発射処理
+	/// </summary>
+	void SingleLockOnShoot();
+	/// <summary>
 	/// ロックオン
 	/// </summary>
 	/// <returns></returns>
-	void LockOn(const ViewProjection& viewProjection);
+	void SingleLockOn(const ViewProjection& viewProjection);
+	/// <summary>
+	/// マルチロックオン
+	/// </summary>
+	/// <param name="viewProjection"></param>
+	void MultiLockOn(const ViewProjection& viewProjection);
+
+
 public://メンバ関数
 
 	Player();
@@ -89,6 +115,6 @@ public://メンバ関数
 	/// </summary>
 	/// <param name="targetPos"></param>
 	void SetTargetPos(const std::vector<Vector3>& targetPos);
-
+	void SetTargetIsAlive(const std::vector<bool>& isAlive);
 	void SetParent(const WorldTransform* parent);
 };

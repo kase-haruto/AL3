@@ -41,10 +41,9 @@ void Player::Init(Model* model, Vector3 pos){
 	wTransform3DReticle_.Initialize();
 
 	//レティクル用テクスチャの取得
-	uint32_t textureReticle = TextureManager::Load("./Resources/reticle.png");
 	//スプライト生成
 	Vector4 spriteColor = Vector4 {1,1,1,1};
-	sprite2DReticle_ = Sprite::Create(textureReticle,
+	sprite2DReticle_ = Sprite::Create(textureReticle_,
 									  Vector2(wTransform3DReticle_.translation_.x,
 									  wTransform3DReticle_.translation_.y),
 									  spriteColor,
@@ -136,10 +135,11 @@ void Player::ReticleUpdate(const ViewProjection& viewProjection){
 	wTransform3DReticle_.UpdateMatrix();
 	//====================================
 
-	LockOn(viewProjection);
+	//SingleLockOn(viewProjection);
+	MultiLockOn(viewProjection);
 }
 
-void Player::LockOn(const ViewProjection& viewProjection){
+void Player::SingleLockOn(const ViewProjection& viewProjection){
 	// レティクルから敵までの距離を計算し、レティクルの位置を更新
 	Vector2 reticlePos = sprite2DReticle_->GetPosition();
 	float reticleSize = 32.0f;
@@ -161,6 +161,43 @@ void Player::LockOn(const ViewProjection& viewProjection){
 	isLockOn = foundTarget;
 }
 
+void Player::MultiLockOn(const ViewProjection& viewProjection){
+	// ロックオン対象リストを初期化
+	target_.resize(static_cast< int >(targetPos_.size()));
+
+	// レティクルの位置とサイズを取得
+	Vector2 reticlePos = sprite2DReticle_->GetPosition();
+	float reticleSize = 32.0f;
+
+	bool anyLockOn = false; // 一時的なフラグ
+
+	for (size_t i = 0; i < targetPos_.size(); ++i){
+		Vector3 scTargetPos = WorldToScreen(targetPos_[i], viewProjection);
+
+		// 距離を計算
+		float dx = scTargetPos.x - reticlePos.x;
+		float dy = scTargetPos.y - reticlePos.y;
+		float dist = sqrtf(dx * dx + dy * dy);
+
+		if (!target_[i].isLockOn){
+			if (dist <= reticleSize){
+				// ロックオンする
+				target_[i].isLockOn = true;
+				target_[i].pos = targetPos_[i];
+				target_[i].marker = Sprite::Create(textureReticle_, {scTargetPos.x, scTargetPos.y}, {1.0f, 1.0f, 1.0f, 1.0f}, {0.5f, 0.5f});
+				anyLockOn = true; // 一つでもロックオンがあった場合に true に設定
+			}
+		} else{
+			// 既にロックオンされているターゲットの位置を更新
+			target_[i].marker->SetPosition({scTargetPos.x, scTargetPos.y});
+			anyLockOn = true; // 既にロックオンされている場合も true に設定
+		}
+	}
+
+	// 一つもロックオンされなかった場合は false に設定
+	isLockOn = anyLockOn;
+}
+
 void Player::Draw(ViewProjection& viewprojection){
 	Actor::Draw(viewprojection);
 	for (auto& bullet : bullets_){
@@ -171,9 +208,19 @@ void Player::Draw(ViewProjection& viewprojection){
 
 void Player::DrawUi(){
 	sprite2DReticle_->Draw();
+	for (const auto& target : target_){
+		if (target.isLockOn && target.marker && target.isAlive){
+			target.marker->Draw();
+		}
+	}
 }
 
 void Player::Shoot(){
+	//SingleLockOnShoot();
+	MultiLockOnShoot();
+}
+
+void Player::SingleLockOnShoot(){
 	if (input_->TriggerKey(DIK_SPACE)){
 		// 弾の速度
 		const float kBulletSpeed = 1.0f;
@@ -195,6 +242,35 @@ void Player::Shoot(){
 
 		// 弾を登録
 		bullets_.push_back(std::move(newBullet));
+	}
+}
+
+void Player::MultiLockOnShoot(){
+	if (isLockOn){
+		if (input_->TriggerKey(DIK_SPACE)){
+			// 弾の速度
+			const float kBulletSpeed = 1.0f;
+
+			auto GetWpos = [] (const Matrix4x4& matrix) ->Vector3{
+				return Vector3 {matrix.m[3][0],matrix.m[3][1],matrix.m[3][2]};
+			};
+
+			for (const auto& target : target_){
+
+				if (target.isLockOn && target.isAlive){
+					Vector3 BulletVel = {0, 0, kBulletSpeed};
+					BulletVel = target.pos - this->GetWorldPosition();
+					BulletVel = Normalize(BulletVel) * kBulletSpeed;
+
+					// 弾を生成してユニークポインタにラップ
+					std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
+					newBullet->Initialize(model_, this->GetWorldPosition(), BulletVel);
+					// 弾を登録
+					bullets_.push_back(std::move(newBullet));
+				}
+
+			}
+		}
 	}
 }
 
@@ -252,4 +328,10 @@ void Player::SetParent(const WorldTransform* parent){
 
 void Player::SetTargetPos(const std::vector<Vector3>& targetPos){
 	targetPos_ = targetPos;
+}
+
+void Player::SetTargetIsAlive(const std::vector<bool>& isAlive){
+	for (int i = 0; i < target_.size(); i++){
+		target_[i].isAlive = isAlive[i];
+	}
 }

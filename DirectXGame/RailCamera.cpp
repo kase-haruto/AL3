@@ -74,7 +74,6 @@ void RailCamera::Update(){
 	wTransform_.UpdateMatrix(false);
 }
 
-
 void RailCamera::DrawLine(ViewProjection& viewProjection){
 	std::vector<Vector3> pointsDrawing;
 	const size_t segmentCount = 100;
