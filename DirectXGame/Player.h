@@ -7,6 +7,7 @@
 #include"Sprite.h"
 #include<vector>
 #include <unordered_map>
+
 class Player : 
 	public Actor {
 

@@ -49,6 +49,8 @@ void Player::Init(Model* model, Vector3 pos){
 									  spriteColor,
 									  {0.5f,0.5f});
 	sprite2DReticle_->SetSize({64.0f,64.0f});
+
+
 }
 
 void Player::Update(const ViewProjection& viewProjection){
@@ -135,8 +137,8 @@ void Player::ReticleUpdate(const ViewProjection& viewProjection){
 	wTransform3DReticle_.UpdateMatrix();
 	//====================================
 
-	//SingleLockOn(viewProjection);
-	MultiLockOn(viewProjection);
+	SingleLockOn(viewProjection);
+	//MultiLockOn(viewProjection);
 }
 
 void Player::SingleLockOn(const ViewProjection& viewProjection){
@@ -208,16 +210,16 @@ void Player::Draw(ViewProjection& viewprojection){
 
 void Player::DrawUi(){
 	sprite2DReticle_->Draw();
-	for (const auto& target : target_){
+	/*for (const auto& target : target_){
 		if (target.isLockOn && target.marker && target.isAlive){
 			target.marker->Draw();
 		}
-	}
+	}*/
 }
 
 void Player::Shoot(){
-	//SingleLockOnShoot();
-	MultiLockOnShoot();
+	SingleLockOnShoot();
+	//MultiLockOnShoot();
 }
 
 void Player::SingleLockOnShoot(){

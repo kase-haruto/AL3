@@ -85,7 +85,7 @@ void GameScene::Update(){
 	player_->SetTargetPos(targetPositions);
 	player_->SetTargetIsAlive(isAlive);
 	ImGui::End();
-	EnemyBulletUpdate();
+	//EnemyBulletUpdate();
 
 
 	//=========================================================
@@ -178,8 +178,6 @@ void GameScene::Draw(){
 	//	playerの描画
 	//=========================================================
 	player_->Draw(viewProjection_);
-
-
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
