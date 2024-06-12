@@ -52,6 +52,30 @@
     <Filter Include="ソース ファイル\2d">
       <UniqueIdentifier>{814a0f6d-f847-4c45-856d-4688fa4c9e6c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{05a6e30c-10ab-4bf2-994e-8bec6da63c27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Object">
+      <UniqueIdentifier>{009d2caf-e620-4c5d-8193-e9978b519892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Object\Actor">
+      <UniqueIdentifier>{07052595-a67c-495f-8801-be80a4bc47dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Object\Actor\Player">
+      <UniqueIdentifier>{242aba13-f5d5-4db0-aaa0-30a271b91269}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Nature">
+      <UniqueIdentifier>{698abed2-f913-4cb8-8153-d68f97572b41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Nature\Skydome">
+      <UniqueIdentifier>{987a9f3b-ff55-4ec5-a199-de026bd7b5e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\3d">
+      <UniqueIdentifier>{f7c82396-2f6c-4a56-b490-d1bb362b968d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Nature\Ground">
+      <UniqueIdentifier>{8b6014f2-bc53-40b8-8284-4e5ef5edff7d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -68,6 +92,24 @@
     </ClCompile>
     <ClCompile Include="2d\ImGuiManager.cpp">
       <Filter>ソース ファイル\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor.cpp">
+      <Filter>Game\Object\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Game\Object\Actor\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Skydome.cpp">
+      <Filter>Game\Nature\Skydome</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix4x4.cpp">
+      <Filter>ソース ファイル\math</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldTransformPlas.cpp">
+      <Filter>ソース ファイル\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>Game\Nature\Ground</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +199,18 @@
     </ClInclude>
     <ClInclude Include="3d\ObjectColor.h">
       <Filter>ヘッダー ファイル\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="Skydome.h">
+      <Filter>Game\Nature\Skydome</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor.h">
+      <Filter>Game\Object\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Game\Object\Actor\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>Game\Nature\Ground</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

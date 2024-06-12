@@ -1,12 +1,18 @@
 #pragma once
 
-#include "Audio.h"
-#include "DirectXCommon.h"
-#include "Input.h"
-#include "Model.h"
-#include "Sprite.h"
-#include "ViewProjection.h"
-#include "WorldTransform.h"
+#include"Audio.h"
+#include"DirectXCommon.h"
+#include"Input.h"
+#include"Model.h"
+#include"Sprite.h"
+#include"ViewProjection.h"
+#include"WorldTransform.h"
+#include"Player.h"
+#include"Skydome.h"
+#include"Ground.h"
+
+#include<stdint.h>
+#include<memory>
 
 /// <summary>
 /// ゲームシーン
@@ -43,8 +49,16 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
-
+	
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
+	Model* model_ = nullptr;
+	Model* moedlSkydome_ = nullptr;
+	Model* modelGround_ = nullptr;
+	std::unique_ptr<ViewProjection>viewProjection_ = nullptr;
+	std::unique_ptr<Player>player_ = nullptr;
+	std::unique_ptr<Skydome>skydome_ = nullptr;
+	std::unique_ptr<Ground>ground_ = nullptr;
+	 
 };
