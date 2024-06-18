@@ -17,6 +17,7 @@ protected:
 	Model* model_ = nullptr;
 	
 	ViewProjection* viewProjection_;
+	bool isUseTexture = false;
 
 public:
 	Actor(){}

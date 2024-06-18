@@ -10,6 +10,7 @@
 #include"Player.h"
 #include"Skydome.h"
 #include"Ground.h"
+#include"DebugCamera.h"
 
 #include<stdint.h>
 #include<memory>
@@ -53,12 +54,18 @@ private: // メンバ変数
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
-	Model* model_ = nullptr;
+	Model* modelPlayer_ = nullptr;
 	Model* moedlSkydome_ = nullptr;
 	Model* modelGround_ = nullptr;
 	std::unique_ptr<ViewProjection>viewProjection_ = nullptr;
 	std::unique_ptr<Player>player_ = nullptr;
 	std::unique_ptr<Skydome>skydome_ = nullptr;
 	std::unique_ptr<Ground>ground_ = nullptr;
+
+	/// <summary>
+	/// デバッグ用
+	/// </summary>
+	std::unique_ptr<DebugCamera> debugCamera_;
+	bool isDebugCameraActive_ = false;
 	 
 };

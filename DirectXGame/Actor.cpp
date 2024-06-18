@@ -1,7 +1,8 @@
 #include "Actor.h"
 
 void Actor::Draw(){
-	model_->Draw(worldTransform_, *viewProjection_, textureHandle_);
+	isUseTexture ? model_->Draw(worldTransform_, *viewProjection_, textureHandle_) :
+				   model_->Draw(worldTransform_, *viewProjection_);
 }
 
 ///================================

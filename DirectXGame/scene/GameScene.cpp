@@ -4,13 +4,16 @@
 
 GameScene::GameScene() {}
 
-GameScene::~GameScene(){ delete model_,moedlSkydome_; }
+GameScene::~GameScene(){ delete moedlSkydome_; }
 
 void GameScene::Initialize() {
 
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+
+	const int kWindowWidth = 1280;
+	const int kWindowHeight = 720;
 
 	//viewProjectionの初期化
 	viewProjection_ = std::make_unique<ViewProjection>();
@@ -26,18 +29,44 @@ void GameScene::Initialize() {
 	//		地面
 	modelGround_ = Model::CreateFromOBJ("ground", true);
 	ground_ = std::make_unique<Ground>(modelGround_);
-	ground_->Initialize();
+	ground_->Initialize(skydome_->GetScale());
 
-	model_ = Model::Create();
 	
 	///=====================================================
 	//		プレイヤー
+	modelPlayer_ = Model::CreateFromOBJ("player", false);
 	player_ = std::make_unique<Player>();
-	player_->Initialize(model_, viewProjection_.get());
+	player_->Initialize(modelPlayer_, viewProjection_.get());
+
+	///=====================================================
+	//		デバッグカメラ
+	debugCamera_ = std::make_unique<DebugCamera>(kWindowWidth, kWindowHeight);
 
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+
+#ifdef _DEBUG
+	// デバッグ用のカメラ
+	debugCamera_->Update();
+
+	if (isDebugCameraActive_){
+		viewProjection_->matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_->matProjection = debugCamera_->GetViewProjection().matProjection;
+		viewProjection_->TransferMatrix();
+	} else{
+		viewProjection_->UpdateMatrix();
+	}
+
+	//カメラの切り替え
+	if (input_->TriggerKey(DIK_RETURN)){
+		isDebugCameraActive_ = !isDebugCameraActive_;
+	}
+
+#endif // _DEBUG
+
+
+}
 
 void GameScene::Draw() {
 
@@ -75,7 +104,6 @@ void GameScene::Draw() {
 	//	地面の描画
 	//=========================================================
 	ground_->Draw(viewProjection_.get());
-
 
 	//=========================================================
 	//	プレイヤーの描画

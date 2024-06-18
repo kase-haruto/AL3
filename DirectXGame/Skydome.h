@@ -1,6 +1,7 @@
 #pragma once
 #include"WorldTransform.h"
 #include"Model.h"
+#include"Vector3.h"
 
 /// <summary>
 /// 天球
@@ -29,4 +30,6 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw(ViewProjection* viewProjection);
+
+	Vector3 GetScale()const;
 };

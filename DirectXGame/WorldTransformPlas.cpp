@@ -1,4 +1,4 @@
-include"WorldTransform.h"
+#include"WorldTransform.h"
 
 void WorldTransform::UpdateMatrix(bool isTransfer){
 	//アフィン行列の作成
