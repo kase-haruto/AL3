@@ -16,8 +16,8 @@ void Skydome::Update(){
 
 }
 
-void Skydome::Draw(ViewProjection* viewProjection){
-	model_->Draw(wTransform_, *viewProjection);
+void Skydome::Draw(ViewProjection& viewProjection){
+	model_->Draw(wTransform_, viewProjection);
 }
 
 Vector3 Skydome::GetScale()const{ return wTransform_.scale_; }

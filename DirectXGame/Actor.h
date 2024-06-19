@@ -16,7 +16,6 @@ protected:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
 	
-	ViewProjection* viewProjection_;
 	bool isUseTexture = false;
 
 public:
@@ -25,11 +24,12 @@ public:
 
 	void Initialize(){};
 	void Update(){};
-	virtual void Draw();
+	virtual void Draw(ViewProjection& viewProjection);
 
 	///================================
 	///	アクセッサ
 	///================================
+	const WorldTransform& GetWorldTransform();
 	Vector3 GetWorldPosition()const;
 
 	Vector3 GetTranslation()const;

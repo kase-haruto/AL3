@@ -16,8 +16,7 @@ void GameScene::Initialize() {
 	const int kWindowHeight = 720;
 
 	//viewProjectionの初期化
-	viewProjection_ = std::make_unique<ViewProjection>();
-	viewProjection_->Initialize();
+	viewProjection_.Initialize();
 
 	///=====================================================
 	//		天球
@@ -36,7 +35,14 @@ void GameScene::Initialize() {
 	//		プレイヤー
 	modelPlayer_ = Model::CreateFromOBJ("player", false);
 	player_ = std::make_unique<Player>();
-	player_->Initialize(modelPlayer_, viewProjection_.get());
+	player_->Initialize(modelPlayer_);
+
+	///=====================================================
+	//		追従カメラ
+	followCamera_ = std::make_unique<FollowCamera>();
+	followCamera_->Initialize();
+	followCamera_->SetTarget(&player_->GetWorldTransform());
+	player_->SetViewProjection(&followCamera_->GetViewProjection());
 
 	///=====================================================
 	//		デバッグカメラ
@@ -45,18 +51,26 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
+	//プレイヤーの更新
+	player_->Update();
+
 
 #ifdef _DEBUG
 	// デバッグ用のカメラ
-	debugCamera_->Update();
-
+	followCamera_->Update();
 	if (isDebugCameraActive_){
-		viewProjection_->matView = debugCamera_->GetViewProjection().matView;
-		viewProjection_->matProjection = debugCamera_->GetViewProjection().matProjection;
-		viewProjection_->TransferMatrix();
+		// デバッグ用のカメラ
+		debugCamera_->Update();
+		//情報の受け渡し
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
 	} else{
-		viewProjection_->UpdateMatrix();
+		//情報の受け渡し
+		viewProjection_.matView = followCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = followCamera_->GetViewProjection().matProjection;
+		//更新と転送
 	}
+	viewProjection_.TransferMatrix();
 
 	//カメラの切り替え
 	if (input_->TriggerKey(DIK_RETURN)){
@@ -98,17 +112,17 @@ void GameScene::Draw() {
 	//=========================================================
 	//	天球の描画
 	//=========================================================
-	skydome_->Draw(viewProjection_.get());
+	skydome_->Draw(viewProjection_);
 
 	//=========================================================
 	//	地面の描画
 	//=========================================================
-	ground_->Draw(viewProjection_.get());
+	ground_->Draw(viewProjection_);
 
 	//=========================================================
 	//	プレイヤーの描画
 	//=========================================================
-	player_->Draw();
+	player_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

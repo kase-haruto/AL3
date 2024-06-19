@@ -1,15 +1,25 @@
 #pragma once
 #include"Actor.h"
+#include"MyFunc.h"
 
 class Player:public Actor {
-private:
 
 public:
 	Player();
 	~Player()override;
 
-	void Initialize(Model* model,ViewProjection* viewProhection);
+	void Initialize(Model* model);
 	void Update();
-	void Draw()override;
+	void Draw(ViewProjection& viewProjection)override;
+
+	void SetViewProjection(const ViewProjection* viewProjection);
+
+private:
+	void Move();
+
+private:
+	//カメラのビュープロジェクション
+	const ViewProjection* viewPorjection_ = nullptr;
+	float targetAngle;
 };
 

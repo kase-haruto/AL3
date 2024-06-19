@@ -16,6 +16,6 @@ void Ground::Update(){
 
 }
 
-void Ground::Draw(const ViewProjection* viewProjection){
-	model_->Draw(worldTransform_, *viewProjection);
+void Ground::Draw(const ViewProjection& viewProjection){
+	model_->Draw(worldTransform_, viewProjection);
 }

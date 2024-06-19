@@ -257,6 +257,18 @@ Vector3 Matrix4x4::Transform(const Vector3& vector, const Matrix4x4& matrix){
 	return result;
 }
 
+
+Vector3 Matrix4x4::TransformNormal(const Vector3& normal, const Matrix4x4& matrix){
+	Vector3 result = {0, 0, 0};
+
+	// 法線ベクトルは平行移動の影響を受けないため、上3×3の行列を使って変換する
+	result.x = normal.x * matrix.m[0][0] + normal.y * matrix.m[1][0] + normal.z * matrix.m[2][0];
+	result.y = normal.x * matrix.m[0][1] + normal.y * matrix.m[1][1] + normal.z * matrix.m[2][1];
+	result.z = normal.x * matrix.m[0][2] + normal.y * matrix.m[1][2] + normal.z * matrix.m[2][2];
+
+	return result;
+}
+
 Matrix4x4 Matrix4x4::Multiply(const Matrix4x4& m1, const Matrix4x4& m2){
 	Matrix4x4 result;
 

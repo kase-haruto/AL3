@@ -27,6 +27,6 @@ public:
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw(const ViewProjection* viewProjection);
+	void Draw(const ViewProjection& viewProjection);
 };
 

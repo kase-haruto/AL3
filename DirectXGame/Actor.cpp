@@ -1,13 +1,14 @@
 #include "Actor.h"
 
-void Actor::Draw(){
-	isUseTexture ? model_->Draw(worldTransform_, *viewProjection_, textureHandle_) :
-				   model_->Draw(worldTransform_, *viewProjection_);
+void Actor::Draw(ViewProjection& viewProjection){
+	isUseTexture ? model_->Draw(worldTransform_, viewProjection, textureHandle_) :
+				   model_->Draw(worldTransform_, viewProjection);
 }
 
 ///================================
 ///	アクセッサ
 ///================================
+const WorldTransform& Actor::GetWorldTransform(){ return worldTransform_; }
 Vector3 Actor::GetWorldPosition()const{
 	Vector3 wPos;
 	wPos.x = worldTransform_.matWorld_.m[3][0];

@@ -111,6 +111,15 @@
     <ClCompile Include="Ground.cpp">
       <Filter>Game\Nature\Ground</Filter>
     </ClCompile>
+    <ClCompile Include="Vector3.cpp">
+      <Filter>ソース ファイル\math</Filter>
+    </ClCompile>
+    <ClCompile Include="MyFunc.cpp">
+      <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="FollowCamera.cpp">
+      <Filter>ソース ファイル\3d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\ViewProjection.h">
@@ -211,6 +220,12 @@
     </ClInclude>
     <ClInclude Include="Ground.h">
       <Filter>Game\Nature\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="MyFunc.h">
+      <Filter>ヘッダー ファイル\base</Filter>
+    </ClInclude>
+    <ClInclude Include="FollowCamera.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

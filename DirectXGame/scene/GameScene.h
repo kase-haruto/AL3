@@ -11,6 +11,7 @@
 #include"Skydome.h"
 #include"Ground.h"
 #include"DebugCamera.h"
+#include"FollowCamera.h"
 
 #include<stdint.h>
 #include<memory>
@@ -57,15 +58,16 @@ private: // メンバ変数
 	Model* modelPlayer_ = nullptr;
 	Model* moedlSkydome_ = nullptr;
 	Model* modelGround_ = nullptr;
-	std::unique_ptr<ViewProjection>viewProjection_ = nullptr;
+	ViewProjection viewProjection_;
 	std::unique_ptr<Player>player_ = nullptr;
 	std::unique_ptr<Skydome>skydome_ = nullptr;
 	std::unique_ptr<Ground>ground_ = nullptr;
 
 	/// <summary>
-	/// デバッグ用
+	/// カメラ
 	/// </summary>
 	std::unique_ptr<DebugCamera> debugCamera_;
+	std::unique_ptr<FollowCamera> followCamera_;
 	bool isDebugCameraActive_ = false;
 	 
 };
