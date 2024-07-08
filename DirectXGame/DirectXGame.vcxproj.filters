@@ -76,6 +76,9 @@
     <Filter Include="Game\Nature\Ground">
       <UniqueIdentifier>{8b6014f2-bc53-40b8-8284-4e5ef5edff7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Object\Actor\Enemy">
+      <UniqueIdentifier>{488f09ec-4840-4d3f-8fe7-2147b61f2d87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -119,6 +122,9 @@
     </ClCompile>
     <ClCompile Include="FollowCamera.cpp">
       <Filter>ソース ファイル\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Game\Object\Actor\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +232,9 @@
     </ClInclude>
     <ClInclude Include="FollowCamera.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Game\Object\Actor\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,8 +1,19 @@
 #include "Actor.h"
 
-void Actor::Draw(ViewProjection& viewProjection){
-	isUseTexture ? model_->Draw(worldTransform_, viewProjection, textureHandle_) :
-				   model_->Draw(worldTransform_, viewProjection);
+void Actor::Initialize(const std::vector<Model*>& models){
+	models_ = models;
+	worldTransform_.Initialize();
+}
+
+void Actor::Update(){
+	//行列の更新
+	worldTransform_.UpdateMatrix();
+}
+
+void Actor::Draw(const ViewProjection& viewProjection){
+	for (Model* model:models_){
+		model->Draw(worldTransform_, viewProjection);
+	}
 }
 
 ///================================
@@ -17,10 +28,10 @@ Vector3 Actor::GetWorldPosition()const{
 	return wPos;
 }
  
-Vector3 Actor::GetTranslation()const{ return worldTransform_.rotation_; }
+Vector3 Actor::GetTranslation()const{ return worldTransform_.translation_; }
 Vector3 Actor::GetRotation()const{ return worldTransform_.rotation_; }
 
-void Actor::SetTranslatiion(const Vector3& translation){ worldTransform_.translation_ = translation; }
+void Actor::SetPos(const Vector3& pos){ worldTransform_.translation_ = pos; }
 void Actor::SetRotation(const Vector3& rotation){ worldTransform_.rotation_ = rotation; }
 
 uint32_t Actor::GetColor()const{ return color_; }

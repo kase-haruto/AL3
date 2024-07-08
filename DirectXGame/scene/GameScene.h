@@ -12,9 +12,11 @@
 #include"Ground.h"
 #include"DebugCamera.h"
 #include"FollowCamera.h"
+#include"Enemy.h"
 
 #include<stdint.h>
 #include<memory>
+#include<vector>
 
 /// <summary>
 /// ゲームシーン
@@ -53,13 +55,19 @@ private: // メンバ変数
 	Audio* audio_ = nullptr;
 	
 	/// <summary>
-	/// ゲームシーン用
+	/// 3dモデル
 	/// </summary>
-	Model* modelPlayer_ = nullptr;
-	Model* moedlSkydome_ = nullptr;
-	Model* modelGround_ = nullptr;
+	std::vector<std::unique_ptr<Model>> playerModels_;
+	std::vector<std::unique_ptr<Model>> enemyModels_;
+	std::unique_ptr<Model> moedlSkydome_ = nullptr;
+	std::unique_ptr<Model> modelGround_ = nullptr;
+
+	/// <summary>
+	/// ゲームシーン用
+	/// </summary>	
 	ViewProjection viewProjection_;
 	std::unique_ptr<Player>player_ = nullptr;
+	std::unique_ptr<Enemy>enemy_ = nullptr;
 	std::unique_ptr<Skydome>skydome_ = nullptr;
 	std::unique_ptr<Ground>ground_ = nullptr;
 

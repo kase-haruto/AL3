@@ -2,11 +2,11 @@
 #include "TextureManager.h"
 #include <cassert>
 
-GameScene::GameScene() {}
+GameScene::GameScene(){}
 
-GameScene::~GameScene(){ delete moedlSkydome_; }
+GameScene::~GameScene(){}
 
-void GameScene::Initialize() {
+void GameScene::Initialize(){
 
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
@@ -20,22 +20,44 @@ void GameScene::Initialize() {
 
 	///=====================================================
 	//		天球
-	moedlSkydome_ = Model::CreateFromOBJ("skydome", true);
-	skydome_ = std::make_unique<Skydome>(moedlSkydome_);
+	moedlSkydome_.reset(Model::CreateFromOBJ("skydome", true));
+	skydome_ = std::make_unique<Skydome>(moedlSkydome_.get());
 	skydome_->Initialize();
 
 	///=====================================================
 	//		地面
-	modelGround_ = Model::CreateFromOBJ("ground", true);
-	ground_ = std::make_unique<Ground>(modelGround_);
+	modelGround_.reset(Model::CreateFromOBJ("ground", true));
+	ground_ = std::make_unique<Ground>(modelGround_.get());
 	ground_->Initialize(skydome_->GetScale());
 
-	
+
 	///=====================================================
 	//		プレイヤー
-	modelPlayer_ = Model::CreateFromOBJ("player", false);
+	playerModels_.push_back(std::unique_ptr<Model>(Model::CreateFromOBJ("playerBody", true)));
+	playerModels_.push_back(std::unique_ptr<Model>(Model::CreateFromOBJ("playerHead", true)));
+	playerModels_.push_back(std::unique_ptr<Model>(Model::CreateFromOBJ("player_L_arm", true)));
+	playerModels_.push_back(std::unique_ptr<Model>(Model::CreateFromOBJ("player_R_arm", true)));
+	playerModels_.push_back(std::unique_ptr<Model>(Model::CreateFromOBJ("hammer", true)));
 	player_ = std::make_unique<Player>();
-	player_->Initialize(modelPlayer_);
+	std::vector<Model*> modelPointers;
+	for (const auto& model : playerModels_){
+		modelPointers.push_back(model.get());
+	}
+	// プレイヤークラスを初期化
+	player_->Initialize(modelPointers);
+
+	///=====================================================
+	//		敵
+	enemyModels_.push_back(std::unique_ptr<Model>(Model::CreateFromOBJ("enemy", true)));
+	enemyModels_.push_back(std::unique_ptr<Model>(Model::CreateFromOBJ("enemy_arm", true)));
+	enemy_ = std::make_unique<Enemy>();
+	std::vector<Model*>enemyModelPtr;
+	for (const auto& model : enemyModels_){
+		enemyModelPtr.push_back(model.get());
+	}
+	enemy_->Initialize(enemyModelPtr);
+	enemy_->SetPos({10.0f,0.0f,20.0f});
+
 
 	///=====================================================
 	//		追従カメラ
@@ -50,10 +72,11 @@ void GameScene::Initialize() {
 
 }
 
-void GameScene::Update() {
+void GameScene::Update(){
 	//プレイヤーの更新
 	player_->Update();
-
+	//敵の更新
+	enemy_->Update();
 
 #ifdef _DEBUG
 	// デバッグ用のカメラ
@@ -82,7 +105,7 @@ void GameScene::Update() {
 
 }
 
-void GameScene::Draw() {
+void GameScene::Draw(){
 
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
@@ -123,6 +146,11 @@ void GameScene::Draw() {
 	//	プレイヤーの描画
 	//=========================================================
 	player_->Draw(viewProjection_);
+
+	//=========================================================
+	//	敵の描画
+	//=========================================================
+	enemy_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
