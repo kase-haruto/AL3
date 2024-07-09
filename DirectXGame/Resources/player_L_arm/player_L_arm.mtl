@@ -1,4 +1,4 @@
-# Blender 4.1.1 MTL File: 'player.blend'
+# Blender 4.1.1 MTL File: 'None'
 # www.blender.org
 
 newmtl マテリアル.002
@@ -9,4 +9,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.500000
 d 1.000000
 illum 2
-map_Kd C:/プログラミング/RS/Blender/player_texture.png
+map_Kd player_texture.png

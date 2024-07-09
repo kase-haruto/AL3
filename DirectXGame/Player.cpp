@@ -22,19 +22,37 @@ Player::Player(){
 
 Player::~Player(){}
 
+///=======================================================================================================
+///		初期化/更新/描画
+///=======================================================================================================
 void Player::Initialize(const std::vector<Model*>& models){
-	//モデルとワールドトランスフォームの初期化
+
+	//モデルとトランスフォームの初期化
 	Actor::Initialize(models);
 	for (int i = 0; i < models.size(); i++){
 		partsTransform_[i]->Initialize();
 	}
 
+	//====================================================================================
+	//各パーツごとのポジションを設定
+	Vector3 headPos {0.0f,2.75f,0.0f};
+	Vector3 L_armPos {-1.0f,2.0f,0.0f};
+	Vector3 R_armPos {1.0f,2.0f,0.0f};
+	partsTransform_[static_cast< int >(Parts::head)]->translation_ = headPos;
+	partsTransform_[static_cast< int >(Parts::L_arm)]->translation_ = L_armPos;
+	partsTransform_[static_cast< int >(Parts::R_arm)]->translation_ = R_armPos;
+	//=====================================================================================
+
+	//====================================================================================
 	//親子関係を結ぶ
 	partsTransform_[static_cast< int >(Parts::body)]->parent_ = &worldTransform_;
-	partsTransform_[static_cast< int >(Parts::head)]->parent_ = partsTransform_[static_cast< int >(Parts::body)].get();
-	partsTransform_[static_cast< int >(Parts::L_arm)]->parent_ = partsTransform_[static_cast< int >(Parts::body)].get();
-	partsTransform_[static_cast< int >(Parts::R_arm)]->parent_ = partsTransform_[static_cast< int >(Parts::body)].get();
-	partsTransform_[static_cast< int >(Parts::weapon)]->parent_ = partsTransform_[static_cast<int>(Parts::body)].get();
+	auto body = partsTransform_[static_cast< int >(Parts::body)].get();
+	partsTransform_[static_cast< int >(Parts::head)]->parent_ = body;
+	partsTransform_[static_cast< int >(Parts::L_arm)]->parent_ = body;
+	partsTransform_[static_cast< int >(Parts::R_arm)]->parent_ = body;
+	partsTransform_[static_cast< int >(Parts::weapon)]->parent_ = body;
+	//====================================================================================
+
 	//浮遊ギミックの初期化
 	InitializeFloatingAction();
 }
@@ -49,6 +67,7 @@ void Player::Update(){
 
 	for (int i = 0; i < 5; ++i){
 		if (ImGui::TreeNode(partNames[i])){
+			ImGui::DragFloat3((std::string(partNames[i]) + ".translation").c_str(), &partsTransform_[static_cast< int >(partIndices[i])]->translation_.x, 0.01f);
 			ImGui::DragFloat3((std::string(partNames[i]) + ".rotation").c_str(), &partsTransform_[static_cast< int >(partIndices[i])]->rotation_.x, 0.01f);
 			ImGui::TreePop();
 		}
@@ -56,10 +75,10 @@ void Player::Update(){
 	ImGui::End();
 #endif // _DEBUG
 
-	BehaviorRootUpdate();
-	if (isAttack_){
-		BehaviorAttackUpdate();
-	}
+	// 通常の更新処理
+	TrasitionaBehavior();
+	BehaviorUpdate();
+	
 
 	//最短角度補完
 	worldTransform_.rotation_.y = LerpShortAngle(worldTransform_.rotation_.y, targetAngle, 0.1f);
@@ -77,9 +96,16 @@ void Player::Draw(const ViewProjection& viewProjection){
 	models_[static_cast< int >(Parts::body)]->Draw(*partsTransform_[static_cast< int >(Parts::body)], viewProjection);
 	models_[static_cast< int >(Parts::L_arm)]->Draw(*partsTransform_[static_cast< int >(Parts::L_arm)], viewProjection);
 	models_[static_cast< int >(Parts::R_arm)]->Draw(*partsTransform_[static_cast< int >(Parts::R_arm)], viewProjection);
-	models_[static_cast< int >(Parts::weapon)]->Draw(*partsTransform_[static_cast< int >(Parts::weapon)], viewProjection);
+
+	if (isAttack_){
+		models_[static_cast< int >(Parts::weapon)]->Draw(*partsTransform_[static_cast< int >(Parts::weapon)], viewProjection);
+	}
 }
 
+
+///=======================================================================================================
+///		通常行動時の処理
+///=======================================================================================================
 void Player::Move(){
 	XINPUT_STATE joyState;
 	// 移動量
@@ -140,7 +166,7 @@ void Player::UpdateFloatingAction(){
 void Player::BehaviorRootUpdate(){
 	//攻撃
 	if (Input::GetInstance()->TriggerKey(DIK_SPACE)){
-		isAttack_ = true;
+		behaviorRequest_ = Behavior::attack;
 	}
 
 	//移動処理
@@ -149,10 +175,74 @@ void Player::BehaviorRootUpdate(){
 	UpdateFloatingAction();
 }
 
-void Player::BehaviorAttackUpdate(){
-	partsTransform_[static_cast< int >(Parts::L_arm)]->rotation_.x = 180;
-	partsTransform_[static_cast< int >(Parts::R_arm)]->rotation_.x = 180;
+void Player::RootInitialize(){
 	isAttack_ = false;
+	partsTransform_[static_cast< int >(Parts::L_arm)]->rotation_.x = 0.0f;
+	partsTransform_[static_cast< int >(Parts::R_arm)]->rotation_.x = 0.0f;
+}
+
+
+///=======================================================================================================
+///		攻撃時の処理
+///=======================================================================================================
+void Player::BehaviorAttackUpdate(){
+	float targetArmAngle = 1.3f;
+	auto& weaponAngle = partsTransform_[static_cast< int >(Parts::weapon)]->rotation_;
+	auto& L_armAngle = partsTransform_[static_cast< int >(Parts::L_arm)]->rotation_;
+	auto& R_armAngle = partsTransform_[static_cast< int >(Parts::R_arm)]->rotation_;
+
+		weaponAngle.x = Lerp(weaponAngle.x, targetArmAngle, 0.2f);
+		L_armAngle.x = Lerp(L_armAngle.x, -targetArmAngle, 0.2f);
+		R_armAngle.x = Lerp(R_armAngle.x, -targetArmAngle, 0.2f);
+
+
+	// 目標角度に達したら攻撃を初期化
+	if (std::abs(targetArmAngle - weaponAngle.x) <= 0.001f){
+		behaviorRequest_ = Behavior::root;
+	}
+}
+
+void Player::AttackInitialize(){
+	isAttack_ = true;
+	float shakeUpAngle = -3.1f;
+	partsTransform_[static_cast< int >(Parts::weapon)]->rotation_.x = 0.0f;
+	partsTransform_[static_cast< int >(Parts::L_arm)]->rotation_.x = shakeUpAngle;
+	partsTransform_[static_cast< int >(Parts::R_arm)]->rotation_.x = shakeUpAngle;
+}
+
+
+void Player::TrasitionaBehavior(){
+	if (behaviorRequest_){
+		//ふるまいの変更
+		behavior_ = behaviorRequest_.value();
+		//各振る舞いごとの初期化
+		switch (behavior_){
+			case Behavior::root:
+			default:
+				RootInitialize();
+				break;
+
+			case Behavior::attack:
+				AttackInitialize();
+				break;
+		}
+		//ふるまいリクエストをリセット
+		behaviorRequest_ = std::nullopt;
+	}
+}
+
+void Player::BehaviorUpdate(){
+	switch (behavior_){
+		//通常
+		case Behavior::root:
+		default:
+			BehaviorRootUpdate();
+			break;
+		//攻撃
+		case Behavior::attack:
+			BehaviorAttackUpdate();
+			break;
+	}
 }
 
 void Player::SetViewProjection(const ViewProjection* viewProjection){ viewPorjection_ = viewProjection; }

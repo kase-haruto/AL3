@@ -4,7 +4,7 @@
 #include"Model.h"
 
 #include<vector>
-
+#include<optional>
 
 class Player :public Actor{
 
@@ -18,6 +18,11 @@ class Player :public Actor{
 		R_arm,
 		weapon,
 		partsCount
+	};
+
+	enum class Behavior{
+		root,//通常
+		attack,//攻撃
 	};
 
 public:
@@ -51,6 +56,14 @@ private:
 	/// </summary>
 	void InitializeFloatingAction();
 	/// <summary>
+	/// 通常行動の初期化
+	/// </summary>
+	void RootInitialize();
+	/// <summary>
+	/// 攻撃処理の初期化
+	/// </summary>
+	void AttackInitialize();
+	/// <summary>
 	/// 浮遊行動の更新
 	/// </summary>
 	void UpdateFloatingAction();
@@ -62,17 +75,29 @@ private:
 	/// 攻撃行動更新
 	/// </summary>
 	void BehaviorAttackUpdate();
+	/// <summary>
+	/// ふるまいの遷移
+	/// </summary>
+	void TrasitionaBehavior();
+	/// <summary>
+	/// ふるまいの更新
+	/// </summary>
+	void BehaviorUpdate();
 private:
 	//カメラのビュープロジェクション
 	const ViewProjection* viewPorjection_ = nullptr;
 	float targetAngle;
 
-	//パーツ事の変数
+	//パーツごとの変数
 	std::vector<std::unique_ptr< WorldTransform>> partsTransform_;
 
 	//浮遊ギミックの媒介変数
 	float floatingParameter_ = 0.0f;
-
 	bool isAttack_ = false;
+
+	//ふるまい
+	Behavior behavior_ = Behavior::root;
+	//次の振る舞いのリクエスト
+	std::optional<Behavior>behaviorRequest_ = std::nullopt;
 };
 
