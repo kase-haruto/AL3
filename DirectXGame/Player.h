@@ -23,6 +23,12 @@ class Player :public Actor{
 	enum class Behavior{
 		root,//通常
 		attack,//攻撃
+		dash,//ダッシュ中
+	};
+
+	struct WorkDash{
+		//ダッシュ用の媒介変数
+		uint32_t dashParameter_ = 0;
 	};
 
 public:
@@ -52,6 +58,10 @@ private:
 	/// </summary>
 	void Move();
 	/// <summary>
+	/// 向いている方向に進む
+	/// </summary>
+	void MoveInDirection(float speed);
+	/// <summary>
 	/// 浮遊行動の初期化
 	/// </summary>
 	void InitializeFloatingAction();
@@ -64,6 +74,10 @@ private:
 	/// </summary>
 	void AttackInitialize();
 	/// <summary>
+	/// ダッシュ行動の初期化
+	/// </summary>
+	void BehaviorDashInitialize();
+	/// <summary>
 	/// 浮遊行動の更新
 	/// </summary>
 	void UpdateFloatingAction();
@@ -75,6 +89,10 @@ private:
 	/// 攻撃行動更新
 	/// </summary>
 	void BehaviorAttackUpdate();
+	/// <summary>
+	/// ダッシュ行動の更新
+	/// </summary>
+	void BehaviorDashUpdate();
 	/// <summary>
 	/// ふるまいの遷移
 	/// </summary>
@@ -99,5 +117,8 @@ private:
 	Behavior behavior_ = Behavior::root;
 	//次の振る舞いのリクエスト
 	std::optional<Behavior>behaviorRequest_ = std::nullopt;
+
+	//ダッシュ用変数
+	WorkDash workDash_;
 };
 

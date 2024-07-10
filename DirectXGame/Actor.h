@@ -15,6 +15,7 @@ protected:
 	//===================================
 	//	3d用
 	WorldTransform worldTransform_;
+	Vector3 direction_;
 	std::vector<Model*>models_;
 	bool isUseTexture = false;
 

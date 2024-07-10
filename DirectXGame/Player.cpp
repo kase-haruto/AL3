@@ -78,7 +78,7 @@ void Player::Update(){
 	// 通常の更新処理
 	TrasitionaBehavior();
 	BehaviorUpdate();
-	
+
 
 	//最短角度補完
 	worldTransform_.rotation_.y = LerpShortAngle(worldTransform_.rotation_.y, targetAngle, 0.1f);
@@ -122,26 +122,34 @@ void Player::Move(){
 
 		if (isMoving){
 			// 移動量に速さを反映
-			move = Normalize(move) * speed;
+			direction_ = Normalize(move);
 
-			Vector3 rotate = viewPorjection_->rotation_;
+			//向いている方向に移動
+			MoveInDirection(speed);
 
-			// カメラの角度から回転行列を計算
-			Matrix4x4 matRotateY = Matrix4x4::MakeRotateYMatrix(rotate.y);
-			Matrix4x4 matRotateZ = Matrix4x4::MakeRotateZMatrix(rotate.z);
-			Matrix4x4 matRotate = Matrix4x4::Multiply(matRotateY, matRotateZ);
-			move = Matrix4x4::Transform(move, matRotate);
-
-			// 実際の移動
-			float horizontalDistance = sqrtf(move.x * move.x + move.z * move.z);
-			worldTransform_.rotation_.x = std::atan2(-move.y, horizontalDistance);
-
-			worldTransform_.translation_ += move;
-
-			// 振り向きの目標角度を設定
-			targetAngle = std::atan2(move.x, move.z);
 		}
 	}
+}
+
+void Player::MoveInDirection(float speed){
+	Vector3 move = direction_ * speed;
+
+	Vector3 rotate = viewPorjection_->rotation_;
+
+	// カメラの角度から回転行列を計算
+	Matrix4x4 matRotateY = Matrix4x4::MakeRotateYMatrix(rotate.y);
+	Matrix4x4 matRotateZ = Matrix4x4::MakeRotateZMatrix(rotate.z);
+	Matrix4x4 matRotate = Matrix4x4::Multiply(matRotateY, matRotateZ);
+	move = Matrix4x4::Transform(move, matRotate);
+
+	// 実際の移動
+	float horizontalDistance = sqrtf(move.x * move.x + move.z * move.z);
+	worldTransform_.rotation_.x = std::atan2(-move.y, horizontalDistance);
+
+	worldTransform_.translation_ += move;
+
+	// 振り向きの目標角度を設定
+	targetAngle = std::atan2(move.x, move.z);
 }
 
 void Player::InitializeFloatingAction(){
@@ -163,10 +171,20 @@ void Player::UpdateFloatingAction(){
 	partsTransform_[static_cast< int >(Parts::body)]->translation_.y = std::sin(floatingParameter_) * floatingAmplitude;
 }
 
+void Player::RootInitialize(){
+	isAttack_ = false;
+	partsTransform_[static_cast< int >(Parts::L_arm)]->rotation_.x = 0.0f;
+	partsTransform_[static_cast< int >(Parts::R_arm)]->rotation_.x = 0.0f;
+}
+
 void Player::BehaviorRootUpdate(){
 	//攻撃
 	if (Input::GetInstance()->TriggerKey(DIK_SPACE)){
 		behaviorRequest_ = Behavior::attack;
+	}
+
+	if (Input::GetInstance()->TriggerKey(DIK_LSHIFT)){
+		behaviorRequest_ = Behavior::dash;
 	}
 
 	//移動処理
@@ -175,33 +193,10 @@ void Player::BehaviorRootUpdate(){
 	UpdateFloatingAction();
 }
 
-void Player::RootInitialize(){
-	isAttack_ = false;
-	partsTransform_[static_cast< int >(Parts::L_arm)]->rotation_.x = 0.0f;
-	partsTransform_[static_cast< int >(Parts::R_arm)]->rotation_.x = 0.0f;
-}
-
 
 ///=======================================================================================================
 ///		攻撃時の処理
 ///=======================================================================================================
-void Player::BehaviorAttackUpdate(){
-	float targetArmAngle = 1.3f;
-	auto& weaponAngle = partsTransform_[static_cast< int >(Parts::weapon)]->rotation_;
-	auto& L_armAngle = partsTransform_[static_cast< int >(Parts::L_arm)]->rotation_;
-	auto& R_armAngle = partsTransform_[static_cast< int >(Parts::R_arm)]->rotation_;
-
-		weaponAngle.x = Lerp(weaponAngle.x, targetArmAngle, 0.2f);
-		L_armAngle.x = Lerp(L_armAngle.x, -targetArmAngle, 0.2f);
-		R_armAngle.x = Lerp(R_armAngle.x, -targetArmAngle, 0.2f);
-
-
-	// 目標角度に達したら攻撃を初期化
-	if (std::abs(targetArmAngle - weaponAngle.x) <= 0.001f){
-		behaviorRequest_ = Behavior::root;
-	}
-}
-
 void Player::AttackInitialize(){
 	isAttack_ = true;
 	float shakeUpAngle = -3.1f;
@@ -210,7 +205,52 @@ void Player::AttackInitialize(){
 	partsTransform_[static_cast< int >(Parts::R_arm)]->rotation_.x = shakeUpAngle;
 }
 
+void Player::BehaviorAttackUpdate(){
+	float targetArmAngle = 1.3f;
+	auto& weaponAngle = partsTransform_[static_cast< int >(Parts::weapon)]->rotation_;
+	auto& L_armAngle = partsTransform_[static_cast< int >(Parts::L_arm)]->rotation_;
+	auto& R_armAngle = partsTransform_[static_cast< int >(Parts::R_arm)]->rotation_;
 
+	weaponAngle.x = Lerp(weaponAngle.x, targetArmAngle, 0.2f);
+	L_armAngle.x = Lerp(L_armAngle.x, -targetArmAngle, 0.2f);
+	R_armAngle.x = Lerp(R_armAngle.x, -targetArmAngle, 0.2f);
+
+
+	// 目標角度に達したら攻撃を初期化
+	if (std::abs(targetArmAngle - weaponAngle.x) <= 0.001f){
+		behaviorRequest_ = Behavior::root;
+	}
+}
+
+
+///=======================================================================================================
+///		ダッシュの処理
+///=======================================================================================================
+void Player::BehaviorDashInitialize(){
+	workDash_.dashParameter_ = 0;
+	worldTransform_.rotation_.y = targetAngle;
+
+}
+
+void Player::BehaviorDashUpdate(){
+	// ダッシュの速さ
+	const float dashSpeed = 0.6f;
+	MoveInDirection(dashSpeed);
+
+
+	//ダッシュ時間
+	const uint32_t dashTime = 30;
+	//既定の時間経過で通常行動に戻る
+	if (++workDash_.dashParameter_ >= dashTime){
+		//ダッシュが終了したら通常行動に戻る
+		behaviorRequest_ = Behavior::root;
+	}
+}
+
+
+///=======================================================================================================
+///		プレイヤーの状態の処理
+///=======================================================================================================
 void Player::TrasitionaBehavior(){
 	if (behaviorRequest_){
 		//ふるまいの変更
@@ -225,6 +265,9 @@ void Player::TrasitionaBehavior(){
 			case Behavior::attack:
 				AttackInitialize();
 				break;
+
+			case Behavior::dash:
+				BehaviorDashInitialize();
 		}
 		//ふるまいリクエストをリセット
 		behaviorRequest_ = std::nullopt;
@@ -238,12 +281,17 @@ void Player::BehaviorUpdate(){
 		default:
 			BehaviorRootUpdate();
 			break;
-		//攻撃
+			//攻撃
 		case Behavior::attack:
 			BehaviorAttackUpdate();
 			break;
+			//ダッシュ
+		case Behavior::dash:
+			BehaviorDashUpdate();
 	}
 }
+
+
 
 void Player::SetViewProjection(const ViewProjection* viewProjection){ viewPorjection_ = viewProjection; }
 
