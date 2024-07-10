@@ -54,6 +54,10 @@ public:
 
 private:
 	/// <summary>
+	/// 各パーツのtransformの初期化
+	/// </summary>
+	void PartsTransformInit();
+	/// <summary>
 	/// 移動
 	/// </summary>
 	void Move();

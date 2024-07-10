@@ -36,15 +36,21 @@ void FollowCamera::Adulation(){
 
 void FollowCamera::Turning(){
 	XINPUT_STATE joyState;
-	
+	XINPUT_STATE padState;
+	DWORD dwResult;
+
+	// ゲームパッドの状態を取得
+	dwResult = XInputGetState(0, &padState);
+
+	if (dwResult == ERROR_SUCCESS){
+		if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB){
+			destinationAngleY_ = target_->rotation_.y;
+		}
+	}
+
 	if (Input::GetInstance()->GetJoystickState(0, joyState)){
 		const float rotateSpeed = 0.1f;
 		destinationAngleY_ += ( float ) joyState.Gamepad.sThumbRX / SHRT_MAX * rotateSpeed;
-
-		//右スティック押し込みでリセット
-		if (Input::GetInstance()->TriggerKey(DIK_M)){
-			destinationAngleY_ = target_->rotation_.y;
-		}
 	}
 
 	//最短角度補完

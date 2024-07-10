@@ -1,6 +1,7 @@
 #include "Player.h"
 #include"TextureManager.h"
 #include"Input.h"
+#include"GlobalVariables.h"
 
 #ifdef _DEBUG
 #include<imgui.h>
@@ -26,13 +27,22 @@ Player::~Player(){}
 ///		初期化/更新/描画
 ///=======================================================================================================
 void Player::Initialize(const std::vector<Model*>& models){
-
+	const char* groupName = "Player";
+	//グループを追加
+	GlobalVariables::GetInstance()->CreateGroup(groupName);
+	
 	//モデルとトランスフォームの初期化
 	Actor::Initialize(models);
-	for (int i = 0; i < models.size(); i++){
+	//各パーツのトランスフォームの初期化
+	PartsTransformInit();
+	//浮遊ギミックの初期化
+	InitializeFloatingAction();
+}
+
+void Player::PartsTransformInit(){
+	for (int i = 0; i < (int)Parts::partsCount; i++){
 		partsTransform_[i]->Initialize();
 	}
-
 	//====================================================================================
 	//各パーツごとのポジションを設定
 	Vector3 headPos {0.0f,2.75f,0.0f};
@@ -52,9 +62,6 @@ void Player::Initialize(const std::vector<Model*>& models){
 	partsTransform_[static_cast< int >(Parts::R_arm)]->parent_ = body;
 	partsTransform_[static_cast< int >(Parts::weapon)]->parent_ = body;
 	//====================================================================================
-
-	//浮遊ギミックの初期化
-	InitializeFloatingAction();
 }
 
 void Player::Update(){
@@ -178,14 +185,22 @@ void Player::RootInitialize(){
 }
 
 void Player::BehaviorRootUpdate(){
-	//攻撃
-	if (Input::GetInstance()->TriggerKey(DIK_SPACE)){
-		behaviorRequest_ = Behavior::attack;
-	}
+	XINPUT_STATE padState;
+	DWORD dwResult;
 
-	if (Input::GetInstance()->TriggerKey(DIK_LSHIFT)){
-		behaviorRequest_ = Behavior::dash;
+	// ゲームパッドの状態を取得
+	dwResult = XInputGetState(0, &padState);
+
+	if (dwResult == ERROR_SUCCESS){
+		if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_X){
+			behaviorRequest_ = Behavior::attack;
+		}
+
+		if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER){
+			behaviorRequest_ = Behavior::dash;
+		}
 	}
+	
 
 	//移動処理
 	Move();
