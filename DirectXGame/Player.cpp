@@ -2,13 +2,25 @@
 #include"TextureManager.h"
 #include"Input.h"
 #include"GlobalVariables.h"
-
 #ifdef _DEBUG
 #include<imgui.h>
 #endif // DEBUG
 
 #include<cassert>
 #include<numbers>
+
+///=======================================================================================================
+///		グローバル変数の調整項目の適用
+///=======================================================================================================
+void Player::ApplyGlobalVariables(){
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	const char* groupName = "Player";
+	partsTransform_[static_cast<int>(Parts::head)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "Head Translation");
+	partsTransform_[static_cast<int>(Parts::L_arm)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "ArmL Translation");
+	partsTransform_[static_cast<int>(Parts::R_arm)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "ArmR Translation");
+	cycle_ = globalVariables->GetValue<int32_t>(groupName, "floatingCycle");
+	floatingAmplitude = globalVariables->GetValue<float>(groupName, "floatingAmplitude");
+}
 
 Player::Player(){
 	//パーツの要素数
@@ -27,16 +39,25 @@ Player::~Player(){}
 ///		初期化/更新/描画
 ///=======================================================================================================
 void Player::Initialize(const std::vector<Model*>& models){
-	const char* groupName = "Player";
-	//グループを追加
-	GlobalVariables::GetInstance()->CreateGroup(groupName);
-	
 	//モデルとトランスフォームの初期化
 	Actor::Initialize(models);
 	//各パーツのトランスフォームの初期化
 	PartsTransformInit();
 	//浮遊ギミックの初期化
 	InitializeFloatingAction();
+
+	const char* groupName = "Player";
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	globalVariables->CreateGroup(groupName);
+
+	//グループを追加
+	globalVariables->AddItem(groupName, "Head Translation", partsTransform_[static_cast< int >(Parts::head)]->translation_);
+	globalVariables->AddItem(groupName, "ArmL Translation", partsTransform_[static_cast< int >(Parts::L_arm)]->translation_);
+	globalVariables->AddItem(groupName, "ArmR Translation", partsTransform_[static_cast< int >(Parts::R_arm)]->translation_);
+	globalVariables->AddItem(groupName, "floatingCycle", cycle_);
+	globalVariables->AddItem(groupName, "floatingAmplitude", floatingAmplitude);
+
+	ApplyGlobalVariables();
 }
 
 void Player::PartsTransformInit(){
@@ -85,7 +106,6 @@ void Player::Update(){
 	// 通常の更新処理
 	TrasitionaBehavior();
 	BehaviorUpdate();
-
 
 	//最短角度補完
 	worldTransform_.rotation_.y = LerpShortAngle(worldTransform_.rotation_.y, targetAngle, 0.1f);
@@ -160,20 +180,19 @@ void Player::MoveInDirection(float speed){
 }
 
 void Player::InitializeFloatingAction(){
-	floatingParameter_ = 0.0f;
+	floatingParameter_ = 1.0f;
+	floatingAmplitude = 0.45f;
 }
 
 void Player::UpdateFloatingAction(){
 	//浮遊移動のサイクル
-	const uint16_t cycle = 120;
 	//１フレームでのパラメータ加算値
-	const float step = 2.0f * ( float ) std::numbers::pi / cycle;
+	const float step = 2.0f * ( float ) std::numbers::pi / cycle_;
 	//パラメータ1ステップ分加算
 	floatingParameter_ += step;
 	//2piを超えたら0に戻す
 	floatingParameter_ = std::fmod(floatingParameter_, 2.0f * ( float ) std::numbers::pi);
-	//浮遊の振幅
-	const float floatingAmplitude = 0.4f;
+	
 	//浮遊を座標に反映
 	partsTransform_[static_cast< int >(Parts::body)]->translation_.y = std::sin(floatingParameter_) * floatingAmplitude;
 }

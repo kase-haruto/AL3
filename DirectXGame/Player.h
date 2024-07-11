@@ -105,6 +105,12 @@ private:
 	/// ふるまいの更新
 	/// </summary>
 	void BehaviorUpdate();
+
+
+	/// <summary>
+	/// 調整項目の適用
+	/// </summary>
+	void ApplyGlobalVariables();
 private:
 	//カメラのビュープロジェクション
 	const ViewProjection* viewPorjection_ = nullptr;
@@ -114,7 +120,11 @@ private:
 	std::vector<std::unique_ptr< WorldTransform>> partsTransform_;
 
 	//浮遊ギミックの媒介変数
+	int32_t cycle_ = 30;
 	float floatingParameter_ = 0.0f;
+	//浮遊の振幅
+	float floatingAmplitude;
+
 	bool isAttack_ = false;
 
 	//ふるまい
