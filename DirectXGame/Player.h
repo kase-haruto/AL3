@@ -6,8 +6,7 @@
 #include<vector>
 #include<optional>
 
-class Player :public Actor{
-
+namespace{
 	/// <summary>
 	/// プレイヤーのパーツ
 	/// </summary>
@@ -31,6 +30,35 @@ class Player :public Actor{
 		//ダッシュ用の媒介変数
 		uint32_t dashParameter_ = 0;
 	};
+
+	struct WorkAttack{
+		uint32_t attackParameter_ = 0;
+		int32_t comboIndex = 0;
+		int32_t inComboPhase = 0;
+		bool comboNext = false;
+	};
+
+	struct ConstAttack{
+		//振りかぶりの時間
+		uint32_t anticipationTime;
+		//ための時間
+		uint32_t chargeTime;
+		//攻撃の振りの時間
+		uint32_t swingTime;
+		//硬直時間
+		uint32_t recoveryTime;
+		//振りかぶりの移動の速さ
+		float anticipationSpeeed;
+		//ための移動の速さ
+		float chrgeSpee;
+		//攻撃振りの移動速度
+		float swingSpeed;
+	};
+}
+
+class Player :public Actor{
+
+
 
 public:
 	Player();
@@ -121,6 +149,10 @@ private:
 	/// </summary>
 	void ApplyGlobalVariables();
 private:
+	//攻撃コンボ数
+	static const int ComboNum = 3;
+	//コンボ定数表
+	static const std::array<ConstAttack, ComboNum>kConstAttacks_;
 
 
 	Vector3 velocity_;
@@ -147,5 +179,6 @@ private:
 
 	//ダッシュ用変数
 	WorkDash workDash_;
+	WorkAttack workAttack_;
 };
 

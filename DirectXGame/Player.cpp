@@ -9,6 +9,17 @@
 #include<cassert>
 #include<numbers>
 
+//コンボ定数表
+const std::array<ConstAttack, Player::ComboNum>Player::kConstAttacks_ = {
+		{
+		//振りかぶり、攻撃前硬直、攻撃振り時間、硬直
+		{0,0,20,0,0.0f,0.0f,0.15f},
+		{15,10,15,0,0.2f,0.0f,0.0f},
+		{15,10,15,30,0.2f,0.0f,0.0f},
+	}
+};
+
+
 ///=======================================================================================================
 ///		グローバル変数の調整項目の適用
 ///=======================================================================================================
@@ -242,10 +253,21 @@ void Player::AttackInitialize(){
 	partsTransform_[static_cast< int >(Parts::weapon)]->rotation_.x = 0.0f;
 	partsTransform_[static_cast< int >(Parts::L_arm)]->rotation_.x = shakeUpAngle;
 	partsTransform_[static_cast< int >(Parts::R_arm)]->rotation_.x = shakeUpAngle;
+
+	//コンボのリセット
+	workAttack_.comboIndex = 0;
+	workAttack_.comboNext = false;
 }
 
 void Player::BehaviorAttackUpdate(){
+	XINPUT_STATE joyStatePre;
+	XINPUT_STATE joyState;
 	float targetArmAngle = 1.3f;
+	//状態の更新
+	joyStatePre = joyState;
+	//コンボの受付時間(1秒　仮)
+	const uint32_t kComboTimeLimit = 60;
+
 	auto& weaponAngle = partsTransform_[static_cast< int >(Parts::weapon)]->rotation_;
 	auto& L_armAngle = partsTransform_[static_cast< int >(Parts::L_arm)]->rotation_;
 	auto& R_armAngle = partsTransform_[static_cast< int >(Parts::R_arm)]->rotation_;
@@ -254,11 +276,40 @@ void Player::BehaviorAttackUpdate(){
 	L_armAngle.x = Lerp(L_armAngle.x, -targetArmAngle, 0.2f);
 	R_armAngle.x = Lerp(R_armAngle.x, -targetArmAngle, 0.2f);
 
+	//コンボ上限に達していなければ
+	if (workAttack_.comboIndex <= ComboNum){
+		//xボタンを押したら
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X &&
+			!joyStatePre.Gamepad.wButtons & XINPUT_GAMEPAD_X){
+
+			//コンボ有効
+			workAttack_.comboNext = true;
+
+		}
+	}
+
+	//既定の時間経過で通常行動に戻る
+	if (++workAttack_.attackParameter_>=kComboTimeLimit){
+		//コンボ継続なら次のコンボに進む
+		if (workAttack_.comboNext){
+			//コンボ継続フラグをリセット
+			workAttack_.comboNext = false;
+
+			//変数のリセット処理
+
+
+		} else{
+			//コンボ継続でない場合通常行動に戻る
+			behaviorRequest_ = Behavior::root;
+		}
+
+	}
 
 	// 目標角度に達したら攻撃を初期化
 	if (std::abs(targetArmAngle - weaponAngle.x) <= 0.001f){
 		behaviorRequest_ = Behavior::root;
 	}
+
 }
 
 
@@ -308,7 +359,7 @@ void Player::TrasitionaBehavior(){
 			case Behavior::dash:
 				BehaviorDashInitialize();
 				break;
-			case
+				case
 				Behavior::jump:
 					BehaviorJumpInitialize();
 		}
