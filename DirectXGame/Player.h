@@ -24,6 +24,7 @@ class Player :public Actor{
 		root,//通常
 		attack,//攻撃
 		dash,//ダッシュ中
+		jump,//ジャンプ中
 	};
 
 	struct WorkDash{
@@ -82,6 +83,10 @@ private:
 	/// </summary>
 	void BehaviorDashInitialize();
 	/// <summary>
+	/// ジャンプ行動初期化
+	/// </summary>
+	void BehaviorJumpInitialize();
+	/// <summary>
 	/// 浮遊行動の更新
 	/// </summary>
 	void UpdateFloatingAction();
@@ -98,6 +103,10 @@ private:
 	/// </summary>
 	void BehaviorDashUpdate();
 	/// <summary>
+	/// ジャンプ行動更新
+	/// </summary>
+	void BehaviorJumpUpdate();
+	/// <summary>
 	/// ふるまいの遷移
 	/// </summary>
 	void TrasitionaBehavior();
@@ -112,6 +121,10 @@ private:
 	/// </summary>
 	void ApplyGlobalVariables();
 private:
+
+
+	Vector3 velocity_;
+
 	//カメラのビュープロジェクション
 	const ViewProjection* viewPorjection_ = nullptr;
 	float targetAngle;

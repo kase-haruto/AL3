@@ -15,9 +15,9 @@
 void Player::ApplyGlobalVariables(){
 	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
 	const char* groupName = "Player";
-	partsTransform_[static_cast<int>(Parts::head)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "Head Translation");
-	partsTransform_[static_cast<int>(Parts::L_arm)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "ArmL Translation");
-	partsTransform_[static_cast<int>(Parts::R_arm)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "ArmR Translation");
+	partsTransform_[static_cast< int >(Parts::head)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "Head Translation");
+	partsTransform_[static_cast< int >(Parts::L_arm)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "ArmL Translation");
+	partsTransform_[static_cast< int >(Parts::R_arm)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "ArmR Translation");
 	cycle_ = globalVariables->GetValue<int32_t>(groupName, "floatingCycle");
 	floatingAmplitude = globalVariables->GetValue<float>(groupName, "floatingAmplitude");
 }
@@ -61,7 +61,7 @@ void Player::Initialize(const std::vector<Model*>& models){
 }
 
 void Player::PartsTransformInit(){
-	for (int i = 0; i < (int)Parts::partsCount; i++){
+	for (int i = 0; i < ( int ) Parts::partsCount; i++){
 		partsTransform_[i]->Initialize();
 	}
 	//====================================================================================
@@ -142,14 +142,14 @@ void Player::Move(){
 		// 速さ
 		const float speed = 0.3f;
 		// 移動量
-		Vector3 move = {( float ) joyState.Gamepad.sThumbLX / SHRT_MAX, 0.0f, ( float ) joyState.Gamepad.sThumbLY / SHRT_MAX};
-		if (Length(move) > threshold){
+		velocity_ = {( float ) joyState.Gamepad.sThumbLX / SHRT_MAX, 0.0f, ( float ) joyState.Gamepad.sThumbLY / SHRT_MAX};
+		if (Length(velocity_) > threshold){
 			isMoving = true;
 		}
 
 		if (isMoving){
 			// 移動量に速さを反映
-			direction_ = Normalize(move);
+			direction_ = Normalize(velocity_);
 
 			//向いている方向に移動
 			MoveInDirection(speed);
@@ -159,7 +159,7 @@ void Player::Move(){
 }
 
 void Player::MoveInDirection(float speed){
-	Vector3 move = direction_ * speed;
+	velocity_ = direction_ * speed;
 
 	Vector3 rotate = viewPorjection_->rotation_;
 
@@ -167,16 +167,16 @@ void Player::MoveInDirection(float speed){
 	Matrix4x4 matRotateY = Matrix4x4::MakeRotateYMatrix(rotate.y);
 	Matrix4x4 matRotateZ = Matrix4x4::MakeRotateZMatrix(rotate.z);
 	Matrix4x4 matRotate = Matrix4x4::Multiply(matRotateY, matRotateZ);
-	move = Matrix4x4::Transform(move, matRotate);
+	velocity_ = Matrix4x4::Transform(velocity_, matRotate);
 
 	// 実際の移動
-	float horizontalDistance = sqrtf(move.x * move.x + move.z * move.z);
-	worldTransform_.rotation_.x = std::atan2(-move.y, horizontalDistance);
+	float horizontalDistance = sqrtf(velocity_.x * velocity_.x + velocity_.z * velocity_.z);
+	worldTransform_.rotation_.x = std::atan2(-velocity_.y, horizontalDistance);
 
-	worldTransform_.translation_ += move;
+	worldTransform_.translation_ += velocity_;
 
 	// 振り向きの目標角度を設定
-	targetAngle = std::atan2(move.x, move.z);
+	targetAngle = std::atan2(velocity_.x, velocity_.z);
 }
 
 void Player::InitializeFloatingAction(){
@@ -192,7 +192,7 @@ void Player::UpdateFloatingAction(){
 	floatingParameter_ += step;
 	//2piを超えたら0に戻す
 	floatingParameter_ = std::fmod(floatingParameter_, 2.0f * ( float ) std::numbers::pi);
-	
+
 	//浮遊を座標に反映
 	partsTransform_[static_cast< int >(Parts::body)]->translation_.y = std::sin(floatingParameter_) * floatingAmplitude;
 }
@@ -218,8 +218,13 @@ void Player::BehaviorRootUpdate(){
 		if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER){
 			behaviorRequest_ = Behavior::dash;
 		}
+
+		//ジャンプボタンを押したら
+		if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_A){
+			behaviorRequest_ = Behavior::jump;
+		}
 	}
-	
+
 
 	//移動処理
 	Move();
@@ -302,6 +307,10 @@ void Player::TrasitionaBehavior(){
 
 			case Behavior::dash:
 				BehaviorDashInitialize();
+				break;
+			case
+				Behavior::jump:
+					BehaviorJumpInitialize();
 		}
 		//ふるまいリクエストをリセット
 		behaviorRequest_ = std::nullopt;
@@ -322,10 +331,44 @@ void Player::BehaviorUpdate(){
 			//ダッシュ
 		case Behavior::dash:
 			BehaviorDashUpdate();
+			break;
+			//ジャンプ
+		case Behavior::jump:
+			BehaviorJumpUpdate();
+			break;
 	}
 }
 
+///=======================================================================================================
+///		ジャンプ行動の処理
+///=======================================================================================================
+void Player::BehaviorJumpInitialize(){
+	partsTransform_[static_cast< int >(Parts::body)]->translation_.y = 0.0f;
+	partsTransform_[static_cast< int >(Parts::L_arm)]->rotation_.x = 0.0f;
+	partsTransform_[static_cast< int >(Parts::R_arm)]->rotation_.x = 0.0f;
 
+	//ジャンプの初速
+	const float kJumpFirstSpeed = 1.0f;
+	//ジャンプ初速を与える
+	velocity_.y = kJumpFirstSpeed;
+}
+
+void Player::BehaviorJumpUpdate(){
+	//移動
+	worldTransform_.translation_ += velocity_;
+	//重力加速度
+	const float kGravityAcceleration = 0.05f;
+	//加速度ベクトル
+	Vector3 accelerationVector = {0,-kGravityAcceleration,0};
+	//加速する
+	velocity_ += accelerationVector;
+
+	if (worldTransform_.translation_.y < 0.0f){
+		worldTransform_.translation_.y = 0.0f;
+		//ジャンプ終了
+		behaviorRequest_ = Behavior::root;
+	}
+}
 
 void Player::SetViewProjection(const ViewProjection* viewProjection){ viewPorjection_ = viewProjection; }
 
