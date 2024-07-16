@@ -118,6 +118,11 @@
     <ClCompile Include="Matrix4x4.cpp" />
     <ClCompile Include="MyFunc.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerAttackBehavior.cpp" />
+    <ClCompile Include="PlayerBaseBehavior.cpp" />
+    <ClCompile Include="PlayerDashBehavior.cpp" />
+    <ClCompile Include="PlayerJumpBehavior.cpp" />
+    <ClCompile Include="PlayerRootBehavior.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="Skydome.cpp" />
     <ClCompile Include="Vector3.cpp" />
@@ -159,6 +164,11 @@
     <ClInclude Include="math\Vector4.h" />
     <ClInclude Include="MyFunc.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerAttackBehavior.h" />
+    <ClInclude Include="PlayerBaseBehavior.h" />
+    <ClInclude Include="PlayerDashBehavior.h" />
+    <ClInclude Include="PlayerJumpBehavior.h" />
+    <ClInclude Include="PlayerRootBehavior.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="Skydome.h" />
   </ItemGroup>

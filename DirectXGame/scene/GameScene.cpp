@@ -24,6 +24,7 @@ void GameScene::Initialize(){
 	skydome_ = std::make_unique<Skydome>(moedlSkydome_.get());
 	skydome_->Initialize();
 
+
 	///=====================================================
 	//		地面
 	modelGround_.reset(Model::CreateFromOBJ("ground", true));

@@ -372,3 +372,67 @@ void Player::BehaviorJumpUpdate(){
 
 void Player::SetViewProjection(const ViewProjection* viewProjection){ viewPorjection_ = viewProjection; }
 
+
+///==========================================================
+///ゲッター/セッター
+///==========================================================
+bool Player::GetIsAttack()const{ return isAttack_; }
+Vector3 Player::GetVelocity()const{ return velocity_; }
+Vector3 Player::GetDirection()const{ return direction_; }
+std::optional<Behavior> Player::GetBehaviorRequest()const{ return behaviorRequest_; }
+
+
+void Player::SetIsAttack(const bool isAttack){ isAttack_ = isAttack; }
+void Player::SetVelocity(const Vector3& vel){ velocity_ = vel; }
+void Player::SetDirection(const Vector3& dir){ direction_ = dir; }
+void Player::SetBehavior(const std::optional<Behavior>& BehaviorRequest){ behaviorRequest_ = BehaviorRequest; }
+//============================================================================================================================================
+//								平行移動
+
+void Player::SetHeadTranslation(const Vector3& translation){ partsTransform_[static_cast< int >(Parts::head)]->translation_ = translation; }
+void Player::Set_L_ArmTranslation(const Vector3& translation){ partsTransform_[static_cast< int >(Parts::L_arm)]->translation_ = translation; }
+void Player::Set_R_ArmTranslation(const Vector3& translation){ partsTransform_[static_cast< int >(Parts::R_arm)]->translation_ = translation; }
+void Player::SetBodyTranslation(const Vector3& translation){ partsTransform_[static_cast< int >(Parts::body)]->translation_ = translation; }
+
+void Player::SetHeadTranslationX(const float translationX){ partsTransform_[static_cast< int >(Parts::head)]->translation_.x = translationX; }
+void Player::SetHeadTranslationY(const float translationY){ partsTransform_[static_cast< int >(Parts::head)]->translation_.y = translationY; }
+void Player::SetHeadTranslationZ(const float translationZ){ partsTransform_[static_cast< int >(Parts::head)]->translation_.z = translationZ; }
+
+void Player::SetBodyTranslationX(const float translationX){ partsTransform_[static_cast< int >(Parts::body)]->translation_.x = translationX; }
+void Player::SetBodyTranslationY(const float translationY){ partsTransform_[static_cast< int >(Parts::body)]->translation_.y = translationY; }
+void Player::SetBodyTranslationZ(const float translationZ){ partsTransform_[static_cast< int >(Parts::body)]->translation_.z = translationZ; }
+
+void Player::Set_L_ArmTranslationX(const float translationX){ partsTransform_[static_cast< int >(Parts::L_arm)]->translation_.x = translationX; }
+void Player::Set_L_ArmTranslationY(const float translationY){ partsTransform_[static_cast< int >(Parts::L_arm)]->translation_.y = translationY; }
+void Player::Set_L_ArmTranslationZ(const float translationZ){ partsTransform_[static_cast< int >(Parts::L_arm)]->translation_.z = translationZ; }
+
+void Player::Set_R_ArmTranslationX(const float translationX){ partsTransform_[static_cast< int >(Parts::R_arm)]->translation_.x = translationX; }
+void Player::Set_R_ArmTranslationY(const float translationY){ partsTransform_[static_cast< int >(Parts::R_arm)]->translation_.y = translationY; }
+void Player::Set_R_ArmTranslationZ(const float translationZ){ partsTransform_[static_cast< int >(Parts::R_arm)]->translation_.z = translationZ; }
+
+
+//============================================================================================================================================
+//								回転
+
+void Player::SetHeadRotation(const Vector3& rotation){ partsTransform_[static_cast< int >(Parts::head)]->rotation_ = rotation; }
+void Player::Set_L_ArmRotation(const Vector3& rotation){ partsTransform_[static_cast< int >(Parts::L_arm)]->rotation_ = rotation; }
+void Player::Set_R_ArmRotation(const Vector3& rotation){ partsTransform_[static_cast< int >(Parts::R_arm)]->rotation_ = rotation; }
+void Player::SetBodyRotation(const Vector3& rotation){ partsTransform_[static_cast< int >(Parts::body)]->rotation_ = rotation; }
+
+void Player::SetHeadRotationX(const float rotationX){ partsTransform_[static_cast< int >(Parts::head)]->rotation_.x = rotationX; }
+void Player::SetHeadRotationY(const float rotationY){ partsTransform_[static_cast< int >(Parts::head)]->rotation_.y = rotationY; }
+void Player::SetHeadRotationZ(const float rotationZ){ partsTransform_[static_cast< int >(Parts::head)]->rotation_.z = rotationZ; }
+
+void Player::SetBodyRotationX(const float rotationX){ partsTransform_[static_cast< int >(Parts::body)]->rotation_.x = rotationX; }
+void Player::SetBodyRotationY(const float rotationY){ partsTransform_[static_cast< int >(Parts::body)]->rotation_.y = rotationY; }
+void Player::SetBodyRotationZ(const float rotationZ){ partsTransform_[static_cast< int >(Parts::body)]->rotation_.z = rotationZ; }
+
+void Player::Set_L_ArmRotationX(const float rotationX){ partsTransform_[static_cast< int >(Parts::L_arm)]->rotation_.x = rotationX; }
+void Player::Set_L_ArmRotationY(const float rotationY){ partsTransform_[static_cast< int >(Parts::L_arm)]->rotation_.y = rotationY; }
+void Player::Set_L_ArmRotationZ(const float rotationZ){ partsTransform_[static_cast< int >(Parts::L_arm)]->rotation_.z = rotationZ; }
+
+void Player::Set_R_ArmRotationX(const float rotationX){ partsTransform_[static_cast< int >(Parts::R_arm)]->rotation_.x = rotationX; }
+void Player::Set_R_ArmRotationY(const float rotationY){ partsTransform_[static_cast< int >(Parts::R_arm)]->rotation_.y = rotationY; }
+void Player::Set_R_ArmRotationZ(const float rotationZ){ partsTransform_[static_cast< int >(Parts::R_arm)]->rotation_.z = rotationZ; }
+
+

@@ -6,8 +6,7 @@
 #include<vector>
 #include<optional>
 
-class Player :public Actor{
-
+namespace PlayerDetails{
 	/// <summary>
 	/// プレイヤーのパーツ
 	/// </summary>
@@ -32,6 +31,15 @@ class Player :public Actor{
 		uint32_t dashParameter_ = 0;
 	};
 
+}
+
+using PlayerDetails::Behavior;
+using PlayerDetails::WorkDash;
+using PlayerDetails::Parts;
+
+class Player :public Actor{
+
+	
 public:
 	Player();
 	~Player()override;
@@ -49,9 +57,79 @@ public:
 	/// </summary>
 	void Draw(const ViewProjection& viewProjection)override;
 	/// <summary>
+	/// 向いている方向に進む
+	/// </summary>
+	void MoveInDirection(float speed);
+	/// <summary>
 	/// 追尾カメラ
 	/// </summary>
 	void SetViewProjection(const ViewProjection* viewProjection);
+
+
+	///==========================================================
+	///ゲッター
+	///==========================================================
+	bool GetIsAttack()const;
+	std::vector<std::unique_ptr< WorldTransform>> GetPartsTransform(){ return std::move(partsTransform_); }
+	Vector3 GetVelocity()const;
+	Vector3 GetDirection()const;
+	std::optional<Behavior> GetBehaviorRequest()const;
+
+	///==========================================================
+	///セッター
+	///==========================================================
+	void SetIsAttack(const bool isAttack);
+	void SetVelocity(const Vector3& vel);
+	void SetDirection(const Vector3& dir);
+	void SetBehavior(const std::optional<Behavior>& BehaviorRequest);
+	//translation
+	void SetHeadTranslation(const Vector3& translation);
+	void Set_L_ArmTranslation(const Vector3& translation);
+	void Set_R_ArmTranslation(const Vector3& translation);
+	void SetBodyTranslation(const Vector3& translation);
+	//rotation
+	void SetHeadRotation(const Vector3& rotation);
+	void Set_L_ArmRotation(const Vector3& rotation);
+	void Set_R_ArmRotation(const Vector3& rotation);
+	void SetBodyRotation(const Vector3& rotation);
+
+#pragma region
+	void SetHeadTranslationX(const float translationX);
+	void SetHeadTranslationY(const float translationY);
+	void SetHeadTranslationZ(const float translationZ);
+
+	void SetBodyTranslationX(const float translationX);
+	void SetBodyTranslationY(const float translationY);
+	void SetBodyTranslationZ(const float translationZ);
+
+	void Set_L_ArmTranslationX(const float translationX);
+	void Set_L_ArmTranslationY(const float translationY);
+	void Set_L_ArmTranslationZ(const float translationZ);
+
+	void Set_R_ArmTranslationX(const float translationX);
+	void Set_R_ArmTranslationY(const float translationY);
+	void Set_R_ArmTranslationZ(const float translationZ);
+
+#pragma endregion パーツtranslation
+
+#pragma region
+	void SetHeadRotationX(const float RotationX);
+	void SetHeadRotationY(const float RotationY);
+	void SetHeadRotationZ(const float RotationZ);
+
+	void SetBodyRotationX(const float RotationX);
+	void SetBodyRotationY(const float RotationY);
+	void SetBodyRotationZ(const float RotationZ);
+
+	void Set_L_ArmRotationX(const float RotationX);
+	void Set_L_ArmRotationY(const float RotationY);
+	void Set_L_ArmRotationZ(const float RotationZ);
+
+	void Set_R_ArmRotationX(const float RotationX);
+	void Set_R_ArmRotationY(const float RotationY);
+	void Set_R_ArmRotationZ(const float RotationZ);
+#pragma endregion パーツrotation
+
 
 private:
 	/// <summary>
@@ -62,10 +140,7 @@ private:
 	/// 移動
 	/// </summary>
 	void Move();
-	/// <summary>
-	/// 向いている方向に進む
-	/// </summary>
-	void MoveInDirection(float speed);
+	
 	/// <summary>
 	/// 浮遊行動の初期化
 	/// </summary>
