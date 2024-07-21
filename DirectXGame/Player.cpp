@@ -1,31 +1,13 @@
 #include "Player.h"
-#include "TextureManager.h"
-#include "Input.h"
-#include "GlobalVariables.h"
-
-#include"PlayerAttackBehavior.h"
-#include"PlayerDashBehavior.h"
-#include"PlayerJumpBehavior.h"
-#include"PlayerRootBehavior.h"
-#ifdef _DEBUG
+#include "PlayerRootBehavior.h"
+#include "PlayerAttackBehavior.h"
+#include "PlayerJumpBehavior.h"
+#include "PlayerDashBehavior.h"
+#include <cmath>
 #include <imgui.h>
-#endif // DEBUG
-#include <cassert>
-#include <numbers>
+#include"GlobalVariables.h"
 
-void Player::ApplyGlobalVariables(){
-    GlobalVariables* globalVariables = GlobalVariables::GetInstance();
-    const char* groupName = "Player";
-    partsTransform_[static_cast< int >(Parts::head)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "Head Translation");
-    partsTransform_[static_cast< int >(Parts::L_arm)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "ArmL Translation");
-    partsTransform_[static_cast< int >(Parts::R_arm)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "ArmR Translation");
-
-    if (currentState_){
-        currentState_->ApplyGlobalVariables();
-    }
-}
-
-Player::Player() : currentState_(nullptr){
+Player::Player() : currentState_(nullptr), isAttack_(false), viewPorjection_(nullptr){
     partsTransform_.resize(static_cast< int >(Parts::partsCount));
     partsTransform_[static_cast< int >(Parts::body)] = std::make_unique<WorldTransform>();
     partsTransform_[static_cast< int >(Parts::head)] = std::make_unique<WorldTransform>();
@@ -47,21 +29,17 @@ Player::~Player(){}
 void Player::Initialize(const std::vector<Model*>& models){
     Actor::Initialize(models);
     PartsTransformInit();
-    //InitializeFloatingAction();
     ChangeState(std::make_unique<PlayerRootBehavior>(this));
 }
 
 void Player::PartsTransformInit(){
-    for (int i = 0; i < static_cast< int >(Parts::partsCount); i++){
-        partsTransform_[i]->Initialize();
+    for (auto& partTransform : partsTransform_){
+        partTransform->Initialize();
     }
 
-    Vector3 headPos {0.0f, 2.75f, 0.0f};
-    Vector3 L_armPos {-1.0f, 2.0f, 0.0f};
-    Vector3 R_armPos {1.0f, 2.0f, 0.0f};
-    partsTransform_[static_cast< int >(Parts::head)]->translation_ = headPos;
-    partsTransform_[static_cast< int >(Parts::L_arm)]->translation_ = L_armPos;
-    partsTransform_[static_cast< int >(Parts::R_arm)]->translation_ = R_armPos;
+    partsTransform_[static_cast< int >(Parts::head)]->translation_ = Vector3 {0.0f, 2.75f, 0.0f};
+    partsTransform_[static_cast< int >(Parts::L_arm)]->translation_ = Vector3 {-1.0f, 2.0f, 0.0f};
+    partsTransform_[static_cast< int >(Parts::R_arm)]->translation_ = Vector3 {1.0f, 2.0f, 0.0f};
 
     partsTransform_[static_cast< int >(Parts::body)]->parent_ = &worldTransform_;
     auto body = partsTransform_[static_cast< int >(Parts::body)].get();
@@ -120,19 +98,16 @@ void Player::MoveInDirection(float speed){
 
     Vector3 rotate = viewPorjection_->rotation_;
 
-    // カメラの角度から回転行列を計算
     Matrix4x4 matRotateY = Matrix4x4::MakeRotateYMatrix(rotate.y);
     Matrix4x4 matRotateZ = Matrix4x4::MakeRotateZMatrix(rotate.z);
     Matrix4x4 matRotate = Matrix4x4::Multiply(matRotateY, matRotateZ);
     velocity_ = Matrix4x4::Transform(velocity_, matRotate);
 
-    // 実際の移動
     float horizontalDistance = sqrtf(velocity_.x * velocity_.x + velocity_.z * velocity_.z);
     worldTransform_.rotation_.x = std::atan2(-velocity_.y, horizontalDistance);
 
     worldTransform_.translation_ += velocity_;
 
-    // 振り向きの目標角度を設定
     targetAngle = std::atan2(velocity_.x, velocity_.z);
 }
 
@@ -172,18 +147,20 @@ void Player::TrasitionaBehavior(){
     }
 }
 
+void Player::ApplyGlobalVariables(){
+    GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+    const char* groupName = "Player";
 
+    partsTransform_[static_cast< int >(Parts::head)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "Head Translation");
+    partsTransform_[static_cast< int >(Parts::L_arm)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "ArmL Translation");
+    partsTransform_[static_cast< int >(Parts::R_arm)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "ArmR Translation");
+
+    if (currentState_){
+        currentState_->ApplyGlobalVariables();
+    }
+}
 
 void Player::SetViewProjection(const ViewProjection* viewProjection){ viewPorjection_ = viewProjection; }
-
-
-
-
-
-
-
-
-
 
 ///==========================================================
 ///ゲッター/セッター

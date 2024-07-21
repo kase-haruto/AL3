@@ -28,19 +28,27 @@ void PlayerJumpBehavior::Initialize(){
 }
 
 void PlayerJumpBehavior::Update(){
-	//移動
+	// 現在の位置と速度を取得
 	Vector3 translation = player_->GetWorldTransform().translation_;
 	Vector3 vel = player_->GetVelocity();
+
+	// 移動処理：現在の位置に速度を加算
 	player_->SetTranslation(translation + vel);
-	
-	//加速度ベクトル
-	Vector3 accelerationVector = {0,-kGravityAcceleration_,0};
-	//加速する
+
+	// 加速度ベクトルを作成（重力を下方向に適用）
+	Vector3 accelerationVector = {0, -kGravityAcceleration_, 0};
+
+	// 現在の速度に加速度を加算（重力による加速）
 	player_->SetVelocity(vel + accelerationVector);
 
-	if (translation.y < 0.0f){
-		translation.y = 0.0f;
-		//ジャンプ終了
+	// プレイヤーが地面に到達した場合
+	if (player_->GetWorldTransform().translation_.y < 0.0f){
+		// y座標を0に固定（地面に到達）
+		Vector3 updatedTranslation = player_->GetWorldTransform().translation_;
+		updatedTranslation.y = 0.0f;
+		player_->SetTranslation(updatedTranslation);
+
+		// ジャンプを終了し、通常の行動に戻す
 		player_->SetBehavior(Behavior::root);
 	}
 }
