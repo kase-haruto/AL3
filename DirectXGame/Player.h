@@ -2,6 +2,7 @@
 #include"Actor.h"
 #include"MyFunc.h"
 #include"Model.h"
+#include"PlayerBaseBehavior.h"
 
 #include<vector>
 #include<optional>
@@ -64,16 +65,22 @@ public:
 	/// 追尾カメラ
 	/// </summary>
 	void SetViewProjection(const ViewProjection* viewProjection);
-
-
+	/// <summary>
+	/// stateをchange
+	/// </summary>
+	/// <param name="newState"></param>
+	void ChangeState(std::unique_ptr<PlayerBaseBehavior> newState);
+	
+	
 	///==========================================================
 	///ゲッター
 	///==========================================================
 	bool GetIsAttack()const;
-	std::vector<std::unique_ptr< WorldTransform>> GetPartsTransform(){ return std::move(partsTransform_); }
+	WorldTransform* GetPartsTransform(int index){ return partsTransform_[index].get(); }
 	Vector3 GetVelocity()const;
 	Vector3 GetDirection()const;
 	std::optional<Behavior> GetBehaviorRequest()const;
+	float GetTargetAngle()const;
 
 	///==========================================================
 	///セッター
@@ -81,7 +88,8 @@ public:
 	void SetIsAttack(const bool isAttack);
 	void SetVelocity(const Vector3& vel);
 	void SetDirection(const Vector3& dir);
-	void SetBehavior(const std::optional<Behavior>& BehaviorRequest);
+	void SetBehavior(Behavior behavior);
+
 	//translation
 	void SetHeadTranslation(const Vector3& translation);
 	void Set_L_ArmTranslation(const Vector3& translation);
@@ -130,97 +138,45 @@ public:
 	void Set_R_ArmRotationZ(const float RotationZ);
 #pragma endregion パーツrotation
 
+	void SetWeaponRotation(const Vector3& rotation);
+	void SetWeaponRotationX(const float rotation);
+	void SetWeaponRotationY(const float rotation);
+	void SetWeaponRotationZ(const float rotation);
 
 private:
 	/// <summary>
 	/// 各パーツのtransformの初期化
 	/// </summary>
 	void PartsTransformInit();
-	/// <summary>
-	/// 移動
-	/// </summary>
-	void Move();
 	
-	/// <summary>
-	/// 浮遊行動の初期化
-	/// </summary>
-	void InitializeFloatingAction();
-	/// <summary>
-	/// 通常行動の初期化
-	/// </summary>
-	void RootInitialize();
-	/// <summary>
-	/// 攻撃処理の初期化
-	/// </summary>
-	void AttackInitialize();
-	/// <summary>
-	/// ダッシュ行動の初期化
-	/// </summary>
-	void BehaviorDashInitialize();
-	/// <summary>
-	/// ジャンプ行動初期化
-	/// </summary>
-	void BehaviorJumpInitialize();
-	/// <summary>
-	/// 浮遊行動の更新
-	/// </summary>
-	void UpdateFloatingAction();
-	/// <summary>
-	/// 通常行動更新
-	/// </summary>
-	void BehaviorRootUpdate();
-	/// <summary>
-	/// 攻撃行動更新
-	/// </summary>
-	void BehaviorAttackUpdate();
-	/// <summary>
-	/// ダッシュ行動の更新
-	/// </summary>
-	void BehaviorDashUpdate();
-	/// <summary>
-	/// ジャンプ行動更新
-	/// </summary>
-	void BehaviorJumpUpdate();
 	/// <summary>
 	/// ふるまいの遷移
 	/// </summary>
 	void TrasitionaBehavior();
-	/// <summary>
-	/// ふるまいの更新
-	/// </summary>
-	void BehaviorUpdate();
+
 
 
 	/// <summary>
 	/// 調整項目の適用
 	/// </summary>
 	void ApplyGlobalVariables();
-private:
 
+
+private:
 
 	Vector3 velocity_;
 
 	//カメラのビュープロジェクション
 	const ViewProjection* viewPorjection_ = nullptr;
-	float targetAngle;
 
-	//パーツごとの変数
-	std::vector<std::unique_ptr< WorldTransform>> partsTransform_;
-
-	//浮遊ギミックの媒介変数
-	int32_t cycle_ = 30;
-	float floatingParameter_ = 0.0f;
-	//浮遊の振幅
-	float floatingAmplitude;
-
-	bool isAttack_ = false;
-
-	//ふるまい
 	Behavior behavior_ = Behavior::root;
 	//次の振る舞いのリクエスト
 	std::optional<Behavior>behaviorRequest_ = std::nullopt;
 
-	//ダッシュ用変数
-	WorkDash workDash_;
+
+	std::unique_ptr<PlayerBaseBehavior> currentState_;
+	std::vector<std::unique_ptr<WorldTransform>> partsTransform_;
+	bool isAttack_ = false;
+	float targetAngle = 0.0f;
 };
 

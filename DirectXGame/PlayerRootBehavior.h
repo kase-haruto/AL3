@@ -1,6 +1,6 @@
 #pragma once
 #include "PlayerBaseBehavior.h"
-
+#include <stdint.h>
 class PlayerRootBehavior final :
     public PlayerBaseBehavior{
 public:
@@ -15,6 +15,11 @@ public:
     /// 更新
     /// </summary>
     void Update()override;
+    /// <summary>
+    /// 朝礼項目の適用
+    /// </summary>
+    void ApplyGlobalVariables()override;
+    
 private:
     /// <summary>
     /// 移動
@@ -32,6 +37,8 @@ private:
 private:
     float floatingParameter_;
     float floatingAmplitude_;
-    float cycle_;
+    int32_t cycle_;
+    // 速さ
+    const float speed_ = 0.3f;
 };
 

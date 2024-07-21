@@ -2,17 +2,34 @@
 #include"Player.h"
 #include<numbers>	
 #include"Input.h"
+#include"GlobalVariables.h"
+
+void PlayerRootBehavior::ApplyGlobalVariables(){
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	const char* groupName = "Player";
+	cycle_ = globalVariables->GetValue<int32_t>(groupName, "floatingCycle");
+	floatingAmplitude_ = globalVariables->GetValue<float>(groupName, "floatingAmplitude");
+}
 
 PlayerRootBehavior::PlayerRootBehavior(Player* player){
 	player_ = player;
+
+	const char* groupName = "Player";
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+
+	//グループを追加
+	globalVariables->AddItem(groupName, "moveSpeed", speed_);
+	globalVariables->AddItem(groupName, "floatingCycle", cycle_);
+	globalVariables->AddItem(groupName, "floatingAmplitude", floatingAmplitude_);
 }
 
 PlayerRootBehavior::~PlayerRootBehavior(){}
 
+
 void PlayerRootBehavior::Initialize(){
 	player_->SetIsAttack(false);
-	Vector3 L_Arm_Rotate  = {0.0f,player_->GetPartsTransform()[int(Parts::L_arm)]->rotation_.y,player_->GetPartsTransform()[int(Parts::L_arm)]->rotation_.z};
-	Vector3 R_Arm_Rotate  = {0.0f,player_->GetPartsTransform()[int(Parts::R_arm)]->rotation_.y,player_->GetPartsTransform()[int(Parts::R_arm)]->rotation_.z};
+	Vector3 L_Arm_Rotate  = {0.0f,player_->GetPartsTransform(int(Parts::L_arm))->rotation_.y,player_->GetPartsTransform(int(Parts::L_arm))->rotation_.z};
+	Vector3 R_Arm_Rotate  = {0.0f,player_->GetPartsTransform(int(Parts::R_arm))->rotation_.y,player_->GetPartsTransform(int(Parts::R_arm))->rotation_.z};
 	player_->Set_L_ArmRotation(L_Arm_Rotate);
 	player_->Set_R_ArmRotation(R_Arm_Rotate);
 }
@@ -20,6 +37,9 @@ void PlayerRootBehavior::Initialize(){
 void PlayerRootBehavior::Update(){
 	XINPUT_STATE padState;
 	DWORD dwResult;
+
+	//調整項目の適用
+	ApplyGlobalVariables();	
 
 	// ゲームパッドの状態を取得
 	dwResult = XInputGetState(0, &padState);
@@ -51,8 +71,7 @@ void PlayerRootBehavior::Move(){
 	if (Input::GetInstance()->GetJoystickState(0, joyState)){
 		const float threshold = 0.7f;
 		bool isMoving = false;
-		// 速さ
-		const float speed = 0.3f;
+		
 		// 移動量
 		Vector3 vel = {( float ) joyState.Gamepad.sThumbLX / SHRT_MAX, 0.0f, ( float ) joyState.Gamepad.sThumbLY / SHRT_MAX};
 		player_->SetVelocity(vel);
@@ -65,7 +84,7 @@ void PlayerRootBehavior::Move(){
 			player_->SetDirection(Normalize(player_->GetVelocity()));
 
 			//向いている方向に移動
-			player_->MoveInDirection(speed);
+			player_->MoveInDirection(speed_);
 
 		}
 	}
