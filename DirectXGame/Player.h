@@ -6,6 +6,9 @@
 #include <vector>
 #include <optional>
 
+/// <summary>
+/// パーツ/行動
+/// </summary>
 namespace PlayerDetails{
     /// <summary>
     /// プレイヤーのパーツ
@@ -54,25 +57,28 @@ public:
     /// </summary>
     /// <param name="speed"></param>
     void MoveInDirection(float speed);
-
-    void SetViewProjection(const ViewProjection* viewProjection);
+    /// <summary>
+    /// 状態の遷移
+    /// </summary>
+    /// <param name="newState"></param>
     void ChangeState(std::unique_ptr<PlayerBaseBehavior> newState);
 
-#pragma
+#pragma region
     bool GetIsAttack() const;
     WorldTransform* GetPartsTransform(int index){ return partsTransform_[index].get(); }
     Vector3 GetVelocity() const;
     Vector3 GetDirection() const;
     std::optional<Behavior> GetBehaviorRequest() const;
     float GetTargetAngle() const;
-#pragma endregion
+#pragma endregion ゲッター
 
 #pragma region
+    void SetViewProjection(const ViewProjection* viewProjection);
+
 
     void SetIsAttack(const bool isAttack);
     void SetVelocity(const Vector3& vel);
     void SetDirection(const Vector3& dir);
-    void SetBehavior(Behavior behavior);
 
     void SetHeadTranslation(const Vector3& translation);
     void Set_L_ArmTranslation(const Vector3& translation);
@@ -100,6 +106,8 @@ public:
     void Set_R_ArmTranslationY(const float translationY);
     void Set_R_ArmTranslationZ(const float translationZ);
 
+    void SetWeaponTranslation(const Vector3& translation);
+
     void SetHeadRotationX(const float RotationX);
     void SetHeadRotationY(const float RotationY);
     void SetHeadRotationZ(const float RotationZ);
@@ -123,15 +131,18 @@ public:
 #pragma endregion セッター
 
 private:
+    /// <summary>
+    /// パーツごとの初期化
+    /// </summary>
     void PartsTransformInit();
-    void TrasitionaBehavior();
+    /// <summary>
+    /// 定数の適用
+    /// </summary>
     void ApplyGlobalVariables();
 
 private:
     Vector3 velocity_ = {0.0f,0.0f,0.0f};
     const ViewProjection* viewPorjection_ = nullptr;
-    Behavior behavior_ = Behavior::root;
-    std::optional<Behavior> behaviorRequest_ = std::nullopt;
     std::unique_ptr<PlayerBaseBehavior> currentState_;
     std::vector<std::unique_ptr<WorldTransform>> partsTransform_;
     bool isAttack_ = false;

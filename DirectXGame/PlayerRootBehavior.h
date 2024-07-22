@@ -16,10 +16,10 @@ public:
     /// </summary>
     void Update()override;
     /// <summary>
-    /// 朝礼項目の適用
+    /// 調整項目の適用
     /// </summary>
     void ApplyGlobalVariables()override;
-    
+
 private:
     /// <summary>
     /// 移動

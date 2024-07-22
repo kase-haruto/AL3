@@ -1,4 +1,8 @@
 #include "PlayerRootBehavior.h"
+#include "PlayerAttackBehavior.h"
+#include "PlayerDashBehavior.h"
+#include "PlayerJumpBehavior.h"
+
 #include "Player.h"
 #include <numbers>
 #include "Input.h"
@@ -42,18 +46,18 @@ void PlayerRootBehavior::Update(){
 
     if (dwResult == ERROR_SUCCESS){
         if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_X){
-            player_->SetBehavior(Behavior::attack);
+            player_->ChangeState(std::make_unique<PlayerAttackBehavior>(player_));
             return;
         }
 
         if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER){
-            player_->SetBehavior(Behavior::dash);
+            player_->ChangeState(std::make_unique<PlayerDashBehavior>(player_));
             return;
         }
 
         // ジャンプボタンを押したら
         if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_A){
-            player_->SetBehavior(Behavior::jump);
+            player_->ChangeState(std::make_unique<PlayerJumpBehavior>(player_));
             return;
         }
     }

@@ -1,4 +1,5 @@
 #include "PlayerJumpBehavior.h"
+#include"PlayerRootBehavior.h"
 #include"Player.h"
 #include"GlobalVariables.h"
 
@@ -49,7 +50,7 @@ void PlayerJumpBehavior::Update(){
 		player_->SetTranslation(updatedTranslation);
 
 		// ジャンプを終了し、通常の行動に戻す
-		player_->SetBehavior(Behavior::root);
+		player_->ChangeState(std::make_unique<PlayerRootBehavior>(player_));
 	}
 }
 

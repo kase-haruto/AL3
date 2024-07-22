@@ -1,4 +1,5 @@
 #include "PlayerDashBehavior.h"
+#include"PlayerRootBehavior.h"
 #include"Player.h"
 #include"GlobalVariables.h"
 
@@ -28,7 +29,7 @@ void PlayerDashBehavior::Update(){
 	//既定の時間経過で通常行動に戻る
 	if (++dashParameter_ >= dashTime){
 		//ダッシュが終了したら通常行動に戻る
-		player_->SetBehavior(Behavior::root);
+		player_->ChangeState(std::make_unique<PlayerRootBehavior>(player_));
 	}
 }
 

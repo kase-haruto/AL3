@@ -22,13 +22,18 @@ Player::Player() : currentState_(nullptr), isAttack_(false), viewPorjection_(nul
     globalVariables->AddItem(groupName, "Head Translation", partsTransform_[static_cast< int >(Parts::head)]->translation_);
     globalVariables->AddItem(groupName, "ArmL Translation", partsTransform_[static_cast< int >(Parts::L_arm)]->translation_);
     globalVariables->AddItem(groupName, "ArmR Translation", partsTransform_[static_cast< int >(Parts::R_arm)]->translation_);
+   /* globalVariables->AddItem(groupName, "weapon Translation", partsTransform_[static_cast< int >(Parts::weapon)]->translation_);
+    globalVariables->AddItem(groupName, "weapon Rotation", partsTransform_[static_cast< int >(Parts::weapon)]->rotation_);*/
 }
 
 Player::~Player(){}
 
 void Player::Initialize(const std::vector<Model*>& models){
+    //モデルとワールドトランスフォームの初期化
     Actor::Initialize(models);
+    //各パーツのtransformの初期化
     PartsTransformInit();
+    //通常行動をセットしておく
     ChangeState(std::make_unique<PlayerRootBehavior>(this));
 }
 
@@ -72,10 +77,10 @@ void Player::Update(){
         currentState_->Update();
     }
 
-    TrasitionaBehavior();
-
+    //旋回を滑らかにする
     worldTransform_.rotation_.y = LerpShortAngle(worldTransform_.rotation_.y, targetAngle, 0.1f);
 
+    //transformの更新
     Actor::Update();
     for (const auto& transform : partsTransform_){
         transform->UpdateMatrix();
@@ -118,35 +123,6 @@ void Player::ChangeState(std::unique_ptr<PlayerBaseBehavior> newState){
     }
 }
 
-void Player::SetBehavior(Behavior behavior){
-    behaviorRequest_ = behavior;
-    TrasitionaBehavior();
-}
-
-void Player::TrasitionaBehavior(){
-    if (behaviorRequest_){
-        behavior_ = behaviorRequest_.value();
-        switch (behavior_){
-            case Behavior::root:
-                ChangeState(std::make_unique<PlayerRootBehavior>(this));
-                break;
-            case Behavior::attack:
-                ChangeState(std::make_unique<PlayerAttackBehavior>(this));
-                break;
-            case Behavior::dash:
-                ChangeState(std::make_unique<PlayerDashBehavior>(this));
-                break;
-            case Behavior::jump:
-                ChangeState(std::make_unique<PlayerJumpBehavior>(this));
-                break;
-            default:
-                ChangeState(std::make_unique<PlayerRootBehavior>(this));
-                break;
-        }
-        behaviorRequest_ = std::nullopt;
-    }
-}
-
 void Player::ApplyGlobalVariables(){
     GlobalVariables* globalVariables = GlobalVariables::GetInstance();
     const char* groupName = "Player";
@@ -154,10 +130,11 @@ void Player::ApplyGlobalVariables(){
     partsTransform_[static_cast< int >(Parts::head)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "Head Translation");
     partsTransform_[static_cast< int >(Parts::L_arm)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "ArmL Translation");
     partsTransform_[static_cast< int >(Parts::R_arm)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "ArmR Translation");
-
-    if (currentState_){
+ /*   partsTransform_[static_cast< int >(Parts::weapon)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "weapon Translation");
+    partsTransform_[static_cast< int >(Parts::weapon)]->rotation_ = globalVariables->GetValue<Vector3>(groupName, "weapon Rotation");*/
+   /* if (currentState_){
         currentState_->ApplyGlobalVariables();
-    }
+    }*/
 }
 
 void Player::SetViewProjection(const ViewProjection* viewProjection){ viewPorjection_ = viewProjection; }
@@ -168,7 +145,6 @@ void Player::SetViewProjection(const ViewProjection* viewProjection){ viewPorjec
 bool Player::GetIsAttack()const{ return isAttack_; }
 Vector3 Player::GetVelocity()const{ return velocity_; }
 Vector3 Player::GetDirection()const{ return direction_; }
-std::optional<Behavior> Player::GetBehaviorRequest()const{ return behaviorRequest_; }
 float Player::GetTargetAngle()const{ return targetAngle; }
 
 void Player::SetIsAttack(const bool isAttack){ isAttack_ = isAttack; }
@@ -200,6 +176,7 @@ void Player::Set_R_ArmTranslationX(const float translationX){ partsTransform_[st
 void Player::Set_R_ArmTranslationY(const float translationY){ partsTransform_[static_cast< int >(Parts::R_arm)]->translation_.y = translationY; }
 void Player::Set_R_ArmTranslationZ(const float translationZ){ partsTransform_[static_cast< int >(Parts::R_arm)]->translation_.z = translationZ; }
 
+void Player::SetWeaponTranslation(const Vector3& translation){ partsTransform_[static_cast< int >(Parts::weapon)]->translation_ = translation; }
 
 //============================================================================================================================================
 //								回転

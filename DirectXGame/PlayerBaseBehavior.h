@@ -1,20 +1,18 @@
 #pragma once
+#include<memory>
 
 class Player;
 
-class PlayerBaseBehavior {
+class PlayerBaseBehavior{
 public:
 
-	virtual ~PlayerBaseBehavior() = default;
+    virtual ~PlayerBaseBehavior() = default;
 
-	virtual void Initialize() = 0;
-	virtual void Update() = 0;
-
-	virtual void ApplyGlobalVariables() = 0;
-	
+    virtual void Initialize() = 0;
+    virtual void Update() = 0;
+    virtual void ApplyGlobalVariables() = 0;
 protected:
-	// Playerクラスのポインタ
-	Player* player_;
+    Player* player_;
 };
 
 

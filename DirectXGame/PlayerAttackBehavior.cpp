@@ -1,49 +1,68 @@
 #include "PlayerAttackBehavior.h"
+#include "PlayerRootBehavior.h"
 #include"Player.h"
 #include"GlobalVariables.h"
+#include "PlayerWeaponSwingDown.h"
+#include "PlayerMowDown.h"
+#include<Xinput.h>
+#include<imgui.h>
 
-PlayerAttackBehavior::PlayerAttackBehavior(Player*player){
+PlayerAttackBehavior::PlayerAttackBehavior(Player* player) :currentCommandIndex_(0){
 	player_ = player;
 
-	const char* groupName = "Player";
-	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
-
-	//グループを追加
-	globalVariables->AddItem(groupName, "targetArmAngle", targetArmAngle_);
-	globalVariables->AddItem(groupName, "shakeUpAngle", shakeUpAngle_);
-	globalVariables->AddItem(groupName, "weaponInitAngle", weaponInitAngle_);
+	//コンボの追加
+	AddCommand(std::make_unique<PlayerWeaponSwingDown>());
+	AddCommand(std::make_unique <PlayerMowDown>());
 }
 
 PlayerAttackBehavior::~PlayerAttackBehavior(){}
 
 void PlayerAttackBehavior::Initialize(){
+	if (!attackCommands_.empty() && currentCommandIndex_ < attackCommands_.size()){
+		attackCommands_[currentCommandIndex_]->Initialize(player_);
+	}
 	player_->SetIsAttack(true);
-	
-	player_->SetWeaponRotationX(weaponInitAngle_);
-	player_->Set_L_ArmRotationX(shakeUpAngle_);
-	player_->Set_R_ArmRotationX(shakeUpAngle_);
 }
 
 void PlayerAttackBehavior::Update(){
-	auto& weaponAngle = player_->GetPartsTransform(int(Parts::weapon))->rotation_;
-	auto& L_armAngle = player_->GetPartsTransform(int(Parts::L_arm))->rotation_;
-	auto& R_armAngle = player_->GetPartsTransform(int(Parts::R_arm))->rotation_;
+	XINPUT_STATE padState = {};
+	XInputGetState(0, &padState);
+	ImGui::Begin("window");
+	ImGui::Text("%d", comboReceptionTime_);
+	ImGui::End();
 
-	weaponAngle.x = Lerp(weaponAngle.x, targetArmAngle_, 0.2f);
-	L_armAngle.x = Lerp(L_armAngle.x, -targetArmAngle_, 0.2f);
-	R_armAngle.x = Lerp(R_armAngle.x, -targetArmAngle_, 0.2f);
+	if (currentCommandIndex_ < attackCommands_.size()){
+		attackCommands_[currentCommandIndex_]->Execute(player_);
 
+		// 現在の攻撃が終了したら次の攻撃
+		if (attackCommands_[currentCommandIndex_]->GetIsFinished()){
+			
+			if (--comboReceptionTime_ <= 0){
+				player_->ChangeState(std::make_unique<PlayerRootBehavior>(player_));
+			} else{
+				// コンボ受付時間以内
+				if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_X){
+					// 次の攻撃
+					currentCommandIndex_++;
+					if (currentCommandIndex_ < attackCommands_.size()){
+						attackCommands_[currentCommandIndex_]->Initialize(player_);
+						comboReceptionTime_ = comboReceptionTimeMax_;
+					}
+				}
+			}
+		}
+		
 
-	// 目標角度に達したら攻撃を初期化
-	if (std::abs(targetArmAngle_ - weaponAngle.x) <= 0.001f){
-		player_->SetBehavior(Behavior::root);
+	} else{
+		// 全ての攻撃が終了したら通常状態に戻す
+		player_->ChangeState(std::make_unique<PlayerRootBehavior>(player_));
 	}
 }
 
 void PlayerAttackBehavior::ApplyGlobalVariables(){
-	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
-	const char* groupName = "Player";
-	targetArmAngle_ = globalVariables->GetValue<float>(groupName, "targetArmAngle");
-	shakeUpAngle_ = globalVariables->GetValue<float>(groupName, "shakeUpAngle");
-	weaponInitAngle_ = globalVariables->GetValue<float>(groupName, "weaponInitAngle");
+
+}
+
+void PlayerAttackBehavior::AddCommand(std::unique_ptr<PlayerAttackCommand> command){
+	attackCommands_.push_back(std::move(command));
 }

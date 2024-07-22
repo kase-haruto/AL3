@@ -1,5 +1,6 @@
 #pragma once
 #include "PlayerBaseBehavior.h"
+#include "PlayerAttackCommand.h"
 
 class PlayerAttackBehavior final:
     public PlayerBaseBehavior{
@@ -21,9 +22,12 @@ public:
     /// </summary>
     void ApplyGlobalVariables()override;
 
+    void AddCommand(std::unique_ptr<PlayerAttackCommand> command);
 private:
-    float targetArmAngle_ = 1.3f;
-    float shakeUpAngle_ = -3.1f;
-    float weaponInitAngle_ = 0.0f;
+    std::vector<std::unique_ptr<PlayerAttackCommand>>attackCommands_;
+    int currentCommandIndex_;
+    uint32_t comboReceptionTime_ = 30;//1秒
+    const int comboReceptionTimeMax_ = 30;
+
 };
 

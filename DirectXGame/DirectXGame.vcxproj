@@ -119,10 +119,13 @@
     <ClCompile Include="MyFunc.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerAttackBehavior.cpp" />
+    <ClCompile Include="PlayerAttackCommand.cpp" />
     <ClCompile Include="PlayerBaseBehavior.cpp" />
     <ClCompile Include="PlayerDashBehavior.cpp" />
     <ClCompile Include="PlayerJumpBehavior.cpp" />
+    <ClCompile Include="PlayerMowDown.cpp" />
     <ClCompile Include="PlayerRootBehavior.cpp" />
+    <ClCompile Include="PlayerWeaponSwingDown.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="Skydome.cpp" />
     <ClCompile Include="Vector3.cpp" />
@@ -165,10 +168,13 @@
     <ClInclude Include="MyFunc.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerAttackBehavior.h" />
+    <ClInclude Include="PlayerAttackCommand.h" />
     <ClInclude Include="PlayerBaseBehavior.h" />
     <ClInclude Include="PlayerDashBehavior.h" />
     <ClInclude Include="PlayerJumpBehavior.h" />
+    <ClInclude Include="PlayerMowDown.h" />
     <ClInclude Include="PlayerRootBehavior.h" />
+    <ClInclude Include="PlayerWeaponSwingDown.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="Skydome.h" />
   </ItemGroup>
