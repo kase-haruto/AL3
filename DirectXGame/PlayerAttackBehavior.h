@@ -28,6 +28,6 @@ private:
     int currentCommandIndex_;
     uint32_t comboReceptionTime_ = 30;//1秒
     const int comboReceptionTimeMax_ = 30;
-
+    
 };
 

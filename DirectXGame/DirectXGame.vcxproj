@@ -125,6 +125,7 @@
     <ClCompile Include="PlayerJumpBehavior.cpp" />
     <ClCompile Include="PlayerMowDown.cpp" />
     <ClCompile Include="PlayerRootBehavior.cpp" />
+    <ClCompile Include="PlayerSpinAttack.cpp" />
     <ClCompile Include="PlayerWeaponSwingDown.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="Skydome.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="PlayerJumpBehavior.h" />
     <ClInclude Include="PlayerMowDown.h" />
     <ClInclude Include="PlayerRootBehavior.h" />
+    <ClInclude Include="PlayerSpinAttack.h" />
     <ClInclude Include="PlayerWeaponSwingDown.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="Skydome.h" />

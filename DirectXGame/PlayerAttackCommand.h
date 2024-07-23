@@ -19,5 +19,7 @@ class PlayerAttackCommand{
 protected:
 	Player* player_ = nullptr;
 	bool isFinished_ = false;
+
+	float movingStep_ = 0.21f;
 };
 

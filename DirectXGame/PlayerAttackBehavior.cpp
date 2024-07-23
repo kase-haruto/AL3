@@ -11,8 +11,8 @@ PlayerAttackBehavior::PlayerAttackBehavior(Player* player) :currentCommandIndex_
 	player_ = player;
 
 	//コンボの追加
-	AddCommand(std::make_unique<PlayerWeaponSwingDown>());
 	AddCommand(std::make_unique <PlayerMowDown>());
+	AddCommand(std::make_unique<PlayerWeaponSwingDown>());
 }
 
 PlayerAttackBehavior::~PlayerAttackBehavior(){}

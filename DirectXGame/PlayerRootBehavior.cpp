@@ -35,6 +35,8 @@ void PlayerRootBehavior::Initialize(){
     Vector3 R_Arm_Rotate = {0.0f, player_->GetPartsTransform(static_cast< int >(Parts::R_arm))->rotation_.y, player_->GetPartsTransform(static_cast< int >(Parts::R_arm))->rotation_.z};
     player_->Set_L_ArmRotation(L_Arm_Rotate);
     player_->Set_R_ArmRotation(R_Arm_Rotate);
+    player_->SetBodyRotation({0.0f,0.0f,0.0f});
+
 }
 
 void PlayerRootBehavior::Update(){
