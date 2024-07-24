@@ -51,13 +51,20 @@ void GameScene::Initialize(){
 	//		敵
 	enemyModels_.push_back(std::unique_ptr<Model>(Model::CreateFromOBJ("enemy", true)));
 	enemyModels_.push_back(std::unique_ptr<Model>(Model::CreateFromOBJ("enemy_arm", true)));
-	enemy_ = std::make_unique<Enemy>();
-	std::vector<Model*>enemyModelPtr;
-	for (const auto& model : enemyModels_){
-		enemyModelPtr.push_back(model.get());
+	for (int i = 0; i < 3; i++){
+		auto enemy = std::make_unique<Enemy>();
+		std::vector<Model*>enemyModelPtr;
+		for (const auto& model : enemyModels_){
+			enemyModelPtr.push_back(model.get());
+		}
+		enemy->Initialize(enemyModelPtr);
+		enemies_.push_back(std::move(enemy));
 	}
-	enemy_->Initialize(enemyModelPtr);
-	enemy_->SetPos({10.0f,0.0f,20.0f});
+	
+	enemies_[0]->SetPos({10.0f,0.0f,20.0f});
+	enemies_[1]->SetPos({20.0f,0.0f,20.0f});
+	enemies_[2]->SetPos({30.0f,0.0f,20.0f});
+	
 
 
 	///=====================================================
@@ -77,7 +84,9 @@ void GameScene::Update(){
 	//プレイヤーの更新
 	player_->Update();
 	//敵の更新
-	enemy_->Update();
+	for (const auto& enemy:enemies_){
+		enemy->Update();
+	}
 
 #ifdef _DEBUG
 	// デバッグ用のカメラ
@@ -151,8 +160,9 @@ void GameScene::Draw(){
 	//=========================================================
 	//	敵の描画
 	//=========================================================
-	enemy_->Draw(viewProjection_);
-
+	for (const auto& enemy : enemies_){
+		enemy->Draw(viewProjection_);
+	}
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion

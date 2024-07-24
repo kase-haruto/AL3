@@ -67,7 +67,8 @@ private: // メンバ変数
 	/// </summary>	
 	ViewProjection viewProjection_;
 	std::unique_ptr<Player>player_ = nullptr;
-	std::unique_ptr<Enemy>enemy_ = nullptr;
+	std::vector<std::unique_ptr<Enemy>>enemies_;
+	//std::unique_ptr<Enemy>enemy_ = nullptr;
 	std::unique_ptr<Skydome>skydome_ = nullptr;
 	std::unique_ptr<Ground>ground_ = nullptr;
 
