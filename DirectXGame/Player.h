@@ -1,151 +1,150 @@
 #pragma once
-#include"Actor.h"
-#include"MyFunc.h"
-#include"Model.h"
+#include "Actor.h"
+#include "MyFunc.h"
+#include "Model.h"
+#include "PlayerBaseBehavior.h"
+#include <vector>
+#include <optional>
 
-#include<vector>
-#include<optional>
+/// <summary>
+/// パーツ/行動
+/// </summary>
+namespace PlayerDetails{
+    /// <summary>
+    /// プレイヤーのパーツ
+    /// </summary>
+    enum class Parts{
+        body,
+        head,
+        L_arm,
+        R_arm,
+        weapon,
+        partsCount
+    };
 
-class Player :public Actor{
+    enum class Behavior{
+        root,   // 通常
+        attack, // 攻撃
+        dash,   // ダッシュ中
+        jump,   // ジャンプ中
+    };
+}
 
-	/// <summary>
-	/// プレイヤーのパーツ
-	/// </summary>
-	enum class Parts{
-		body,
-		head,
-		L_arm,
-		R_arm,
-		weapon,
-		partsCount
-	};
+using PlayerDetails::Behavior;
+using PlayerDetails::Parts;
 
-	enum class Behavior{
-		root,//通常
-		attack,//攻撃
-		dash,//ダッシュ中
-		jump,//ジャンプ中
-	};
-
-	struct WorkDash{
-		//ダッシュ用の媒介変数
-		uint32_t dashParameter_ = 0;
-	};
-
+class Player : public Actor{
 public:
-	Player();
-	~Player()override;
+    Player();
+    ~Player() override;
 
-	/// <summary>
-	/// 初期化
-	/// </summary>
-	void Initialize(const std::vector<Model*>& model)override;
-	/// <summary>
-	/// 更新
-	/// </summary>
-	void Update()override;
-	/// <summary>
-	/// 描画
-	/// </summary>
-	void Draw(const ViewProjection& viewProjection)override;
-	/// <summary>
-	/// 追尾カメラ
-	/// </summary>
-	void SetViewProjection(const ViewProjection* viewProjection);
+    /// <summary>
+    /// 初期化
+    /// </summary>
+    /// <param name="model"></param>
+    void Initialize(const std::vector<Model*>& model) override;
+    /// <summary>
+    /// 更新
+    /// </summary>
+    void Update() override;
+    /// <summary>
+    /// 描画
+    /// </summary>
+    /// <param name="viewProjection"></param>
+    void Draw(const ViewProjection& viewProjection) override;
+    /// <summary>
+    /// 向いている方向に進む
+    /// </summary>
+    /// <param name="speed"></param>
+    void MoveInDirection(float speed);
+    /// <summary>
+    /// 状態の遷移
+    /// </summary>
+    /// <param name="newState"></param>
+    void ChangeState(std::unique_ptr<PlayerBaseBehavior> newState);
+
+#pragma region
+    bool GetIsAttack() const;
+    WorldTransform* GetPartsTransform(int index){ return partsTransform_[index].get(); }
+    Vector3 GetVelocity() const;
+    Vector3 GetDirection() const;
+    std::optional<Behavior> GetBehaviorRequest() const;
+    float GetTargetAngle() const;
+#pragma endregion ゲッター
+
+#pragma region
+    void SetViewProjection(const ViewProjection* viewProjection);
+
+
+    void SetIsAttack(const bool isAttack);
+    void SetVelocity(const Vector3& vel);
+    void SetDirection(const Vector3& dir);
+
+    void SetHeadTranslation(const Vector3& translation);
+    void Set_L_ArmTranslation(const Vector3& translation);
+    void Set_R_ArmTranslation(const Vector3& translation);
+    void SetBodyTranslation(const Vector3& translation);
+
+    void SetHeadRotation(const Vector3& rotation);
+    void Set_L_ArmRotation(const Vector3& rotation);
+    void Set_R_ArmRotation(const Vector3& rotation);
+    void SetBodyRotation(const Vector3& rotation);
+
+    void SetHeadTranslationX(const float translationX);
+    void SetHeadTranslationY(const float translationY);
+    void SetHeadTranslationZ(const float translationZ);
+
+    void SetBodyTranslationX(const float translationX);
+    void SetBodyTranslationY(const float translationY);
+    void SetBodyTranslationZ(const float translationZ);
+
+    void Set_L_ArmTranslationX(const float translationX);
+    void Set_L_ArmTranslationY(const float translationY);
+    void Set_L_ArmTranslationZ(const float translationZ);
+
+    void Set_R_ArmTranslationX(const float translationX);
+    void Set_R_ArmTranslationY(const float translationY);
+    void Set_R_ArmTranslationZ(const float translationZ);
+
+    void SetWeaponTranslation(const Vector3& translation);
+
+    void SetHeadRotationX(const float RotationX);
+    void SetHeadRotationY(const float RotationY);
+    void SetHeadRotationZ(const float RotationZ);
+
+    void SetBodyRotationX(const float RotationX);
+    void SetBodyRotationY(const float RotationY);
+    void SetBodyRotationZ(const float RotationZ);
+
+    void Set_L_ArmRotationX(const float RotationX);
+    void Set_L_ArmRotationY(const float RotationY);
+    void Set_L_ArmRotationZ(const float RotationZ);
+
+    void Set_R_ArmRotationX(const float RotationX);
+    void Set_R_ArmRotationY(const float RotationY);
+    void Set_R_ArmRotationZ(const float RotationZ);
+
+    void SetWeaponRotation(const Vector3& rotation);
+    void SetWeaponRotationX(const float rotation);
+    void SetWeaponRotationY(const float rotation);
+    void SetWeaponRotationZ(const float rotation);
+#pragma endregion セッター
 
 private:
-	/// <summary>
-	/// 各パーツのtransformの初期化
-	/// </summary>
-	void PartsTransformInit();
-	/// <summary>
-	/// 移動
-	/// </summary>
-	void Move();
-	/// <summary>
-	/// 向いている方向に進む
-	/// </summary>
-	void MoveInDirection(float speed);
-	/// <summary>
-	/// 浮遊行動の初期化
-	/// </summary>
-	void InitializeFloatingAction();
-	/// <summary>
-	/// 通常行動の初期化
-	/// </summary>
-	void RootInitialize();
-	/// <summary>
-	/// 攻撃処理の初期化
-	/// </summary>
-	void AttackInitialize();
-	/// <summary>
-	/// ダッシュ行動の初期化
-	/// </summary>
-	void BehaviorDashInitialize();
-	/// <summary>
-	/// ジャンプ行動初期化
-	/// </summary>
-	void BehaviorJumpInitialize();
-	/// <summary>
-	/// 浮遊行動の更新
-	/// </summary>
-	void UpdateFloatingAction();
-	/// <summary>
-	/// 通常行動更新
-	/// </summary>
-	void BehaviorRootUpdate();
-	/// <summary>
-	/// 攻撃行動更新
-	/// </summary>
-	void BehaviorAttackUpdate();
-	/// <summary>
-	/// ダッシュ行動の更新
-	/// </summary>
-	void BehaviorDashUpdate();
-	/// <summary>
-	/// ジャンプ行動更新
-	/// </summary>
-	void BehaviorJumpUpdate();
-	/// <summary>
-	/// ふるまいの遷移
-	/// </summary>
-	void TrasitionaBehavior();
-	/// <summary>
-	/// ふるまいの更新
-	/// </summary>
-	void BehaviorUpdate();
+    /// <summary>
+    /// パーツごとの初期化
+    /// </summary>
+    void PartsTransformInit();
+    /// <summary>
+    /// 定数の適用
+    /// </summary>
+    void ApplyGlobalVariables();
 
-
-	/// <summary>
-	/// 調整項目の適用
-	/// </summary>
-	void ApplyGlobalVariables();
 private:
-
-
-	Vector3 velocity_;
-
-	//カメラのビュープロジェクション
-	const ViewProjection* viewPorjection_ = nullptr;
-	float targetAngle;
-
-	//パーツごとの変数
-	std::vector<std::unique_ptr< WorldTransform>> partsTransform_;
-
-	//浮遊ギミックの媒介変数
-	int32_t cycle_ = 30;
-	float floatingParameter_ = 0.0f;
-	//浮遊の振幅
-	float floatingAmplitude;
-
-	bool isAttack_ = false;
-
-	//ふるまい
-	Behavior behavior_ = Behavior::root;
-	//次の振る舞いのリクエスト
-	std::optional<Behavior>behaviorRequest_ = std::nullopt;
-
-	//ダッシュ用変数
-	WorkDash workDash_;
+    Vector3 velocity_ = {0.0f,0.0f,0.0f};
+    const ViewProjection* viewPorjection_ = nullptr;
+    std::unique_ptr<PlayerBaseBehavior> currentState_;
+    std::vector<std::unique_ptr<WorldTransform>> partsTransform_;
+    bool isAttack_ = false;
+    float targetAngle = 0.0f;
 };
-

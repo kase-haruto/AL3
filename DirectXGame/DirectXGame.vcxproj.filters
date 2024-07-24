@@ -82,6 +82,12 @@
     <Filter Include="Game\Variables">
       <UniqueIdentifier>{2253f520-b5b8-4cdc-b222-dd36c16f7463}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Object\Actor\Player\PlayerState">
+      <UniqueIdentifier>{3ce8185c-3067-4818-a7b7-3db7b2e5af12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Object\Actor\Player\PlayerAttack">
+      <UniqueIdentifier>{66cc395b-c049-42c3-b4bb-56399530943c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -131,6 +137,30 @@
     </ClCompile>
     <ClCompile Include="GlobalVariables.cpp">
       <Filter>Game\Variables</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerBaseBehavior.cpp">
+      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerRootBehavior.cpp">
+      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerAttackBehavior.cpp">
+      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDashBehavior.cpp">
+      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerJumpBehavior.cpp">
+      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerAttackCommand.cpp">
+      <Filter>Game\Object\Actor\Player\PlayerAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerWeaponSwingDown.cpp">
+      <Filter>Game\Object\Actor\Player\PlayerAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerMowDown.cpp">
+      <Filter>Game\Object\Actor\Player\PlayerAttack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -244,6 +274,30 @@
     </ClInclude>
     <ClInclude Include="GlobalVariables.h">
       <Filter>Game\Variables</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerBaseBehavior.h">
+      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerRootBehavior.h">
+      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAttackBehavior.h">
+      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDashBehavior.h">
+      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerJumpBehavior.h">
+      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAttackCommand.h">
+      <Filter>Game\Object\Actor\Player\PlayerAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerWeaponSwingDown.h">
+      <Filter>Game\Object\Actor\Player\PlayerAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMowDown.h">
+      <Filter>Game\Object\Actor\Player\PlayerAttack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
