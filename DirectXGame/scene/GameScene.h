@@ -12,6 +12,7 @@
 #include"Ground.h"
 #include"DebugCamera.h"
 #include"FollowCamera.h"
+#include"LockOn.h"
 #include"Enemy.h"
 
 #include<stdint.h>
@@ -67,7 +68,7 @@ private: // メンバ変数
 	/// </summary>	
 	ViewProjection viewProjection_;
 	std::unique_ptr<Player>player_ = nullptr;
-	std::vector<std::unique_ptr<Enemy>>enemies_;
+	std::list<std::unique_ptr<Enemy>>enemies_;
 	//std::unique_ptr<Enemy>enemy_ = nullptr;
 	std::unique_ptr<Skydome>skydome_ = nullptr;
 	std::unique_ptr<Ground>ground_ = nullptr;
@@ -77,6 +78,7 @@ private: // メンバ変数
 	/// </summary>
 	std::unique_ptr<DebugCamera> debugCamera_;
 	std::unique_ptr<FollowCamera> followCamera_;
+	std::unique_ptr<LockOn> lockOn_;
 	bool isDebugCameraActive_ = false;
 	 
 };

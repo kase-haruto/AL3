@@ -32,13 +32,19 @@ public:
 	/// </summary>
 	/// <param name="viewProjection"></param>
 	void Draw(const ViewProjection& viewProjection)override;
+	/// <summary>
+	/// 中心座標取得
+	/// </summary>
+	Vector3 GetCenter()const;
 
 private:
 	/// <summary>
 	/// 移動処理
 	/// </summary>
 	void Move();
-
+	/// <summary>
+	/// 腕の動き
+	/// </summary>
 	void ArmWave();
 
 private:

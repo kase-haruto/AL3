@@ -24,4 +24,13 @@ struct Matrix4x4 final {
 	static Vector3 TransformNormal(const Vector3& normal, const Matrix4x4& matrix);
 
 	static Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2);
+
+	// 正射影行列
+	static Matrix4x4 MakeOrthographicMatrix(float l, float t, float r, float b, float nearClip, float farClip);
+
+	// 透視投影行列
+	static Matrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearClip, float farClip);
+
+	// ビューポート変換行列
+	static Matrix4x4 MakeViewportMatrix(float l, float t, float w, float h, float minDepth, float maxDepth);
 };

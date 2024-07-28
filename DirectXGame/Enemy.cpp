@@ -72,3 +72,10 @@ void Enemy::Move(){
 	worldTransform_.translation_.z += forward.z * moveSpeed;
 }
 
+Vector3 Enemy::GetCenter()const{
+	const Vector3 offset = {0.0f,1.0f,0.0f};
+
+	Vector3 worldPos = Matrix4x4::Transform(offset, worldTransform_.matWorld_);
+	return worldPos;
+}
+

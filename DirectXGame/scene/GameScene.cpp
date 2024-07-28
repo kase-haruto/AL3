@@ -58,13 +58,9 @@ void GameScene::Initialize(){
 			enemyModelPtr.push_back(model.get());
 		}
 		enemy->Initialize(enemyModelPtr);
-		enemies_.push_back(std::move(enemy));
+		enemy->SetPos({10.0f + (i * 10.0f),0.0f,20.0f});
+			enemies_.push_back(std::move(enemy));
 	}
-	
-	enemies_[0]->SetPos({10.0f,0.0f,20.0f});
-	enemies_[1]->SetPos({20.0f,0.0f,20.0f});
-	enemies_[2]->SetPos({30.0f,0.0f,20.0f});
-	
 
 
 	///=====================================================
@@ -73,6 +69,11 @@ void GameScene::Initialize(){
 	followCamera_->Initialize();
 	followCamera_->SetTarget(&player_->GetWorldTransform());
 	player_->SetViewProjection(&followCamera_->GetViewProjection());
+
+	//======================================================
+	//		ロックオン
+	lockOn_ = std::make_unique<LockOn>();
+	lockOn_->Initialize();
 
 	///=====================================================
 	//		デバッグカメラ
@@ -84,9 +85,11 @@ void GameScene::Update(){
 	//プレイヤーの更新
 	player_->Update();
 	//敵の更新
-	for (const auto& enemy:enemies_){
+	for (const auto& enemy : enemies_){
 		enemy->Update();
 	}
+
+	lockOn_->Update(enemies_, viewProjection_);
 
 #ifdef _DEBUG
 	// デバッグ用のカメラ
@@ -127,6 +130,8 @@ void GameScene::Draw(){
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
+
+
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -174,6 +179,9 @@ void GameScene::Draw(){
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+	
+	//ロックオンスプライト描画
+	lockOn_->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();

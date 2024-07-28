@@ -88,6 +88,9 @@
     <Filter Include="Game\Object\Actor\Player\PlayerAttack">
       <UniqueIdentifier>{66cc395b-c049-42c3-b4bb-56399530943c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Camera">
+      <UniqueIdentifier>{51f14a5e-b160-4fff-8eab-c7627a4190e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -129,9 +132,6 @@
     <ClCompile Include="MyFunc.cpp">
       <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="FollowCamera.cpp">
-      <Filter>ソース ファイル\3d</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>Game\Object\Actor\Enemy</Filter>
     </ClCompile>
@@ -161,6 +161,15 @@
     </ClCompile>
     <ClCompile Include="PlayerMowDown.cpp">
       <Filter>Game\Object\Actor\Player\PlayerAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="FollowCamera.cpp">
+      <Filter>Game\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerSpinAttack.cpp">
+      <Filter>Game\Object\Actor\Player\PlayerAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="LockOn.cpp">
+      <Filter>Game\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -266,9 +275,6 @@
     <ClInclude Include="MyFunc.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="FollowCamera.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Game\Object\Actor\Enemy</Filter>
     </ClInclude>
@@ -298,6 +304,15 @@
     </ClInclude>
     <ClInclude Include="PlayerMowDown.h">
       <Filter>Game\Object\Actor\Player\PlayerAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerSpinAttack.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="FollowCamera.h">
+      <Filter>Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="LockOn.h">
+      <Filter>Game\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
