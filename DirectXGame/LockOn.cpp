@@ -25,19 +25,30 @@ void LockOn::Initialize(){
 }
 
 void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const ViewProjection& viewProjection){
-    XINPUT_STATE padState = {};
+    prePadState = padState;
+
     XInputGetState(0, &padState);
 
     ApplyGlobalVariables();
+
+    // 現在のボタン状態を取得
+    WORD currentButtonState = padState.Gamepad.wButtons;
+    WORD preButtonState = prePadState.Gamepad.wButtons;
+
+    bool isLeftShoulderPressed = (currentButtonState & XINPUT_GAMEPAD_LEFT_SHOULDER) != 0;
+    bool wasLeftShoulderPressed = (preButtonState & XINPUT_GAMEPAD_LEFT_SHOULDER) != 0;
+
+    bool isLeftShoulderJustPressed = isLeftShoulderPressed && !wasLeftShoulderPressed;
+
     //ロックオン状態なら
     if (target_){
         // ロックオン状態時の処理を追加
-        if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER){
+        if (isLeftShoulderJustPressed){
             target_ = nullptr;
         }
     } else{
         //ロックオントリガーを押したら
-        if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER){
+        if (isLeftShoulderJustPressed){
             SelectTarget(enemies, viewProjection);
         }
     }

@@ -50,5 +50,8 @@ private:
 
 	// 角度範囲（度からラジアンに変換）
 	float angleRange_ = 20.0f * kDegreeToRadian;
+
+	XINPUT_STATE padState = {};
+	XINPUT_STATE prePadState = {};
 };
 
