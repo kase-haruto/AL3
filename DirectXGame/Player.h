@@ -30,6 +30,8 @@ namespace PlayerDetails{
     };
 }
 
+class LockOn;
+
 using PlayerDetails::Behavior;
 using PlayerDetails::Parts;
 
@@ -70,6 +72,10 @@ public:
     Vector3 GetDirection() const;
     std::optional<Behavior> GetBehaviorRequest() const;
     float GetTargetAngle() const;
+
+    const LockOn* GetLockOn()const;
+    bool HasLockOnTarget()const;
+
 #pragma endregion ゲッター
 
 #pragma region
@@ -129,6 +135,7 @@ public:
     void SetWeaponRotationY(const float rotation);
     void SetWeaponRotationZ(const float rotation);
 #pragma endregion セッター
+    void SetLockOn(const LockOn* lockon);
 
 private:
     /// <summary>
@@ -147,4 +154,9 @@ private:
     std::vector<std::unique_ptr<WorldTransform>> partsTransform_;
     bool isAttack_ = false;
     float targetAngle = 0.0f;
+
+    /// <summary>
+    /// ロックオン
+    /// </summary>
+    const LockOn* lockOn_ = nullptr;
 };

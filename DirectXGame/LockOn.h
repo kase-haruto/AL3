@@ -4,6 +4,7 @@
 
 #include<numbers>
 #include<memory>
+#include<Xinput.h>
 
 /// <summary>
 /// ロックオン
@@ -25,7 +26,13 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw();
-
+	/// <summary>
+	/// ロックオンtargetの座標
+	/// </summary>
+	/// <returns></returns>
+	Vector3 GetTargetPosition()const;
+	
+	bool ExistTarget()const{ return target_ ? true : false; }
 private:
 	/// <summary>
 	/// 適用

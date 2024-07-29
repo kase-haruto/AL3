@@ -8,6 +8,7 @@
 #include "Input.h"
 #include "GlobalVariables.h"
 #include <cmath>
+#include"LockOn.h"
 
 void PlayerRootBehavior::ApplyGlobalVariables(){
     GlobalVariables* globalVariables = GlobalVariables::GetInstance();
@@ -88,6 +89,27 @@ void PlayerRootBehavior::Move(){
             player_->SetDirection(Normalize(player_->GetVelocity()));
             // 向いている方向に移動
             player_->MoveInDirection(speed_);
+        }
+        ///ジョイスティックによる入力がない
+        else if (player_->GetLockOn() && player_->GetLockOn()->ExistTarget()){
+            Vector3 lockOnTargetPos = player_->GetLockOn()->GetTargetPosition();
+            Vector3 sub = lockOnTargetPos - player_->GetWorldPosition();
+
+            //距離
+            float distance = Length(sub);
+            //距離しきい値
+            const float moveThreshold = 0.2f;
+
+            //しきい値より離れているときのみ
+            if (distance> moveThreshold){
+                Vector3 newRotate {player_->GetRotation().x,std::atan2(sub.x,sub.z),player_->GetRotation().z};
+                player_->SetRotation(newRotate);
+
+                //しきい値を超える速さなら修正
+                if (speed_>distance - moveThreshold){
+                    speed_ = distance - moveThreshold;
+                }
+            }
         }
     }
 }

@@ -7,6 +7,7 @@
 #include <imgui.h>
 #include"GlobalVariables.h"
 
+#include "LockOn.h"
 Player::Player() : currentState_(nullptr), isAttack_(false), viewPorjection_(nullptr){
     partsTransform_.resize(static_cast< int >(Parts::partsCount));
     partsTransform_[static_cast< int >(Parts::body)] = std::make_unique<WorldTransform>();
@@ -154,6 +155,8 @@ void Player::SetIsAttack(const bool isAttack){ isAttack_ = isAttack; }
 void Player::SetVelocity(const Vector3& vel){ velocity_ = vel; }
 void Player::SetDirection(const Vector3& dir){ direction_ = dir; }
 
+const LockOn* Player::GetLockOn()const{ return lockOn_; }
+bool Player::HasLockOnTarget()const{ return lockOn_->ExistTarget() ? true : false; }
 
 //============================================================================================================================================
 //								平行移動
@@ -208,3 +211,8 @@ void Player::SetWeaponRotation(const Vector3& rotation){ partsTransform_[static_
 void Player::SetWeaponRotationX(const float rotation){ partsTransform_[static_cast< int >(Parts::weapon)]->rotation_.x = rotation; }
 void Player::SetWeaponRotationY(const float rotation){ partsTransform_[static_cast< int >(Parts::weapon)]->rotation_.y = rotation; }
 void Player::SetWeaponRotationZ(const float rotation){ partsTransform_[static_cast< int >(Parts::weapon)]->rotation_.z = rotation; }
+
+
+void Player::SetLockOn(const LockOn* lockOn){
+    lockOn_ = lockOn;
+}

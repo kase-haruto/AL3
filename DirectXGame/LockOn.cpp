@@ -5,7 +5,7 @@
 #include "MyFunc.h"
 
 #include <cmath>
-#include <Xinput.h>
+
 
 LockOn::LockOn() : lockOnMark_(nullptr, [] (Sprite* p){ delete p; }){
     const char* groupName = "LockOn";
@@ -120,4 +120,11 @@ void LockOn::SelectTarget(const std::list<std::unique_ptr<Enemy>>& enemies, cons
         //ソートの結果一番近い敵をロックオン対象とする
         target_ = targets.front().second;
     }
+}
+
+Vector3 LockOn::GetTargetPosition()const{
+    if (target_){
+        return target_->GetCenter();
+    }
+    return Vector3();
 }

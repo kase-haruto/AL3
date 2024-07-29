@@ -39,6 +39,6 @@ private:
     float floatingAmplitude_;
     int32_t cycle_;
     // 速さ
-    const float speed_ = 0.3f;
+   float speed_ = 0.3f;
 };
 

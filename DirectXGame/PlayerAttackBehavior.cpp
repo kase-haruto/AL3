@@ -4,6 +4,7 @@
 #include"GlobalVariables.h"
 #include "PlayerWeaponSwingDown.h"
 #include "PlayerMowDown.h"
+#include "LockOn.h"
 #include<Xinput.h>
 #include<imgui.h>
 
@@ -31,12 +32,21 @@ void PlayerAttackBehavior::Update(){
 	ImGui::Text("%d", comboReceptionTime_);
 	ImGui::End();
 
+	///ジョイスティックによる入力がない
+	if (player_->GetLockOn() && player_->GetLockOn()->ExistTarget()){
+		Vector3 lockOnTargetPos = player_->GetLockOn()->GetTargetPosition();
+		Vector3 sub = lockOnTargetPos - player_->GetWorldPosition();
+
+		Vector3 newRotate {player_->GetRotation().x,std::atan2(sub.x,sub.z),player_->GetRotation().z};
+		player_->SetRotation(newRotate);
+	}
+
 	if (currentCommandIndex_ < attackCommands_.size()){
 		attackCommands_[currentCommandIndex_]->Execute(player_);
 
 		// 現在の攻撃が終了したら次の攻撃
 		if (attackCommands_[currentCommandIndex_]->GetIsFinished()){
-			
+
 			if (--comboReceptionTime_ <= 0){
 				player_->ChangeState(std::make_unique<PlayerRootBehavior>(player_));
 			} else{
@@ -51,7 +61,7 @@ void PlayerAttackBehavior::Update(){
 				}
 			}
 		}
-		
+
 
 	} else{
 		// 全ての攻撃が終了したら通常状態に戻す

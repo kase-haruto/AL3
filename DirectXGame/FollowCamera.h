@@ -2,6 +2,8 @@
 #include"ViewProjection.h"
 #include"WorldTransform.h"
 
+class LockOn;
+
 /// <summary>
 /// 追従カメラ
 /// </summary>
@@ -33,6 +35,17 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	Vector3 CalculateOffset();
+	/// <summary>
+	/// ロックオン時の挙動
+	/// </summary>
+	void ActiveLockOn();
+
+	/// <summary>
+	/// ロックオンをセット
+	/// </summary>
+	/// <param name="lockOn"></param>
+	void SetLockOn(const LockOn* lockOn);
+
 private:
 	/// <summary>
 	/// 旋回
@@ -47,6 +60,7 @@ private:
 	/// </summary>
 	void Reset();
 
+
 private:
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
@@ -56,5 +70,8 @@ private:
 	Vector3 interTarget_ = {};
 	//目標角度
 	float destinationAngleY_ = 0.0f;
+
+	//ロックオン
+	const LockOn* lockOn_ = nullptr;
 };
 

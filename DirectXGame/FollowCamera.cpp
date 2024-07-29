@@ -1,7 +1,7 @@
 #include "FollowCamera.h"
 #include"Input.h"
 #include"MyFunc.h"
-
+#include"LockOn.h"
 FollowCamera::FollowCamera(){}
 
 FollowCamera::~FollowCamera(){}
@@ -13,8 +13,14 @@ void FollowCamera::Initialize(){
 void FollowCamera::Update(){
 	//追従
 	Adulation();
-	//旋回
-	Turning();	
+	//ロックオン中
+	if (lockOn_->ExistTarget()&&lockOn_){
+		ActiveLockOn();
+	} else{
+		//旋回
+		Turning();
+	}
+	
 
 	//ビュー行列の更新
 	viewProjection_.UpdateMatrix();
@@ -29,8 +35,6 @@ void FollowCamera::Adulation(){
 
 		//座標をコピーしてオフセット分ずらす
 		viewProjection_.translation_ = interTarget_ + offset;
-
-		
 	}
 }
 
@@ -56,6 +60,17 @@ void FollowCamera::Turning(){
 	//最短角度補完
 	viewProjection_.rotation_.y = LerpShortAngle(viewProjection_.rotation_.y,destinationAngleY_,0.08f);
 }
+
+void FollowCamera::ActiveLockOn(){
+	//ロックオン座標
+	Vector3 lockOnTargetPos = lockOn_->GetTargetPosition();
+	//追従対象者からロックオン対象へのベクトル
+	Vector3 sub = lockOnTargetPos - target_->translation_;
+
+	//y軸周りの回転
+	viewProjection_.rotation_.y = std::atan2(sub.x, sub.z);
+}
+
 
 void FollowCamera::Reset(){
 	//追従対象がいれば
@@ -87,4 +102,8 @@ const ViewProjection& FollowCamera::GetViewProjection(){ return viewProjection_;
 void FollowCamera::SetTarget(const WorldTransform* target){
 	target_ = target;
 	Reset();
+}
+
+void FollowCamera::SetLockOn(const LockOn* lockOn){
+	lockOn_ = lockOn;
 }

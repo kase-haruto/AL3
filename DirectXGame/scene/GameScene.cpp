@@ -75,6 +75,9 @@ void GameScene::Initialize(){
 	lockOn_ = std::make_unique<LockOn>();
 	lockOn_->Initialize();
 
+	followCamera_->SetLockOn(lockOn_.get());
+	player_->SetLockOn(lockOn_.get());
+
 	///=====================================================
 	//		デバッグカメラ
 	debugCamera_ = std::make_unique<DebugCamera>(kWindowWidth, kWindowHeight);
