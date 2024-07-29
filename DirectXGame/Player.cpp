@@ -58,23 +58,6 @@ void Player::PartsTransformInit(){
 }
 
 void Player::Update(){
-    ApplyGlobalVariables();
-
-#ifdef _DEBUG
-    ImGui::Begin("player");
-    ImGui::DragFloat3("translation", &worldTransform_.translation_.x, 0.01f);
-    const char* partNames[] = {"head", "body", "L_arm", "R_arm", "weapon"};
-    Parts partIndices[] = {Parts::head, Parts::body, Parts::L_arm, Parts::R_arm, Parts::weapon};
-
-    for (int i = 0; i < 5; ++i){
-        if (ImGui::TreeNode(partNames[i])){
-            ImGui::DragFloat3((std::string(partNames[i]) + ".translation").c_str(), &partsTransform_[static_cast< int >(partIndices[i])]->translation_.x, 0.01f);
-            ImGui::DragFloat3((std::string(partNames[i]) + ".rotation").c_str(), &partsTransform_[static_cast< int >(partIndices[i])]->rotation_.x, 0.01f);
-            ImGui::TreePop();
-        }
-    }
-    ImGui::End();
-#endif // _DEBUG
 
     if (currentState_){
         currentState_->Update();
@@ -146,6 +129,11 @@ void Player::SetViewProjection(const ViewProjection* viewProjection){ viewPorjec
 ///==========================================================
 ///ゲッター/セッター
 ///==========================================================
+Vector3 Player::GetCenterPos()const{
+    const Vector3 offset = {0.0f,1.5f,0.0f};
+    Vector3 worldPos = Matrix4x4::Transform(offset, worldTransform_.matWorld_);
+    return worldPos;
+}
 bool Player::GetIsAttack()const{ return isAttack_; }
 Vector3 Player::GetVelocity()const{ return velocity_; }
 Vector3 Player::GetDirection()const{ return direction_; }

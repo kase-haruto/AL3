@@ -35,7 +35,7 @@ public:
 	/// <summary>
 	/// 中心座標取得
 	/// </summary>
-	Vector3 GetCenter()const;
+	Vector3 GetCenterPos()const override;
 
 private:
 	/// <summary>

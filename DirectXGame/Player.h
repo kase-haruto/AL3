@@ -65,6 +65,7 @@ public:
     /// <param name="newState"></param>
     void ChangeState(std::unique_ptr<PlayerBaseBehavior> newState);
 
+    Vector3 GetCenterPos()const override;
 #pragma region
     bool GetIsAttack() const;
     WorldTransform* GetPartsTransform(int index){ return partsTransform_[index].get(); }
