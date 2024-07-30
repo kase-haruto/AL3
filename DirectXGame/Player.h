@@ -65,7 +65,8 @@ public:
     /// <param name="newState"></param>
     void ChangeState(std::unique_ptr<PlayerBaseBehavior> newState);
 
-    Vector3 GetCenterPos()const override;
+    void OnCollision()override;
+
 #pragma region
     bool GetIsAttack() const;
     WorldTransform* GetPartsTransform(int index){ return partsTransform_[index].get(); }
@@ -76,6 +77,9 @@ public:
 
     const LockOn* GetLockOn()const;
     bool HasLockOnTarget()const;
+
+    Vector3 GetCenterPos()const override;
+
 
 #pragma endregion ゲッター
 
@@ -135,8 +139,11 @@ public:
     void SetWeaponRotationX(const float rotation);
     void SetWeaponRotationY(const float rotation);
     void SetWeaponRotationZ(const float rotation);
-#pragma endregion セッター
+
+
     void SetLockOn(const LockOn* lockon);
+
+#pragma endregion セッター
 
 private:
     /// <summary>

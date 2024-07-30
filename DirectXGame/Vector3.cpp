@@ -6,7 +6,6 @@
 
 
 
-
 //乗算
 Vector3 Vector3::operator*(const float& scalar) const{
 	float newX = x * scalar;

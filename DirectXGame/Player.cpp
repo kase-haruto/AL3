@@ -126,9 +126,17 @@ void Player::ApplyGlobalVariables(){
 
 void Player::SetViewProjection(const ViewProjection* viewProjection){ viewPorjection_ = viewProjection; }
 
+bool Player::HasLockOnTarget()const{ return lockOn_->ExistTarget() ? true : false; }
+
+void Player::OnCollision(){
+    ChangeState(std::make_unique<PlayerJumpBehavior>(this));
+}
+
 ///==========================================================
 ///ゲッター/セッター
 ///==========================================================
+
+#pragma region
 Vector3 Player::GetCenterPos()const{
     const Vector3 offset = {0.0f,1.5f,0.0f};
     Vector3 worldPos = Matrix4x4::Transform(offset, worldTransform_.matWorld_);
@@ -144,7 +152,10 @@ void Player::SetVelocity(const Vector3& vel){ velocity_ = vel; }
 void Player::SetDirection(const Vector3& dir){ direction_ = dir; }
 
 const LockOn* Player::GetLockOn()const{ return lockOn_; }
-bool Player::HasLockOnTarget()const{ return lockOn_->ExistTarget() ? true : false; }
+#pragma endregion getter
+
+
+#pragma region
 
 //============================================================================================================================================
 //								平行移動
@@ -204,3 +215,5 @@ void Player::SetWeaponRotationZ(const float rotation){ partsTransform_[static_ca
 void Player::SetLockOn(const LockOn* lockOn){
     lockOn_ = lockOn;
 }
+
+#pragma endregion setter

@@ -14,6 +14,7 @@
 #include"FollowCamera.h"
 #include"LockOn.h"
 #include"Enemy.h"
+#include"CollisionManager.h"
 
 #include<stdint.h>
 #include<memory>
@@ -50,6 +51,12 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+private:
+	/// <summary>
+	/// 衝突判定と応答
+	/// </summary>
+	void CheckAllCollision();
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -69,9 +76,12 @@ private: // メンバ変数
 	ViewProjection viewProjection_;
 	std::unique_ptr<Player>player_ = nullptr;
 	std::list<std::unique_ptr<Enemy>>enemies_;
-	//std::unique_ptr<Enemy>enemy_ = nullptr;
 	std::unique_ptr<Skydome>skydome_ = nullptr;
 	std::unique_ptr<Ground>ground_ = nullptr;
+
+	std::unique_ptr<CollisionManager>collisionManager_ = nullptr;
+
+	
 
 	/// <summary>
 	/// カメラ

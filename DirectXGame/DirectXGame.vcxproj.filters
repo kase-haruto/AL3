@@ -171,8 +171,11 @@
     <ClCompile Include="LockOn.cpp">
       <Filter>Game\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Collider.cpp">
+    <ClCompile Include="CollisionManager.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Game\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -317,8 +320,11 @@
     <ClInclude Include="LockOn.h">
       <Filter>Game\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Collider.h">
+    <ClInclude Include="CollisionManager.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Game\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

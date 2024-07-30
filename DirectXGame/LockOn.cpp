@@ -55,7 +55,7 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const View
 
     if (target_){
         //ロックオンmarkerの座標計算
-        Vector3 positionWorld = target_->GetCenter();
+        Vector3 positionWorld = target_->GetCenterPos();
        
         //ビューポート行列
         Matrix4x4 matViewport = Matrix4x4::MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
@@ -92,7 +92,7 @@ void LockOn::SelectTarget(const std::list<std::unique_ptr<Enemy>>& enemies, cons
     //すべての敵に対して純にロックオン判定
     for (const std::unique_ptr<Enemy>& enemy : enemies){
         //敵のロックオン座標取得
-        Vector3 positionWorld = enemy->GetCenter();
+        Vector3 positionWorld = enemy->GetCenterPos();
         //ワールド座標からビュー座標変換
         Vector3 positionView = Matrix4x4::Transform(positionWorld, viewProjection.matView);
 
@@ -124,7 +124,7 @@ void LockOn::SelectTarget(const std::list<std::unique_ptr<Enemy>>& enemies, cons
 
 Vector3 LockOn::GetTargetPosition()const{
     if (target_){
-        return target_->GetCenter();
+        return target_->GetCenterPos();
     }
     return Vector3();
 }

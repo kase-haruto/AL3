@@ -2,6 +2,9 @@
 #include"Vector3.h"
 #include"Matrix4x4.h"
 
+#include<cmath>
+
+
 /// <summary>
 /// 内積
 /// </summary>

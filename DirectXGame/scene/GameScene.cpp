@@ -82,6 +82,10 @@ void GameScene::Initialize(){
 	//		デバッグカメラ
 	debugCamera_ = std::make_unique<DebugCamera>(kWindowWidth, kWindowHeight);
 
+	//=======================================================
+	//		衝突判定
+	collisionManager_ = std::make_unique<CollisionManager>();
+	collisionManager_->Initialize();
 }
 
 void GameScene::Update(){
@@ -91,6 +95,8 @@ void GameScene::Update(){
 	for (const auto& enemy : enemies_){
 		enemy->Update();
 	}
+
+	CheckAllCollision();
 
 	lockOn_->Update(enemies_, viewProjection_);
 
@@ -190,4 +196,20 @@ void GameScene::Draw(){
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+
+void GameScene::CheckAllCollision(){
+	//衝突マネージャーのリセット
+	collisionManager_->Reset();
+
+	//コライダーをリストに登録
+	collisionManager_->AddCollider(player_.get());
+	//敵すべてについて
+	for (const std::unique_ptr<Enemy>& enemy:enemies_){
+		collisionManager_->AddCollider(enemy.get());
+	}
+
+	//衝突判定と応答
+	collisionManager_->CheckAllCollidion();
 }
