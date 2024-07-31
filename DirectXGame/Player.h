@@ -72,7 +72,6 @@ public:
     WorldTransform* GetPartsTransform(int index){ return partsTransform_[index].get(); }
     Vector3 GetVelocity() const;
     Vector3 GetDirection() const;
-    std::optional<Behavior> GetBehaviorRequest() const;
     float GetTargetAngle() const;
 
     const LockOn* GetLockOn()const;

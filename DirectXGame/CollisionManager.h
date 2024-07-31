@@ -40,6 +40,17 @@ public:
 	/// <param name="collider"></param>
 	void AddCollider(Collider* collider);
 
+	/// <summary>
+	/// トランスフォームの更新
+	/// </summary>
+	void UpdateWorldTransform();
+
+	/// <summary>
+	/// 判定の可視化
+	/// </summary>
+	/// <param name="viewProjection"></param>
+	void Draw(const ViewProjection& viewProjection);
+
 private:
 	//コライダー
 	std::list<Collider*> colliders_;

@@ -5,7 +5,7 @@
 CollisionManager::CollisionManager(){}
 
 void CollisionManager::Initialize(){
-	debugModel_.reset(Model::CreateFromOBJ("collider", false));
+	debugModel_.reset(Model::CreateFromOBJ("collider", true));
 
 }
 
@@ -48,4 +48,17 @@ void CollisionManager::CheckAllCollidion(){
 
 void CollisionManager::AddCollider(Collider* collider){
 	colliders_.push_back(collider);
+}
+
+void CollisionManager::UpdateWorldTransform(){
+	//すべてのコライダーのトランスフォームの更新
+	for (const auto& collider:colliders_){
+		collider->UpdateTransform();
+	}
+}
+
+void CollisionManager::Draw(const ViewProjection& viewPro){
+	for (const auto& collider:colliders_){
+		collider->Draw(debugModel_.get(), viewPro);
+	}
 }

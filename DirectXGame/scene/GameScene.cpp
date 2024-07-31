@@ -98,6 +98,11 @@ void GameScene::Update(){
 
 	CheckAllCollision();
 
+#ifdef _DEBUG 
+	collisionManager_->UpdateWorldTransform();
+#endif // _DEBUG
+
+
 	lockOn_->Update(enemies_, viewProjection_);
 
 #ifdef _DEBUG
@@ -156,6 +161,7 @@ void GameScene::Draw(){
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
+
 	//=========================================================
 	//	天球の描画
 	//=========================================================
@@ -165,6 +171,13 @@ void GameScene::Draw(){
 	//	地面の描画
 	//=========================================================
 	ground_->Draw(viewProjection_);
+
+
+#ifdef _DEBUG
+	//衝突範囲の可視化
+	collisionManager_->Draw(viewProjection_);
+#endif // _DEBUG
+
 
 	//=========================================================
 	//	プレイヤーの描画
@@ -177,6 +190,9 @@ void GameScene::Draw(){
 	for (const auto& enemy : enemies_){
 		enemy->Draw(viewProjection_);
 	}
+
+
+
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion
