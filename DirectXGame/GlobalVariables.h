@@ -19,7 +19,7 @@ class GlobalVariables{
 	/// </summary>
 	struct Item{
 		//項目の値
-		std::variant<int32_t, float, Vector3>value;
+		std::variant<int32_t, float, Vector3,bool>value;
 	};
 
 	/// <summary>
@@ -80,6 +80,11 @@ public:
 	template<typename T>
 	T GetValue(const std::string& groupName, const std::string& key)const;
 
+	void ShowSlider(const std::string& itemName, float& value);
+	void ShowSlider(const std::string& itemName, int32_t& value);
+	void ShowSlider(const std::string& itemName, Vector3& value);
+	void CheckBox(const std::string& itemName, bool& value);
+
 private:
 	GlobalVariables() = default;
 	~GlobalVariables() = default;
@@ -133,21 +138,7 @@ T GlobalVariables::GetValue(const std::string& groupName, const std::string& key
 	return std::get<T>(group.items.at(key).value);
 }
 
-template<typename T>
-inline void ShowSlider(const std::string& itemName, T& value);
 
-template<>
-inline void ShowSlider<int32_t>(const std::string& itemName, int32_t& value){
-	ImGui::SliderInt(itemName.c_str(), &value, 0, 100);
-}
 
-template<>
-inline void ShowSlider<float>(const std::string& itemName, float& value){
-	ImGui::SliderFloat(itemName.c_str(), &value, 0, 100.0f);
-}
 
-template<>
-inline void ShowSlider<Vector3>(const std::string& itemName, Vector3& value){
-	ImGui::SliderFloat3(itemName.c_str(), &value.x, -10.0f, 10.0f);
-}
 

@@ -12,43 +12,47 @@ void GlobalVariables::Update(){
 		ImGui::End();
 		return;
 	}
-	if (!ImGui::BeginMenuBar()){ return; }
+	if (ImGui::BeginMenuBar()){
 
-	//各グループについて
-	for (std::map<std::string, Group>::iterator itGroup = datas_.begin();
-		 itGroup != datas_.end(); ++itGroup){
-		//グループ名を取得
-		const std::string& groupName = itGroup->first;
-		//グループの参照を取得
-		Group& group = itGroup->second;
+		// 各グループについて
+		for (auto itGroup = datas_.begin(); itGroup != datas_.end(); ++itGroup){
+			// グループ名を取得
+			const std::string& groupName = itGroup->first;
+			// グループの参照を取得
+			Group& group = itGroup->second;
 
-		if (!ImGui::BeginMenu(groupName.c_str())){ continue; }
-		//各項目について
-		for (std::map<std::string, Item>::iterator itItem = group.items.begin();
-			 itItem != group.items.end(); ++itItem){
+			if (ImGui::BeginMenu(groupName.c_str())){
+				// 各項目について
+				for (auto itItem = group.items.begin(); itItem != group.items.end(); ++itItem){
+					// 各項目を取得
+					const std::string& itemName = itItem->first;
+					// 項目の参照を取得
+					Item& item = itItem->second;
 
-			//各項目を取得
-			const std::string& itemName = itItem->first;
-			//項目の参照を取得
-			Item& item = itItem->second;
+					std::visit([&] (auto& value){
+						using T = std::decay_t<decltype(value)>;
+						if constexpr (std::is_same_v<T, bool>){
+							CheckBox(itemName, value);
+						} else{
+							ShowSlider(itemName, value);
+						}
+							   }, item.value);
+				}
 
-			std::visit([&] (auto& value){
-				ShowSlider(itemName, value);
-					   }, item.value);
+				ImGui::Text("\n");
+
+				if (ImGui::Button("save")){
+					SaveFile(groupName);
+					std::string message = std::format("{}.json saved.", groupName);
+					MessageBoxA(nullptr, message.c_str(), "GlobalVariables", 0);
+				}
+
+				ImGui::EndMenu();
+			}
 		}
 
-		ImGui::Text("\n");
-
-		if (ImGui::Button("save")){
-			SaveFile(groupName);
-			std::string message = std::format("{}.json saved.", groupName);
-			MessageBoxA(nullptr, message.c_str(), "GlobalVariables", 0);
-		}
-
-		ImGui::EndMenu();
+		ImGui::EndMenuBar();
 	}
-
-	ImGui::EndMenuBar();
 	ImGui::End();
 }
 
@@ -93,6 +97,11 @@ void GlobalVariables::SaveFile(const std::string& groupName){
 			//float型のjson配列登録
 			Vector3 value = std::get<Vector3>(item.value);
 			root[groupName][itemName] = json::array({value.x,value.y,value.z});
+		}
+
+		else if (std::holds_alternative<bool>(item.value)){
+			//bool型の値を登録
+			root[groupName][itemName] = std::get<bool>(item.value);
 		}
 	}
 
@@ -197,6 +206,29 @@ void GlobalVariables::LoadFile(const std::string& groupName){
 			Vector3 value = {itItem->at(0), itItem->at(1), itItem->at(2)};
 			SetValue(groupName, itemName, value);
 		}
+		else if (itItem->is_boolean()){
+			// bool型の値を登録
+			bool value = itItem->get<bool>();
+			SetValue(groupName, itemName, value);
+		}
 	}
 }
 
+
+
+
+void GlobalVariables::ShowSlider(const std::string& itemName, int32_t& value){
+	ImGui::SliderInt(itemName.c_str(), &value, 0, 100);
+}
+
+void GlobalVariables::ShowSlider(const std::string& itemName, float& value){
+	ImGui::SliderFloat(itemName.c_str(), &value, 0, 100.0f);
+}
+
+void GlobalVariables::ShowSlider(const std::string& itemName, Vector3& value){
+	ImGui::SliderFloat3(itemName.c_str(), &value.x, -10.0f, 10.0f);
+}
+
+void GlobalVariables::CheckBox(const std::string& itemName, bool& value){
+	ImGui::Checkbox(itemName.c_str(), &value);
+}

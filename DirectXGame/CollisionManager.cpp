@@ -1,8 +1,21 @@
 #include "CollisionManager.h"
 #include"Vector3.h"
 #include"MyFunc.h"
+#include"GlobalVariables.h"
 
-CollisionManager::CollisionManager(){}
+CollisionManager::CollisionManager(){
+	const char* groupName = "Collision";
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	globalVariables->CreateGroup(groupName);
+	globalVariables->AddItem(groupName, "isDrawCollider", isDrawCollider_);
+}
+
+void CollisionManager::ApplyGlobalVariables(){
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	const char* groupName = "Collision";
+
+	isDrawCollider_ = globalVariables->GetValue<bool>(groupName, "isDrawCollider");
+}
 
 void CollisionManager::Initialize(){
 	debugModel_.reset(Model::CreateFromOBJ("collider", true));
@@ -29,6 +42,8 @@ void CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 }
 
 void CollisionManager::CheckAllCollidion(){
+	ApplyGlobalVariables();
+
 	std::list<Collider*>::iterator itrA = colliders_.begin();
 	for (; itrA != colliders_.end();++itrA){
 		Collider* colliderA = *itrA;
@@ -51,6 +66,9 @@ void CollisionManager::AddCollider(Collider* collider){
 }
 
 void CollisionManager::UpdateWorldTransform(){
+	if (!isDrawCollider_){
+		return;
+	}
 	//すべてのコライダーのトランスフォームの更新
 	for (const auto& collider:colliders_){
 		collider->UpdateTransform();
@@ -58,6 +76,9 @@ void CollisionManager::UpdateWorldTransform(){
 }
 
 void CollisionManager::Draw(const ViewProjection& viewPro){
+	if (!isDrawCollider_){
+		return;
+	}
 	for (const auto& collider:colliders_){
 		collider->Draw(debugModel_.get(), viewPro);
 	}

@@ -51,10 +51,17 @@ public:
 	/// <param name="viewProjection"></param>
 	void Draw(const ViewProjection& viewProjection);
 
+	/// <summary>
+	/// 調整項目の適用
+	/// </summary>
+	void ApplyGlobalVariables();
+
 private:
 	//コライダー
 	std::list<Collider*> colliders_;
 	//デバッグ表示用モデル
 	std::unique_ptr<Model> debugModel_;
+
+	bool isDrawCollider_ = false;
 };
 

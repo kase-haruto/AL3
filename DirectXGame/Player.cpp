@@ -8,6 +8,7 @@
 #include"GlobalVariables.h"
 
 #include "LockOn.h"
+
 Player::Player() : currentState_(nullptr), isAttack_(false), viewPorjection_(nullptr){
     partsTransform_.resize(static_cast< int >(Parts::partsCount));
     partsTransform_[static_cast< int >(Parts::body)] = std::make_unique<WorldTransform>();
