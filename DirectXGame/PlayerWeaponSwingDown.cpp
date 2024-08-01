@@ -11,7 +11,7 @@ void PlayerWeaponSwingDown::Initialize(Player* player){
 }
 
 void PlayerWeaponSwingDown::Execute(Player* player){
-	auto& weaponAngle = player->GetPartsTransform(int(Parts::weapon))->rotation_;
+	Vector3 weaponAngle = player->GetWeaponTransform().rotation_;
 	auto& L_armAngle = player->GetPartsTransform(int(Parts::L_arm))->rotation_;
 	auto& R_armAngle = player->GetPartsTransform(int(Parts::R_arm))->rotation_;
 
@@ -21,7 +21,7 @@ void PlayerWeaponSwingDown::Execute(Player* player){
 
 
 	// 目標角度に達したら現在の攻撃を終了
-	if (std::abs(targetArmAngle_ - weaponAngle.x) <= 0.01f){
+	if (std::abs(targetArmAngle_ - L_armAngle.x) <= 0.01f){
 		isFinished_ = true;
 	}
 }

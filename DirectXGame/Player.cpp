@@ -6,8 +6,8 @@
 #include <cmath>
 #include <imgui.h>
 #include"GlobalVariables.h"
-
 #include "LockOn.h"
+#include"WeaponBase.h"
 
 Player::Player() : currentState_(nullptr), isAttack_(false), viewPorjection_(nullptr){
     partsTransform_.resize(static_cast< int >(Parts::partsCount));
@@ -15,7 +15,6 @@ Player::Player() : currentState_(nullptr), isAttack_(false), viewPorjection_(nul
     partsTransform_[static_cast< int >(Parts::head)] = std::make_unique<WorldTransform>();
     partsTransform_[static_cast< int >(Parts::L_arm)] = std::make_unique<WorldTransform>();
     partsTransform_[static_cast< int >(Parts::R_arm)] = std::make_unique<WorldTransform>();
-    partsTransform_[static_cast< int >(Parts::weapon)] = std::make_unique<WorldTransform>();
 
     const char* groupName = "Player";
     GlobalVariables* globalVariables = GlobalVariables::GetInstance();
@@ -24,10 +23,6 @@ Player::Player() : currentState_(nullptr), isAttack_(false), viewPorjection_(nul
     globalVariables->AddItem(groupName, "Head Translation", partsTransform_[static_cast< int >(Parts::head)]->translation_);
     globalVariables->AddItem(groupName, "ArmL Translation", partsTransform_[static_cast< int >(Parts::L_arm)]->translation_);
     globalVariables->AddItem(groupName, "ArmR Translation", partsTransform_[static_cast< int >(Parts::R_arm)]->translation_);
-   /* globalVariables->AddItem(groupName, "body rotation", partsTransform_[static_cast< int >(Parts::body)]->rotation_);
-    
-    globalVariables->AddItem(groupName, "weapon Translation", partsTransform_[static_cast< int >(Parts::weapon)]->translation_);
-    globalVariables->AddItem(groupName, "weapon Rotation", partsTransform_[static_cast< int >(Parts::weapon)]->rotation_);*/
 }
 
 Player::~Player(){}
@@ -55,7 +50,6 @@ void Player::PartsTransformInit(){
     partsTransform_[static_cast< int >(Parts::head)]->parent_ = body;
     partsTransform_[static_cast< int >(Parts::L_arm)]->parent_ = body;
     partsTransform_[static_cast< int >(Parts::R_arm)]->parent_ = body;
-    partsTransform_[static_cast< int >(Parts::weapon)]->parent_ = body;
 }
 
 void Player::Update(){
@@ -81,7 +75,7 @@ void Player::Draw(const ViewProjection& viewProjection){
     models_[static_cast< int >(Parts::R_arm)]->Draw(*partsTransform_[static_cast< int >(Parts::R_arm)], viewProjection);
 
     if (isAttack_){
-        models_[static_cast< int >(Parts::weapon)]->Draw(*partsTransform_[static_cast< int >(Parts::weapon)], viewProjection);
+        weapon_->Draw(viewProjection);
     }
 }
 
@@ -176,7 +170,10 @@ void Player::Set_R_ArmTranslationX(const float translationX){ partsTransform_[st
 void Player::Set_R_ArmTranslationY(const float translationY){ partsTransform_[static_cast< int >(Parts::R_arm)]->translation_.y = translationY; }
 void Player::Set_R_ArmTranslationZ(const float translationZ){ partsTransform_[static_cast< int >(Parts::R_arm)]->translation_.z = translationZ; }
 
-void Player::SetWeaponTranslation(const Vector3& translation){ partsTransform_[static_cast< int >(Parts::weapon)]->translation_ = translation; }
+void Player::SetWeaponTranslation(const Vector3& translation){ weapon_->SetTranslation(translation); }
+void Player::SetWeaponTranslationX(const float translation){ weapon_->SetTranslationX(translation); }
+void Player::SetWeaponTranslationY(const float translation){ weapon_->SetTranslationY(translation); }
+void Player::SetWeaponTranslationZ(const float translation){ weapon_->SetTranslationZ(translation); }
 
 //============================================================================================================================================
 //								回転
@@ -201,11 +198,12 @@ void Player::Set_R_ArmRotationX(const float rotationX){ partsTransform_[static_c
 void Player::Set_R_ArmRotationY(const float rotationY){ partsTransform_[static_cast< int >(Parts::R_arm)]->rotation_.y = rotationY; }
 void Player::Set_R_ArmRotationZ(const float rotationZ){ partsTransform_[static_cast< int >(Parts::R_arm)]->rotation_.z = rotationZ; }
 
-void Player::SetWeaponRotation(const Vector3& rotation){ partsTransform_[static_cast< int >(Parts::weapon)]->rotation_ = rotation; }
-void Player::SetWeaponRotationX(const float rotation){ partsTransform_[static_cast< int >(Parts::weapon)]->rotation_.x = rotation; }
-void Player::SetWeaponRotationY(const float rotation){ partsTransform_[static_cast< int >(Parts::weapon)]->rotation_.y = rotation; }
-void Player::SetWeaponRotationZ(const float rotation){ partsTransform_[static_cast< int >(Parts::weapon)]->rotation_.z = rotation; }
+void Player::SetWeaponRotation(const Vector3& rotation){ weapon_->SetRotation(rotation); }
+void Player::SetWeaponRotationX(const float rotation){ weapon_->SetRotationX(rotation); }
+void Player::SetWeaponRotationY(const float rotation){ weapon_->SetRotationY(rotation); }
+void Player::SetWeaponRotationZ(const float rotation){ weapon_->SetRotationZ(rotation); }
 
+void Player::SetWeapon(WeaponBase* weapon){ weapon_ = weapon; }
 
 void Player::SetLockOn(const LockOn* lockOn){
     lockOn_ = lockOn;

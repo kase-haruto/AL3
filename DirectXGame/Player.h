@@ -7,7 +7,6 @@
 #include <optional>
 #include"Hammer.h"
 
-#include"WeaponBase.h"
 
 /// <summary>
 /// パーツ/行動
@@ -21,7 +20,6 @@ namespace PlayerDetails{
         head,
         L_arm,
         R_arm,
-        weapon,
         partsCount
     };
 
@@ -34,6 +32,7 @@ namespace PlayerDetails{
 }
 
 class LockOn;
+class WeaponBase;
 
 using PlayerDetails::Behavior;
 using PlayerDetails::Parts;
@@ -67,12 +66,15 @@ public:
     /// </summary>
     /// <param name="newState"></param>
     void ChangeState(std::unique_ptr<PlayerBaseBehavior> newState);
-
+    /// <summary>
+    /// 衝突時の反応
+    /// </summary>
     void OnCollision()override;
 
 #pragma region
     bool GetIsAttack() const;
     WorldTransform* GetPartsTransform(int index){ return partsTransform_[index].get(); }
+    const WorldTransform& GetWeaponTransform()const{ return weapon_->GetWorldTransform(); }
     Vector3 GetVelocity() const;
     Vector3 GetDirection() const;
     float GetTargetAngle() const;
@@ -120,6 +122,10 @@ public:
     void Set_R_ArmTranslationZ(const float translationZ);
 
     void SetWeaponTranslation(const Vector3& translation);
+    void SetWeaponTranslationX(const float translation);
+    void SetWeaponTranslationY(const float translation);
+    void SetWeaponTranslationZ(const float translation);
+
 
     void SetHeadRotationX(const float RotationX);
     void SetHeadRotationY(const float RotationY);
@@ -172,5 +178,5 @@ private:
     const LockOn* lockOn_ = nullptr;
 
     //武器
-    WeaponBase* weapon_;
+    WeaponBase* weapon_ = nullptr;
 };

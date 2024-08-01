@@ -40,7 +40,6 @@ void GameScene::Initialize(){
 	playerModels_.push_back(std::unique_ptr<Model>(Model::CreateFromOBJ("playerHead", true)));
 	playerModels_.push_back(std::unique_ptr<Model>(Model::CreateFromOBJ("player_L_arm", true)));
 	playerModels_.push_back(std::unique_ptr<Model>(Model::CreateFromOBJ("player_R_arm", true)));
-	playerModels_.push_back(std::unique_ptr<Model>(Model::CreateFromOBJ("hammer", true)));
 	player_ = std::make_unique<Player>();
 	std::vector<Model*> modelPointers;
 	for (const auto& model : playerModels_){
@@ -66,8 +65,11 @@ void GameScene::Initialize(){
 
 	//=======================================================
 	//		武器
-	weapon_ = std::make_unique<Hammer>();
-	weapon_->Initialize();
+	weaponManager_ = std::make_unique<WeaponManager>();
+	weaponManager_->Initialize();
+
+	//プレイヤーに初期武器をセット
+	player_->SetWeapon(weaponManager_->GetWeapon(WeaponName::hammer));
 
 	///=====================================================
 	//		追従カメラ

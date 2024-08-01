@@ -15,7 +15,7 @@
 #include"LockOn.h"
 #include"Enemy.h"
 #include"CollisionManager.h"
-#include"WeaponBase.h"
+#include"WeaponManager.h"
 
 #include<stdint.h>
 #include<memory>
@@ -70,6 +70,7 @@ private: // メンバ変数
 	std::vector<std::unique_ptr<Model>> enemyModels_;
 	std::unique_ptr<Model> moedlSkydome_ = nullptr;
 	std::unique_ptr<Model> modelGround_ = nullptr;
+	std::unique_ptr<WeaponManager>weaponManager_ = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用
@@ -82,7 +83,6 @@ private: // メンバ変数
 	std::unique_ptr<WeaponBase>weapon_ = nullptr;
 
 	std::unique_ptr<CollisionManager>collisionManager_ = nullptr;
-
 	
 
 	/// <summary>
