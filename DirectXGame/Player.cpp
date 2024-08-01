@@ -117,12 +117,6 @@ void Player::ApplyGlobalVariables(){
     partsTransform_[static_cast< int >(Parts::head)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "Head Translation");
     partsTransform_[static_cast< int >(Parts::L_arm)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "ArmL Translation");
     partsTransform_[static_cast< int >(Parts::R_arm)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "ArmR Translation");
-   /* partsTransform_[static_cast< int >(Parts::body)]->rotation_ = globalVariables->GetValue<Vector3>(groupName, "body rotation");
-    partsTransform_[static_cast< int >(Parts::weapon)]->translation_ = globalVariables->GetValue<Vector3>(groupName, "weapon Translation");
-    partsTransform_[static_cast< int >(Parts::weapon)]->rotation_ = globalVariables->GetValue<Vector3>(groupName, "weapon Rotation");*/
-   /* if (currentState_){
-        currentState_->ApplyGlobalVariables();
-    }*/
 }
 
 void Player::SetViewProjection(const ViewProjection* viewProjection){ viewPorjection_ = viewProjection; }

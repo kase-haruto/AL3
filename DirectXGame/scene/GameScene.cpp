@@ -1,5 +1,7 @@
 #include "GameScene.h"
 #include "TextureManager.h"
+#include"Hammer.h"
+
 #include <cassert>
 
 GameScene::GameScene(){}
@@ -62,6 +64,10 @@ void GameScene::Initialize(){
 			enemies_.push_back(std::move(enemy));
 	}
 
+	//=======================================================
+	//		武器
+	weapon_ = std::make_unique<Hammer>();
+	weapon_->Initialize();
 
 	///=====================================================
 	//		追従カメラ

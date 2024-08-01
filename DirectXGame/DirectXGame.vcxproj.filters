@@ -91,6 +91,9 @@
     <Filter Include="Game\Camera">
       <UniqueIdentifier>{51f14a5e-b160-4fff-8eab-c7627a4190e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Object\Weapon">
+      <UniqueIdentifier>{a6232241-0312-4f04-872d-09b2a00e4ff1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -176,6 +179,15 @@
     </ClCompile>
     <ClCompile Include="Collider.cpp">
       <Filter>Game\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Hammer.cpp">
+      <Filter>Game\Object\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="WeaponBase.cpp">
+      <Filter>Game\Object\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="WeaponManager.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -325,6 +337,15 @@
     </ClInclude>
     <ClInclude Include="Collider.h">
       <Filter>Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Hammer.h">
+      <Filter>Game\Object\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponBase.h">
+      <Filter>Game\Object\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponManager.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

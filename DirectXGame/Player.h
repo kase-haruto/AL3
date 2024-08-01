@@ -5,6 +5,9 @@
 #include "PlayerBaseBehavior.h"
 #include <vector>
 #include <optional>
+#include"Hammer.h"
+
+#include"WeaponBase.h"
 
 /// <summary>
 /// パーツ/行動
@@ -139,6 +142,7 @@ public:
     void SetWeaponRotationY(const float rotation);
     void SetWeaponRotationZ(const float rotation);
 
+    void SetWeapon(WeaponBase* weapon);
 
     void SetLockOn(const LockOn* lockon);
 
@@ -166,4 +170,7 @@ private:
     /// ロックオン
     /// </summary>
     const LockOn* lockOn_ = nullptr;
+
+    //武器
+    WeaponBase* weapon_;
 };

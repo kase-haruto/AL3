@@ -15,6 +15,7 @@
 #include"LockOn.h"
 #include"Enemy.h"
 #include"CollisionManager.h"
+#include"WeaponBase.h"
 
 #include<stdint.h>
 #include<memory>
@@ -78,6 +79,7 @@ private: // メンバ変数
 	std::list<std::unique_ptr<Enemy>>enemies_;
 	std::unique_ptr<Skydome>skydome_ = nullptr;
 	std::unique_ptr<Ground>ground_ = nullptr;
+	std::unique_ptr<WeaponBase>weapon_ = nullptr;
 
 	std::unique_ptr<CollisionManager>collisionManager_ = nullptr;
 

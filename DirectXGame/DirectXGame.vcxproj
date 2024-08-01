@@ -116,6 +116,7 @@
     <ClCompile Include="FollowCamera.cpp" />
     <ClCompile Include="GlobalVariables.cpp" />
     <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="Hammer.cpp" />
     <ClCompile Include="LockOn.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix4x4.cpp" />
@@ -133,6 +134,8 @@
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="Skydome.cpp" />
     <ClCompile Include="Vector3.cpp" />
+    <ClCompile Include="WeaponBase.cpp" />
+    <ClCompile Include="WeaponManager.cpp" />
     <ClCompile Include="WorldTransformPlas.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +169,7 @@
     <ClInclude Include="FollowCamera.h" />
     <ClInclude Include="GlobalVariables.h" />
     <ClInclude Include="Ground.h" />
+    <ClInclude Include="Hammer.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="LockOn.h" />
     <ClInclude Include="math\Matrix4x4.h" />
@@ -185,6 +189,8 @@
     <ClInclude Include="PlayerWeaponSwingDown.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="Skydome.h" />
+    <ClInclude Include="WeaponBase.h" />
+    <ClInclude Include="WeaponManager.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\TerrainPS.hlsl">
