@@ -11,18 +11,28 @@ void Hammer::Draw(const ViewProjection& viewProjection){
 }
 
 void Hammer::OnCollision([[maybe_unused]]Collider* other ){
-
 	/*
-	エフェクトが未実装なのでいったん消しておく
-	
+	* ========================================
+	* エフェクトが未実装のため、コメントアウトしておく
+	* ========================================
+	* 
 	//衝突相手の識別idを取得
 	uint32_t typeID = other->GetTypeId();
 	//衝突相手が敵なら
 	if (typeID==static_cast<uint32_t>(CollisionTypeIdDef::kEnemy)){
 		Enemy* enemy = static_cast< Enemy* >(other);
-		//敵の位置にエフェクトを発生
-	}*/
+		uint32_t serialNumber = enemy->GetSerialNumber();
 
+		//衝突履歴があれば何もせずに抜ける
+		if (contactRecord_.CheckRecord(serialNumber)){
+			return;
+		}
+		//接触履歴に登録
+		contactRecord_.AddRecord(serialNumber);
+
+		//敵の位置にエフェクトを発生
+	}	
+	*/
 	
 }
 

@@ -2,6 +2,8 @@
 #include "Collider.h"
 #include"ViewProjection.h"
 #include"WeaponBase.h"
+#include"ContactRecord.h"
+
 /// <summary>
 /// ハンマー
 /// </summary>
@@ -35,6 +37,6 @@ public:
     Vector3 GetCenterPos()const override;
 
 private:
-    
+    ContactRecord contactRecord_;
 };
 

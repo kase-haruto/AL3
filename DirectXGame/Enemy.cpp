@@ -2,6 +2,9 @@
 #include"CollisionTypeIdDef.h"
 
 #include<numbers>
+
+uint32_t Enemy::nextSerialNumber_ = 0;
+
 Enemy::Enemy(){
 
 	//パーツの要素数
@@ -9,6 +12,11 @@ Enemy::Enemy(){
 	//パーツごとのtransform
 	partsTransform_[static_cast< int >(Parts::body)] = std::make_unique<WorldTransform>();
 	partsTransform_[static_cast< int >(Parts::arm)] = std::make_unique<WorldTransform>();
+
+	//シリアル番号を振る
+	serialNumber_ = nextSerialNumber_;
+	//次の番号を1増加
+	++nextSerialNumber_;
 }
 
 Enemy::~Enemy(){}

@@ -23,20 +23,29 @@ public:
 	/// </summary>
 	/// <param name="models"></param>
 	void Initialize(const std::vector<Model*>&models)override;
+	
 	/// <summary>
 	/// 更新
 	/// </summary>
 	void Update()override;
+	
 	/// <summary>
 	/// 描画
 	/// </summary>
 	/// <param name="viewProjection"></param>
 	void Draw(const ViewProjection& viewProjection)override;
+	
 	/// <summary>
 	/// 中心座標取得
 	/// </summary>
 	Vector3 GetCenterPos()const override;
 
+	uint32_t GetSerialNumber()const{ return serialNumber_; }
+
+	/// <summary>
+	/// 衝突時応答
+	/// </summary>
+	/// <param name="other"></param>
 	void OnCollision([[maybe_unused]] Collider* other)override;
 
 private:
@@ -44,6 +53,7 @@ private:
 	/// 移動処理
 	/// </summary>
 	void Move();
+	
 	/// <summary>
 	/// 腕の動き
 	/// </summary>
@@ -53,5 +63,11 @@ private:
 	//パーツ事の変数
 	std::vector<std::unique_ptr< WorldTransform>> partsTransform_;
 	float waveParameter_ = 0;
+
+	//識別番号
+	uint32_t serialNumber_ = 0;
+
+public:
+	static uint32_t nextSerialNumber_;
 };
 
