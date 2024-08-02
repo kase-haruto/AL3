@@ -1,4 +1,6 @@
 #include "Enemy.h"
+#include"CollisionTypeIdDef.h"
+
 #include<numbers>
 Enemy::Enemy(){
 
@@ -21,6 +23,8 @@ void Enemy::Initialize(const std::vector<Model*>& models){
 
 	partsTransform_[static_cast< int >(Parts::body)]->parent_ = &worldTransform_;
 	partsTransform_[static_cast< int >(Parts::arm)]->parent_ = partsTransform_[static_cast< int >(Parts::body)].get();
+
+	Collider::SetTypeID(static_cast< uint32_t >(CollisionTypeIdDef::kEnemy));
 }
 
 void Enemy::Update(){
@@ -71,6 +75,10 @@ void Enemy::Move(){
 	worldTransform_.translation_.x += forward.x * moveSpeed;
 	worldTransform_.translation_.z += forward.z * moveSpeed;
 }
+
+
+
+void Enemy::OnCollision([[maybe_unused]] Collider* other){}
 
 Vector3 Enemy::GetCenterPos()const{
 	const Vector3 offset = {0.0f,1.0f,0.0f};

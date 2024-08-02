@@ -15,7 +15,7 @@ void PlayerWeaponSwingDown::Execute(Player* player){
 	auto& L_armAngle = player->GetPartsTransform(int(Parts::L_arm))->rotation_;
 	auto& R_armAngle = player->GetPartsTransform(int(Parts::R_arm))->rotation_;
 
-	weaponAngle.x = Lerp(weaponAngle.x, targetArmAngle_, movingStep_);
+	player->SetWeaponRotationX(Lerp(weaponAngle.x, targetArmAngle_, movingStep_));
 	L_armAngle.x = Lerp(L_armAngle.x, -targetArmAngle_, movingStep_);
 	R_armAngle.x = Lerp(R_armAngle.x, -targetArmAngle_, movingStep_);
 

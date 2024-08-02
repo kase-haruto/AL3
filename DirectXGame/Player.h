@@ -69,7 +69,7 @@ public:
     /// <summary>
     /// 衝突時の反応
     /// </summary>
-    void OnCollision()override;
+    void OnCollision([[maybe_unused]] Collider* other)override;
 
 #pragma region
     bool GetIsAttack() const;

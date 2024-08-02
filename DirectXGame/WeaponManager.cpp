@@ -1,5 +1,10 @@
 #include "WeaponManager.h"
 #include<cassert>
+#include"GlobalVariables.h"
+
+WeaponManager::WeaponManager(){
+	
+}
 
 void WeaponManager::Initialize(){
 	//=================================================================

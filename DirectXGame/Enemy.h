@@ -37,6 +37,8 @@ public:
 	/// </summary>
 	Vector3 GetCenterPos()const override;
 
+	void OnCollision([[maybe_unused]] Collider* other)override;
+
 private:
 	/// <summary>
 	/// 移動処理

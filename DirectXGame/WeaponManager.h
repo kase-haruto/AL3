@@ -22,7 +22,7 @@ public:
 	/// <summary>
 	/// コンストラクタ/デストラクタ
 	/// </summary>
-	WeaponManager() = default;
+	WeaponManager();
 	~WeaponManager() = default;
 
 	/// <summary>

@@ -36,8 +36,8 @@ void CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 	float distance = Length(sub);
 	//球同士の衝突判定
 	if (distance <= colliderA_radius + colliderB_radius){
-		colliderA->OnCollision();
-		colliderB->OnCollision();
+		colliderA->OnCollision(colliderB);
+		colliderB->OnCollision(colliderA);
 	}
 }
 

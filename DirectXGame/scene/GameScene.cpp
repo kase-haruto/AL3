@@ -71,6 +71,7 @@ void GameScene::Initialize(){
 	//プレイヤーに初期武器をセット
 	player_->SetWeapon(weaponManager_->GetWeapon(WeaponName::hammer));
 
+
 	///=====================================================
 	//		追従カメラ
 	followCamera_ = std::make_unique<FollowCamera>();
