@@ -11,13 +11,19 @@ void Hammer::Draw(const ViewProjection& viewProjection){
 }
 
 void Hammer::OnCollision([[maybe_unused]]Collider* other ){
+
+	/*
+	エフェクトが未実装なのでいったん消しておく
+	
 	//衝突相手の識別idを取得
 	uint32_t typeID = other->GetTypeId();
 	//衝突相手が敵なら
 	if (typeID==static_cast<uint32_t>(CollisionTypeIdDef::kEnemy)){
 		Enemy* enemy = static_cast< Enemy* >(other);
 		//敵の位置にエフェクトを発生
-	}
+	}*/
+
+	
 }
 
 Vector3 Hammer::GetCenterPos() const{
