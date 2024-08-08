@@ -4,6 +4,8 @@
 void WeaponBase::Initialize(Model* model){
 	worldTransform_.Initialize();
 	model_ = model;
+
+	Collider::Initialize();
 }
 
 void WeaponBase::Draw(const ViewProjection& viewProjection){
@@ -26,3 +28,7 @@ void WeaponBase::SetTranslationY(const float translation){ worldTransform_.trans
 void WeaponBase::SetTranslationZ(const float translation){ worldTransform_.translation_.z = translation; }
 
 void WeaponBase::SetModel(Model* model){ model_ = model; }
+
+void WeaponBase::SetParent(WorldTransform worldTransform){
+	worldTransform_.parent_ = &worldTransform;
+}

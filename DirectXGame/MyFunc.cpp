@@ -2,7 +2,7 @@
 #include<cmath>
 #include<algorithm>
 #include<numbers>
-#include<numbers>
+#include<cassert>
 
 float Dot(const Vector3& v1, const Vector3& v2){
 	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
@@ -90,4 +90,23 @@ Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m){
 
 float DegToRad(float degree){
 	return degree * (float)std::numbers::pi / 180.0f;
+}
+
+Vector3 GetSphereCollisionPoint(const Vector3& centerA, float radiusA, const Vector3& centerB, float radiusB){
+	// 球の中心間の距離ベクトルを計算
+	Vector3 d = centerB - centerA;
+
+	// 球の中心間の距離の大きさを計算
+	float distance = d.Length();
+
+	// 衝突が発生しているか確認
+	assert(distance <= radiusA + radiusB);
+
+	// 正規化した距離ベクトルを計算
+	Vector3 normalizedD = d.Normalize();
+
+	// 衝突点を計算
+	Vector3 contactPoint = centerA + normalizedD * radiusA;
+
+	return contactPoint;
 }

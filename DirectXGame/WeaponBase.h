@@ -2,6 +2,8 @@
 #include "Collider.h"
 #include"ViewProjection.h"
 
+class Actor;
+
 /// <summary>
 /// ハンマー
 /// </summary>
@@ -16,6 +18,12 @@ public:
     /// </summary>
     /// <param name="model"></param>
     virtual void Initialize(Model* model) = 0;
+
+    /// <summary>
+    /// 更新
+    /// </summary>
+    virtual void Update() = 0;
+
     /// <summary>
     /// 描画
     /// </summary>
@@ -24,7 +32,7 @@ public:
     /// <summary>
     /// 衝突時の反応
     /// </summary>
-    virtual void OnCollision()override = 0;
+    virtual void OnCollision([[maybe_unused]] Collider* other)override = 0;
 
 
     /// <summary>
@@ -34,7 +42,8 @@ public:
     virtual Vector3 GetCenterPos()const override =0;
 
     const WorldTransform& GetWorldTransform()const{ return worldTransform_; }
-    const Vector3& GetRotation()const;
+    WorldTransform& GetWorldTransform(){ return worldTransform_;}
+    const Vector3& GetRotation()const;  
     const Vector3& GetTranslation()const;
 
     void SetRotation(const Vector3& rotation);
@@ -48,8 +57,10 @@ public:
     void SetTranslationZ(const float translation);
 
     void SetModel(Model* model);
+    void SetParent(WorldTransform worldTransform);
 
 protected:
     Model* model_;
     WorldTransform worldTransform_;
+
 };

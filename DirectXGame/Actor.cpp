@@ -4,6 +4,7 @@ void Actor::Initialize(const std::vector<Model*>& models){
 	models_ = models;
 	worldTransform_.Initialize();
 
+	//可視化用コライダーのトランスフォームの初期化
 	Collider::Initialize();
 }
 

@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include<numbers>
+
 Enemy::Enemy(){
 
 	//パーツの要素数
@@ -21,6 +22,9 @@ void Enemy::Initialize(const std::vector<Model*>& models){
 
 	partsTransform_[static_cast< int >(Parts::body)]->parent_ = &worldTransform_;
 	partsTransform_[static_cast< int >(Parts::arm)]->parent_ = partsTransform_[static_cast< int >(Parts::body)].get();
+
+	//衝突判定のid設定
+	Collider::SetTypeID(static_cast< uint32_t >(CollisionTypeIdDef::kEnemy));
 }
 
 void Enemy::Update(){
@@ -70,6 +74,10 @@ void Enemy::Move(){
 	// 前方向に移動
 	worldTransform_.translation_.x += forward.x * moveSpeed;
 	worldTransform_.translation_.z += forward.z * moveSpeed;
+}
+
+void Enemy::OnCollision([[maybe_unused]] Collider* other){
+
 }
 
 Vector3 Enemy::GetCenterPos()const{

@@ -94,6 +94,12 @@
     <Filter Include="Game\Object\Weapon">
       <UniqueIdentifier>{a6232241-0312-4f04-872d-09b2a00e4ff1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Collision">
+      <UniqueIdentifier>{e1d64cdd-01c4-4eb8-8e63-7781cf8c9b40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Effect">
+      <UniqueIdentifier>{9dd464ea-9c4f-4a57-89ac-77035ee9a2a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -174,9 +180,6 @@
     <ClCompile Include="LockOn.cpp">
       <Filter>Game\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Collider.cpp">
       <Filter>Game\Object</Filter>
     </ClCompile>
@@ -188,6 +191,15 @@
     </ClCompile>
     <ClCompile Include="WeaponManager.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>Game\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleEffectManager.cpp">
+      <Filter>Game\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackEffectParticle.cpp">
+      <Filter>Game\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -332,9 +344,6 @@
     <ClInclude Include="LockOn.h">
       <Filter>Game\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Collider.h">
       <Filter>Game\Object</Filter>
     </ClInclude>
@@ -346,6 +355,18 @@
     </ClInclude>
     <ClInclude Include="WeaponManager.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>Game\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionTypeIdDef.h">
+      <Filter>Game\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleEffectManager.h">
+      <Filter>Game\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackEffectParticle.h">
+      <Filter>Game\Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

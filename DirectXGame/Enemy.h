@@ -32,6 +32,9 @@ public:
 	/// </summary>
 	/// <param name="viewProjection"></param>
 	void Draw(const ViewProjection& viewProjection)override;
+
+	void OnCollision([[maybe_unused]] Collider* other)override;
+
 	/// <summary>
 	/// 中心座標取得
 	/// </summary>

@@ -8,16 +8,7 @@
 #include<stdint.h>
 
 class Actor:public Collider{
-protected:
-	uint32_t textureHandle_;
-	uint32_t color_;
 
-	//===================================
-	//	3d用
-	WorldTransform worldTransform_;
-	Vector3 direction_;
-	std::vector<Model*>models_;
-	bool isUseTexture = false;
 
 public:
 	Actor() = default;
@@ -47,5 +38,16 @@ public:
 
 	uint32_t GetColor()const;
 	void SetColor(const uint32_t& color);
+
+protected:
+	uint32_t textureHandle_;
+	uint32_t color_;
+
+	//===================================
+	//	3d用
+	WorldTransform worldTransform_;
+	Vector3 direction_;
+	std::vector<Model*>models_;
+	bool isUseTexture = false;
 };
 

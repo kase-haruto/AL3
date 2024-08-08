@@ -34,6 +34,8 @@ void Player::Initialize(const std::vector<Model*>& models){
     PartsTransformInit();
     //通常行動をセットしておく
     ChangeState(std::make_unique<PlayerRootBehavior>(this));
+    //衝突判定の識別id
+    Collider::SetTypeID(static_cast< uint32_t >(CollisionTypeIdDef::kPlayer));
 }
 
 void Player::PartsTransformInit(){
@@ -54,8 +56,31 @@ void Player::PartsTransformInit(){
 
 void Player::Update(){
 
+#ifdef _DEBUG
+    ImGui::Begin("player");
+    auto weaponRotate = weapon_->GetRotation();
+    ImGui::DragFloat3("weaponRotate",&weaponRotate.x,0.01f);
+    weapon_->SetRotation(weaponRotate);
+
+    auto weaponTranslation = weapon_->GetTranslation();
+    ImGui::DragFloat3("weaponTranslation", &weaponTranslation.x, 0.01f);
+    weapon_->SetTranslation(weaponTranslation);
+
+    ImGui::DragFloat3("playerTranslation", &worldTransform_.translation_.x, 0.01f);
+
+    ImGui::End();
+#endif // _DEBUG
+
+
     if (currentState_){
         currentState_->Update();
+    }
+
+    //======================================
+    //      武器の更新
+    //======================================
+    if (weapon_){
+        weapon_->Update();
     }
 
     //旋回を滑らかにする
@@ -117,8 +142,8 @@ void Player::SetViewProjection(const ViewProjection* viewProjection){ viewPorjec
 
 bool Player::HasLockOnTarget()const{ return lockOn_->ExistTarget() ? true : false; }
 
-void Player::OnCollision(){
-    ChangeState(std::make_unique<PlayerJumpBehavior>(this));
+void Player::OnCollision([[maybe_unused]] Collider* other){
+  //  ChangeState(std::make_unique<PlayerJumpBehavior>(this));
 }
 
 ///==========================================================
@@ -203,7 +228,10 @@ void Player::SetWeaponRotationX(const float rotation){ weapon_->SetRotationX(rot
 void Player::SetWeaponRotationY(const float rotation){ weapon_->SetRotationY(rotation); }
 void Player::SetWeaponRotationZ(const float rotation){ weapon_->SetRotationZ(rotation); }
 
-void Player::SetWeapon(WeaponBase* weapon){ weapon_ = weapon; }
+void Player::SetWeapon(WeaponBase* weapon){ 
+    weapon_ = weapon;
+    weapon_->GetWorldTransform().parent_ = &worldTransform_;
+}
 
 void Player::SetLockOn(const LockOn* lockOn){
     lockOn_ = lockOn;
