@@ -48,6 +48,15 @@ void Hammer::OnCollision([[maybe_unused]] Collider* other){
     // 衝突相手が敵なら
     if (typeID == static_cast< uint32_t >(CollisionTypeIdDef::kEnemy)){
         Enemy* enemy = static_cast< Enemy* >(other);
+        uint32_t serialNumber = enemy->GetSerialNumber();
+
+        //接触履歴があれば何もせず抜ける
+        if (contactRecord_.CheckRecord(serialNumber)){
+            return;
+        }
+
+        //履歴に登録
+        contactRecord_.AddRecord(serialNumber);
 
         // 敵の位置にエフェクトを発生
         if (enemy){

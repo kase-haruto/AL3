@@ -14,6 +14,13 @@ void WeaponBase::Draw(const ViewProjection& viewProjection){
 
 }
 
+
+
+void WeaponBase::ClearContactRecord(){
+	contactRecord_.Clear();
+}
+
+
 const Vector3& WeaponBase::GetRotation()const{ return worldTransform_.rotation_; }
 const Vector3& WeaponBase::GetTranslation()const{ return worldTransform_.translation_; }
 
