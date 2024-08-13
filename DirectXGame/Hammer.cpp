@@ -1,6 +1,4 @@
 #include "Hammer.h"
-#include"CollisionTypeIdDef.h"
-#include"Enemy.h"
 #include<cassert>
 #include<imgui.h>
 #include"Enemy.h"
@@ -8,10 +6,10 @@
 #include"MyFunc.h"
 
 void Hammer::Initialize(Model* model){
-	WeaponBase::Initialize(model);
-	Collider::SetRadius(3.0f);
+    WeaponBase::Initialize(model);
+    Collider::SetRadius(3.0f);
 
-	Collider::SetTypeID(static_cast< uint32_t >(CollisionTypeIdDef::kPlayerWeapon));
+    Collider::SetTypeID(static_cast< uint32_t >(CollisionTypeIdDef::kPlayerWeapon));
 
 }
 
@@ -29,13 +27,13 @@ void Hammer::Update(){
             return effect->IsEffectFinished(); // エフェクトが終了した場合削除
         }),
         activeEffects.end()
-    );
+            );
 
-	worldTransform_.UpdateMatrix();
+    worldTransform_.UpdateMatrix();
 }
 
 void Hammer::Draw(const ViewProjection& viewProjection){
-	WeaponBase::Draw(viewProjection);
+    WeaponBase::Draw(viewProjection);
 
     // アクティブなエフェクトを描画
     for (auto& effect : activeEffects){
@@ -50,6 +48,15 @@ void Hammer::OnCollision([[maybe_unused]] Collider* other){
     // 衝突相手が敵なら
     if (typeID == static_cast< uint32_t >(CollisionTypeIdDef::kEnemy)){
         Enemy* enemy = static_cast< Enemy* >(other);
+        uint32_t serialNumber = enemy->GetSerialNumber();
+
+        //接触履歴があれば何もせず抜ける
+        if (contactRecord_.CheckRecord(serialNumber)){
+            return;
+        }
+
+        //履歴に登録
+        contactRecord_.AddRecord(serialNumber);
 
         // 敵の位置にエフェクトを発生
         if (enemy){
@@ -65,7 +72,7 @@ void Hammer::OnCollision([[maybe_unused]] Collider* other){
 }
 
 Vector3 Hammer::GetCenterPos() const{
-	const Vector3 offset = {0.0f,9.0f,0.0f};
-	Vector3 worldPos = Matrix4x4::Transform(offset, worldTransform_.matWorld_);
-	return worldPos;
+    const Vector3 offset = {0.0f,9.0f,0.0f};
+    Vector3 worldPos = Matrix4x4::Transform(offset, worldTransform_.matWorld_);
+    return worldPos;
 }

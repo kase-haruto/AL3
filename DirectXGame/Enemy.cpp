@@ -1,9 +1,12 @@
 #include "Enemy.h"
-#include"CollisionTypeIdDef.h"
-
 #include<numbers>
 
+uint32_t Enemy::nextSerialNumber = 0;
+
 Enemy::Enemy(){
+	//シリアルナンバーを振る
+	serialNumber_ = nextSerialNumber;
+	++nextSerialNumber;
 
 	//パーツの要素数
 	partsTransform_.resize(static_cast< int >(Parts::partsCount));
@@ -57,14 +60,14 @@ void Enemy::ArmWave(){
 
 void Enemy::Draw(const ViewProjection& viewProjection){
 	models_[static_cast< int >(Parts::body)]->Draw(*partsTransform_[static_cast< int >(Parts::body)], viewProjection);
-	models_[static_cast< int >(Parts::arm)]->Draw(*partsTransform_[static_cast<int>(Parts::arm)], viewProjection);
+	models_[static_cast< int >(Parts::arm)]->Draw(*partsTransform_[static_cast< int >(Parts::arm)], viewProjection);
 }
 
 void Enemy::Move(){
 	//回転速度と移動速度
-	const float rotateSpeed= 0.03f;
+	const float rotateSpeed = 0.03f;
 	const float moveSpeed = 0.3f;
-	
+
 	//回転の更新
 	worldTransform_.rotation_.y += rotateSpeed;
 

@@ -1,7 +1,7 @@
 #pragma once
 #include"Actor.h"
 
-class Enemy:public Actor{
+class Enemy :public Actor{
 	/// <summary>
 	/// 敵のパーツ
 	/// </summary>
@@ -22,7 +22,7 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="models"></param>
-	void Initialize(const std::vector<Model*>&models)override;
+	void Initialize(const std::vector<Model*>& models)override;
 	/// <summary>
 	/// 更新
 	/// </summary>
@@ -40,6 +40,12 @@ public:
 	/// </summary>
 	Vector3 GetCenterPos()const override;
 
+	/// <summary>
+	/// シリアルナンバーの取得
+	/// </summary>
+	/// <returns></returns>
+	uint32_t GetSerialNumber()const{ return serialNumber_; }
+
 private:
 	/// <summary>
 	/// 移動処理
@@ -54,5 +60,10 @@ private:
 	//パーツ事の変数
 	std::vector<std::unique_ptr< WorldTransform>> partsTransform_;
 	float waveParameter_ = 0;
+
+	//シリアルナンバー
+	uint32_t serialNumber_ = 0;
+	static uint32_t nextSerialNumber;
+
 };
 

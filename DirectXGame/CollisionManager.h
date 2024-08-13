@@ -11,7 +11,7 @@ class CollisionManager{
 public:
 	CollisionManager();
 	~CollisionManager() = default;
-	
+
 	/// <summary>
 	/// 初期化
 	/// </summary>

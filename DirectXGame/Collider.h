@@ -5,11 +5,6 @@
 #include"Model.h"
 #include"CollisionTypeIdDef.h"
 
-#include <stdint.h>
-
-/// <summary>
-/// オブジェクト基底クラス
-/// </summary>
 class Collider{
 public:
 	virtual ~Collider() = default;
@@ -46,7 +41,7 @@ public:
 		Vector3 worldPos = Matrix4x4::Transform(offset, worldTransform_.matWorld_);
 		return worldPos;
 	};
-	
+
 	float GetRadius()const{ return radius_; }
 	//識別IDの取得
 	uint32_t GetTypeID()const{ return typeID_; }

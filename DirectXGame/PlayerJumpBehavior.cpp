@@ -6,7 +6,7 @@
 PlayerJumpBehavior::PlayerJumpBehavior(Player* player){
 	player_ = player;
 
-	
+
 	const char* groupName = "Player";
 	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
 	globalVariables->CreateGroup(groupName);
@@ -23,7 +23,7 @@ void PlayerJumpBehavior::Initialize(){
 	player_->Set_L_ArmRotationX(0.0f);
 	player_->Set_L_ArmRotationX(0.0f);
 
-	
+
 	//ジャンプ初速を与える
 	player_->SetVelocity(jumpFirstSpeed_);
 }

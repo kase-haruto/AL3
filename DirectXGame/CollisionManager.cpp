@@ -45,14 +45,14 @@ void CollisionManager::CheckAllCollidion(){
 	ApplyGlobalVariables();
 
 	std::list<Collider*>::iterator itrA = colliders_.begin();
-	for (; itrA != colliders_.end();++itrA){
+	for (; itrA != colliders_.end(); ++itrA){
 		Collider* colliderA = *itrA;
 
 		//イテレータBはイテレータAの次の要素から回す
 		std::list<Collider*>::iterator itrB = itrA;
 		itrB++;
 
-		for (; itrB != colliders_.end();++itrB){
+		for (; itrB != colliders_.end(); ++itrB){
 			Collider* colliderB = *itrB;
 
 			//ペアの当たり判定
@@ -70,7 +70,7 @@ void CollisionManager::UpdateWorldTransform(){
 		return;
 	}
 	//すべてのコライダーのトランスフォームの更新
-	for (const auto& collider:colliders_){
+	for (const auto& collider : colliders_){
 		collider->UpdateTransform();
 	}
 }
@@ -79,7 +79,7 @@ void CollisionManager::Draw(const ViewProjection& viewPro){
 	if (!isDrawCollider_){
 		return;
 	}
-	for (const auto& collider:colliders_){
+	for (const auto& collider : colliders_){
 		collider->Draw(debugModel_.get(), viewPro);
 	}
 }

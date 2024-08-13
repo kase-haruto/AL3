@@ -14,7 +14,7 @@ void Actor::Update(){
 }
 
 void Actor::Draw(const ViewProjection& viewProjection){
-	for (Model* model:models_){
+	for (Model* model : models_){
 		model->Draw(worldTransform_, viewProjection);
 	}
 }
@@ -31,6 +31,7 @@ Vector3 Actor::GetCenterPos()const{
 ///================================
 ///	アクセッサ
 ///================================
+const WorldTransform& Actor::GetWorldTransform(){ return worldTransform_; }
 Vector3 Actor::GetWorldPosition()const{
 	Vector3 wPos;
 	wPos.x = worldTransform_.matWorld_.m[3][0];
@@ -38,6 +39,15 @@ Vector3 Actor::GetWorldPosition()const{
 	wPos.z = worldTransform_.matWorld_.m[3][2];
 	return wPos;
 }
+
+void Actor::SetTranslation(const Vector3& translation){ worldTransform_.translation_ = translation; }
+void Actor::SetRotation(const Vector3& rotation){ worldTransform_.rotation_ = rotation; }
+void Actor::SetRotationX(const float rotation){ worldTransform_.rotation_.x = rotation; }
+void Actor::SetRotationY(const float rotation){ worldTransform_.rotation_.y = rotation; }
+void Actor::SetRotationZ(const float rotation){ worldTransform_.rotation_.z = rotation; }
+
+Vector3 Actor::GetTranslation()const{ return worldTransform_.translation_; }
+Vector3 Actor::GetRotation()const{ return worldTransform_.rotation_; }
 
 void Actor::SetPos(const Vector3& pos){ worldTransform_.translation_ = pos; }
 

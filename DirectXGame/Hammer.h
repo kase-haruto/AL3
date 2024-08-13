@@ -3,11 +3,12 @@
 #include"ViewProjection.h"
 #include"WeaponBase.h"
 #include"AttackEffectParticle.h"
+#include"ContactRecord.h"
 
 /// <summary>
 /// ハンマー
 /// </summary>
-class Hammer final:
+class Hammer final :
     public WeaponBase{
 public:
     Hammer() = default;
@@ -29,7 +30,7 @@ public:
     /// </summary>
     /// <param name="viewProjection"></param>
     void Draw(const ViewProjection& viewProjection)override;
-   
+
     /// <summary>
     /// 衝突時の反応
     /// </summary>
@@ -42,6 +43,9 @@ public:
     Vector3 GetCenterPos()const override;
 
 private:
+
+
+    //攻撃ヒット時のエフェクト
     std::vector<std::unique_ptr<AttackEffectParticle>> activeEffects;
 };
 

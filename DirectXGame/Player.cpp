@@ -8,21 +8,21 @@
 #include"GlobalVariables.h"
 #include "LockOn.h"
 #include"WeaponBase.h"
-#include"CollisionTypeIdDef.h"
+
 Player::Player() : currentState_(nullptr), isAttack_(false), viewPorjection_(nullptr){
-	partsTransform_.resize(static_cast< int >(Parts::partsCount));
-	partsTransform_[static_cast< int >(Parts::body)] = std::make_unique<WorldTransform>();
-	partsTransform_[static_cast< int >(Parts::head)] = std::make_unique<WorldTransform>();
-	partsTransform_[static_cast< int >(Parts::L_arm)] = std::make_unique<WorldTransform>();
-	partsTransform_[static_cast< int >(Parts::R_arm)] = std::make_unique<WorldTransform>();
+    partsTransform_.resize(static_cast< int >(Parts::partsCount));
+    partsTransform_[static_cast< int >(Parts::body)] = std::make_unique<WorldTransform>();
+    partsTransform_[static_cast< int >(Parts::head)] = std::make_unique<WorldTransform>();
+    partsTransform_[static_cast< int >(Parts::L_arm)] = std::make_unique<WorldTransform>();
+    partsTransform_[static_cast< int >(Parts::R_arm)] = std::make_unique<WorldTransform>();
 
-	const char* groupName = "Player";
-	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
-	globalVariables->CreateGroup(groupName);
+    const char* groupName = "Player";
+    GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+    globalVariables->CreateGroup(groupName);
 
-	globalVariables->AddItem(groupName, "Head Translation", partsTransform_[static_cast< int >(Parts::head)]->translation_);
-	globalVariables->AddItem(groupName, "ArmL Translation", partsTransform_[static_cast< int >(Parts::L_arm)]->translation_);
-	globalVariables->AddItem(groupName, "ArmR Translation", partsTransform_[static_cast< int >(Parts::R_arm)]->translation_);
+    globalVariables->AddItem(groupName, "Head Translation", partsTransform_[static_cast< int >(Parts::head)]->translation_);
+    globalVariables->AddItem(groupName, "ArmL Translation", partsTransform_[static_cast< int >(Parts::L_arm)]->translation_);
+    globalVariables->AddItem(groupName, "ArmR Translation", partsTransform_[static_cast< int >(Parts::R_arm)]->translation_);
 }
 
 Player::~Player(){}
@@ -59,7 +59,7 @@ void Player::Update(){
 #ifdef _DEBUG
     ImGui::Begin("player");
     auto weaponRotate = weapon_->GetRotation();
-    ImGui::DragFloat3("weaponRotate",&weaponRotate.x,0.01f);
+    ImGui::DragFloat3("weaponRotate", &weaponRotate.x, 0.01f);
     weapon_->SetRotation(weaponRotate);
 
     auto weaponTranslation = weapon_->GetTranslation();
@@ -119,7 +119,7 @@ void Player::MoveInDirection(float speed){
 
     worldTransform_.translation_ += velocity_;
 
-	targetAngle = std::atan2(velocity_.x, velocity_.z);
+    targetAngle = std::atan2(velocity_.x, velocity_.z);
 }
 
 void Player::ChangeState(std::unique_ptr<PlayerBaseBehavior> newState){
@@ -143,7 +143,7 @@ void Player::SetViewProjection(const ViewProjection* viewProjection){ viewPorjec
 bool Player::HasLockOnTarget()const{ return lockOn_->ExistTarget() ? true : false; }
 
 void Player::OnCollision([[maybe_unused]] Collider* other){
-  //  ChangeState(std::make_unique<PlayerJumpBehavior>(this));
+    //  ChangeState(std::make_unique<PlayerJumpBehavior>(this));
 }
 
 ///==========================================================
@@ -228,7 +228,7 @@ void Player::SetWeaponRotationX(const float rotation){ weapon_->SetRotationX(rot
 void Player::SetWeaponRotationY(const float rotation){ weapon_->SetRotationY(rotation); }
 void Player::SetWeaponRotationZ(const float rotation){ weapon_->SetRotationZ(rotation); }
 
-void Player::SetWeapon(WeaponBase* weapon){ 
+void Player::SetWeapon(WeaponBase* weapon){
     weapon_ = weapon;
     weapon_->GetWorldTransform().parent_ = &worldTransform_;
 }

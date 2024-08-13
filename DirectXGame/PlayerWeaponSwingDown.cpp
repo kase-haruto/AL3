@@ -7,6 +7,10 @@ void PlayerWeaponSwingDown::Initialize(Player* player){
 	Vector3 init = {0.0f,0.0f,0.0f};
 	player->SetBodyRotation(init);
 	isFinished_ = false;
+
+	//ハンマーの接触履歴を削除
+	player->GetWeapon()->ClearContactRecord();
+
 }
 
 void PlayerWeaponSwingDown::Execute(Player* player){
@@ -27,3 +31,4 @@ void PlayerWeaponSwingDown::Execute(Player* player){
 		isFinished_ = true;
 	}
 }
+

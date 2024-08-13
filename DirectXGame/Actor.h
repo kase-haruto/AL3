@@ -7,7 +7,7 @@
 #include<memory>
 #include<stdint.h>
 
-class Actor:public Collider{
+class Actor :public Collider{
 
 
 public:
@@ -22,8 +22,19 @@ public:
 	///================================
 	///	アクセッサ
 	///================================
+	const WorldTransform& GetWorldTransform();
 	Vector3 GetWorldPosition()const;
+	void SetTranslation(const Vector3& translation);
+	void SetRotation(const Vector3& rotation);
+	void SetRotationX(const float rotatino);
+	void SetRotationY(const float rotation);
+	void SetRotationZ(const float rotation);
+
+	Vector3 GetTranslation()const;
 	void SetPos(const Vector3& pos);
+
+	Vector3 GetRotation()const;
+
 
 	uint32_t GetColor()const;
 	void SetColor(const uint32_t& color);
