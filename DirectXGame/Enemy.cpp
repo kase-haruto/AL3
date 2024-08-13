@@ -3,12 +3,7 @@
 
 #include<numbers>
 
-uint32_t Enemy::nextSerialNumber = 0;
-
 Enemy::Enemy(){
-	//シリアルナンバーを振る
-	serialNumber_ = nextSerialNumber;
-	++nextSerialNumber;
 
 	//パーツの要素数
 	partsTransform_.resize(static_cast< int >(Parts::partsCount));

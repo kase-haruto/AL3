@@ -1,8 +1,6 @@
 #pragma once
 #include "Collider.h"
 #include"ViewProjection.h"
-#include"ContactRecord.h"
-
 
 class Actor;
 
@@ -36,11 +34,6 @@ public:
     /// </summary>
     virtual void OnCollision([[maybe_unused]] Collider* other)override = 0;
 
-    /// <summary>
-    /// 接触履歴のクリア
-    /// </summary>
-    void ClearContactRecord();
-
 
     /// <summary>
     /// 中心座標
@@ -61,6 +54,4 @@ protected:
     Model* model_;
     WorldTransform worldTransform_;
 
-    //敵のシリアルナンバー記録
-    ContactRecord contactRecord_;
 };

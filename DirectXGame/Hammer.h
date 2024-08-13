@@ -3,7 +3,6 @@
 #include"ViewProjection.h"
 #include"WeaponBase.h"
 #include"AttackEffectParticle.h"
-#include"ContactRecord.h"
 
 /// <summary>
 /// ハンマー
@@ -43,9 +42,6 @@ public:
     Vector3 GetCenterPos()const override;
 
 private:
-
-
-    //攻撃ヒット時のエフェクト
     std::vector<std::unique_ptr<AttackEffectParticle>> activeEffects;
 };
 

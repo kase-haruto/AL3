@@ -201,9 +201,6 @@
     <ClCompile Include="AttackEffectParticle.cpp">
       <Filter>Game\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="ConectRecord.cpp">
-      <Filter>Game\Object\Actor\Enemy</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\ViewProjection.h">
@@ -370,9 +367,6 @@
     </ClInclude>
     <ClInclude Include="AttackEffectParticle.h">
       <Filter>Game\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="ContactRecord.h">
-      <Filter>Game\Object\Actor\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -6,9 +6,6 @@ void PlayerMowDown::Initialize(Player* player){
 	player->SetBodyRotation(bodyInitRotation);
 	player->Set_L_ArmRotationX(shakeUpAngle_);
 	player->Set_R_ArmRotationX(shakeUpAngle_);
-
-	//ハンマーの接触履歴を削除
-	player->GetWeapon()->ClearContactRecord();
 }
 
 void PlayerMowDown::Execute(Player* player){

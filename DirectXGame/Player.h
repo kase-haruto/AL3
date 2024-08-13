@@ -75,7 +75,6 @@ public:
     bool GetIsAttack() const;
     WorldTransform* GetPartsTransform(int index){ return partsTransform_[index].get(); }
     const WorldTransform& GetWeaponTransform()const{ return weapon_->GetWorldTransform(); }
-    WeaponBase* GetWeapon() { return weapon_; }
     Vector3 GetVelocity() const;
     Vector3 GetDirection() const;
     float GetTargetAngle() const;
