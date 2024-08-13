@@ -59,3 +59,5 @@ float Norm(Vector3 v);
 Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
 
 float DegToRad(float degree);
+
+Vector3 GetSphereCollisionPoint(const Vector3& centerA, float radiusA, const Vector3& centerB, float radiusB);

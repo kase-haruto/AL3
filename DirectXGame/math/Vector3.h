@@ -8,6 +8,8 @@ struct Vector3 final {
 	float y;
 	float z;
 
+    float Length()const;
+    Vector3 Normalize()const;
 
     Vector3 operator*(const float& scalar) const;
     Vector3 operator*=(const float& scalar);

@@ -4,7 +4,14 @@
 #include"MyFunc.h"
 #include <algorithm>
 
+float Vector3::Length()const {
+	return sqrtf(x * x + y * y + z * z);
+}
 
+Vector3 Vector3::Normalize()const {
+	float length = Length();
+	return Vector3(x / length, y / length, z / length);
+}
 
 //乗算
 Vector3 Vector3::operator*(const float& scalar) const{

@@ -1,6 +1,10 @@
 #pragma once
 #include "Collider.h"
 #include"ViewProjection.h"
+#include"ContactRecord.h"
+
+
+class Actor;
 
 /// <summary>
 /// ハンマー
@@ -16,6 +20,12 @@ public:
     /// </summary>
     /// <param name="model"></param>
     virtual void Initialize(Model* model) = 0;
+
+    /// <summary>
+    /// 更新
+    /// </summary>
+    virtual void Update() = 0;
+
     /// <summary>
     /// 描画
     /// </summary>
@@ -26,6 +36,11 @@ public:
     /// </summary>
     virtual void OnCollision([[maybe_unused]] Collider* other)override = 0;
 
+    /// <summary>
+    /// 接触履歴のクリア
+    /// </summary>
+    void ClearContactRecord();
+
 
     /// <summary>
     /// 中心座標
@@ -33,10 +48,19 @@ public:
     /// <returns></returns>
     virtual Vector3 GetCenterPos()const override =0;
 
+    const WorldTransform& GetWorldTransform()const{ return worldTransform_; }
+    WorldTransform& GetWorldTransform(){ return worldTransform_;}
+    const Vector3& GetRotation()const;  
+    const Vector3& GetTranslation()const;
 
 
     void SetModel(Model* model);
+    void SetParent(WorldTransform worldTransform);
 
 protected:
     Model* model_;
+    WorldTransform worldTransform_;
+
+    //敵のシリアルナンバー記録
+    ContactRecord contactRecord_;
 };

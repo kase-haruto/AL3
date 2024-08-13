@@ -19,6 +19,8 @@ public:
 private:
 	float targetArmAngle_ = 1.3f;
 	float shakeUpAngle_ = -3.1f;
+
 	Vector3 weaponInitAngle_ = {0.0f,0.0f,0.0f};
+	Vector3 weaponTargetAngle_ = {1.3f,0.0f,0.0f};		
 };
 

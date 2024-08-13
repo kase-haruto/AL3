@@ -21,9 +21,10 @@ private:
 
 	Vector3 bodyInitRotation = {0.0f,-1.2f,0.0f};
 	Vector3 bodyTargetRotation = {0.0f,1.2f,0.0f};
-	Vector3 weaponInitRotation_ = {1.6f,0.0f,1.538f};
+
+	Vector3 weaponInitRotation_ = {0.5f,0.25f,1.6f};
 	Vector3 weaponInitTranslation_ = {0.0f,1.6f,0.0f};
 
-	Vector3 weaponTargetAngle_ = {2.8f,0.0f,1.538f};
+	Vector3 weaponTargetAngle_ = {2.7f,0.25f,1.6f};
 };
 

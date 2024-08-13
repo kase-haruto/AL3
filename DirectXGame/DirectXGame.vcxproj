@@ -108,10 +108,12 @@
   <ItemGroup>
     <ClCompile Include="2d\ImGuiManager.cpp" />
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="AttackEffectParticle.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
+    <ClCompile Include="ConectRecord.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FollowCamera.cpp" />
     <ClCompile Include="GlobalVariables.cpp" />
@@ -121,6 +123,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix4x4.cpp" />
     <ClCompile Include="MyFunc.cpp" />
+    <ClCompile Include="ParticleEffectManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerAttackBehavior.cpp" />
     <ClCompile Include="PlayerAttackCommand.cpp" />
@@ -158,6 +161,7 @@
     <ClInclude Include="3d\ViewProjection.h" />
     <ClInclude Include="3d\WorldTransform.h" />
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="AttackEffectParticle.h" />
     <ClInclude Include="audio\Audio.h" />
     <ClInclude Include="base\DirectXCommon.h" />
     <ClInclude Include="base\StringUtility.h" />
@@ -166,6 +170,7 @@
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="CollisionTypeIdDef.h" />
+    <ClInclude Include="ContactRecord.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="FollowCamera.h" />
     <ClInclude Include="GlobalVariables.h" />
@@ -178,6 +183,7 @@
     <ClInclude Include="math\Vector3.h" />
     <ClInclude Include="math\Vector4.h" />
     <ClInclude Include="MyFunc.h" />
+    <ClInclude Include="ParticleEffectManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerAttackBehavior.h" />
     <ClInclude Include="PlayerAttackCommand.h" />

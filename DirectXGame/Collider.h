@@ -3,6 +3,7 @@
 #include"WorldTransform.h"
 #include"ViewProjection.h"
 #include"Model.h"
+#include"CollisionTypeIdDef.h"
 
 #include <stdint.h>
 
@@ -17,10 +18,12 @@ public:
 	/// ワールドトランスフォーむの初期化
 	/// </summary>
 	void Initialize();
+
 	/// <summary>
 	/// トランスフォームの更新
 	/// </summary>
 	void UpdateTransform();
+
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -37,39 +40,25 @@ public:
 	///		アクセッサ
 	///=================================================================
 
-	virtual Vector3 GetCenterPos()const = 0;
+	virtual Vector3 GetCenterPos()const{
+		const Vector3 offset = {0.0f,1.0f,0.0f};
+
+		Vector3 worldPos = Matrix4x4::Transform(offset, worldTransform_.matWorld_);
+		return worldPos;
+	};
+	
 	float GetRadius()const{ return radius_; }
-
-	const Vector3& GetRotation()const;
-	const Vector3& GetTranslation()const;
-	const Vector3& GetScale()const;
-
-	const WorldTransform& GetWorldTransform()const{ return worldTransform_; }
-
 	//識別IDの取得
-	uint32_t GetTypeId()const{ return typeID_; }
-
-	void SetRotation(const Vector3& rotation);
-	void SetRotationX(const float rotation);
-	void SetRotationY(const float rotation);
-	void SetRotationZ(const float rotation);
-
-	void SetTranslation(const Vector3& translation);
-	void SetTranslationX(const float translation);
-	void SetTranslationY(const float translation);
-	void SetTranslationZ(const float translation);
-
-	void SetScale(const Vector3& scale);
+	uint32_t GetTypeID()const{ return typeID_; }
 
 	void SetRadius(float radius){ radius_ = radius; }
-
 	void SetTypeID(uint32_t typeID){ typeID_ = typeID; }
-protected:
+
+private:
 	float radius_ = 1.5f;
 	//ワールドトランスフォーム
 	WorldTransform worldTransform_;
 
-	//オブジェクト識別ID
 	uint32_t typeID_ = 0u;
 };
 

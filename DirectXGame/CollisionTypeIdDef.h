@@ -1,11 +1,11 @@
 #pragma once
+
 #include<cstdint>
 
+//コリジョン種別id定義
 enum class CollisionTypeIdDef:uint32_t{
-	kDefault,			//デフォルト
-	kPlayer,			//プレイヤー
-	kPlayerWeapon,		//武器
-	kEnemy,				//敵
-	kObstacleOBJ,		//障害物
+	kDefault,
+	kPlayer,
+	kPlayerWeapon,
+	kEnemy,
 };
-

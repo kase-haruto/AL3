@@ -59,7 +59,7 @@ void GameScene::Initialize(){
 			enemyModelPtr.push_back(model.get());
 		}
 		enemy->Initialize(enemyModelPtr);
-		enemy->SetPos({10.0f + (i * 10.0f),0.0f,20.0f});
+		enemy->SetPos({10.0f + (i * 20.0f),0.0f,20.0f});
 			enemies_.push_back(std::move(enemy));
 	}
 
@@ -228,13 +228,25 @@ void GameScene::CheckAllCollision(){
 	//衝突マネージャーのリセット
 	collisionManager_->Reset();
 
-	//コライダーをリストに登録
+	//=============================================================
+	//		コライダーをリストに登録
+	//=============================================================
+
+	//プレイヤー
 	collisionManager_->AddCollider(player_.get());
+
+	//武器
+	collisionManager_->AddCollider(weaponManager_->GetWeapon(WeaponName::hammer));
+
 	//敵すべてについて
 	for (const std::unique_ptr<Enemy>& enemy:enemies_){
 		collisionManager_->AddCollider(enemy.get());
 	}
 
-	//衝突判定と応答
+
+	//=============================================================
+	//		衝突判定と応答
+	//=============================================================
+	
 	collisionManager_->CheckAllCollidion();
 }

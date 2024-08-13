@@ -28,9 +28,6 @@ void PlayerAttackBehavior::Initialize(){
 void PlayerAttackBehavior::Update(){
 	XINPUT_STATE padState = {};
 	XInputGetState(0, &padState);
-	ImGui::Begin("window");
-	ImGui::Text("%d", comboReceptionTime_);
-	ImGui::End();
 
 	///ジョイスティックによる入力がない
 	if (player_->GetLockOn() && player_->GetLockOn()->ExistTarget()){

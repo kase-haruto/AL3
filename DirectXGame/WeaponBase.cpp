@@ -1,11 +1,11 @@
 #include "WeaponBase.h"
 #include<cassert>
-#include"CollisionTypeIdDef.h"
 
 void WeaponBase::Initialize(Model* model){
 	worldTransform_.Initialize();
 	model_ = model;
-	Collider::SetTypeID(static_cast< uint32_t >(CollisionTypeIdDef::kPlayerWeapon));
+
+	Collider::Initialize();
 }
 
 void WeaponBase::Draw(const ViewProjection& viewProjection){
@@ -16,4 +16,17 @@ void WeaponBase::Draw(const ViewProjection& viewProjection){
 
 
 
+void WeaponBase::ClearContactRecord(){
+	contactRecord_.Clear();
+}
+
+
+const Vector3& WeaponBase::GetRotation()const{ return worldTransform_.rotation_; }
+const Vector3& WeaponBase::GetTranslation()const{ return worldTransform_.translation_; }
+
+
 void WeaponBase::SetModel(Model* model){ model_ = model; }
+
+void WeaponBase::SetParent(WorldTransform worldTransform){
+	worldTransform_.parent_ = &worldTransform;
+}

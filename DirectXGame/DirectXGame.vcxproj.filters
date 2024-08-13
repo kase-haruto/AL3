@@ -95,7 +95,10 @@
       <UniqueIdentifier>{a6232241-0312-4f04-872d-09b2a00e4ff1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\Collision">
-      <UniqueIdentifier>{197b2d37-90c7-4ed7-926c-f2c06cc7bfdb}</UniqueIdentifier>
+      <UniqueIdentifier>{e1d64cdd-01c4-4eb8-8e63-7781cf8c9b40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Effect">
+      <UniqueIdentifier>{9dd464ea-9c4f-4a57-89ac-77035ee9a2a3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +194,15 @@
     </ClCompile>
     <ClCompile Include="CollisionManager.cpp">
       <Filter>Game\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleEffectManager.cpp">
+      <Filter>Game\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackEffectParticle.cpp">
+      <Filter>Game\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="ConectRecord.cpp">
+      <Filter>Game\Object\Actor\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -352,6 +364,15 @@
     </ClInclude>
     <ClInclude Include="CollisionTypeIdDef.h">
       <Filter>Game\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleEffectManager.h">
+      <Filter>Game\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackEffectParticle.h">
+      <Filter>Game\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="ContactRecord.h">
+      <Filter>Game\Object\Actor\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

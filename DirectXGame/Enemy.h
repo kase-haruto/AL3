@@ -32,12 +32,19 @@ public:
 	/// </summary>
 	/// <param name="viewProjection"></param>
 	void Draw(const ViewProjection& viewProjection)override;
+
+	void OnCollision([[maybe_unused]] Collider* other)override;
+
 	/// <summary>
 	/// 中心座標取得
 	/// </summary>
 	Vector3 GetCenterPos()const override;
 
-	void OnCollision([[maybe_unused]] Collider* other)override;
+	/// <summary>
+	/// シリアルナンバーの取得
+	/// </summary>
+	/// <returns></returns>
+	uint32_t GetSerialNumber()const{ return serialNumber_; }
 
 private:
 	/// <summary>
@@ -53,5 +60,10 @@ private:
 	//パーツ事の変数
 	std::vector<std::unique_ptr< WorldTransform>> partsTransform_;
 	float waveParameter_ = 0;
+
+	//シリアルナンバー
+	uint32_t serialNumber_ = 0;
+	static uint32_t nextSerialNumber;
+
 };
 

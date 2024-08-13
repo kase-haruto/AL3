@@ -2,6 +2,9 @@
 #include "Collider.h"
 #include"ViewProjection.h"
 #include"WeaponBase.h"
+#include"AttackEffectParticle.h"
+#include"ContactRecord.h"
+
 /// <summary>
 /// ハンマー
 /// </summary>
@@ -16,6 +19,11 @@ public:
     /// </summary>
     /// <param name="model"></param>
     void Initialize(Model* model)override;
+
+    /// <summary>
+    /// 更新
+    /// </summary>
+    void Update()override;
 
     /// <summary>
     /// 描画
@@ -35,6 +43,9 @@ public:
     Vector3 GetCenterPos()const override;
 
 private:
-    
+
+
+    //攻撃ヒット時のエフェクト
+    std::vector<std::unique_ptr<AttackEffectParticle>> activeEffects;
 };
 
