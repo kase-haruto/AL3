@@ -79,6 +79,11 @@ void PlayerRootBehavior::Update(){
 }
 
 void PlayerRootBehavior::Move(){
+    if (Input::GetInstance()->PushKey(DIK_A)){
+        Vector3 vel {player_->GetWorldPosition().x + 0.5f,0.0f,0.0f};
+        player_->SetPos(vel);
+    }
+
     XINPUT_STATE joyState = {};
     if (Input::GetInstance()->GetJoystickState(0, joyState)){
         const float threshold = 0.7f;

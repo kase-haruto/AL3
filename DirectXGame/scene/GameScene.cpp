@@ -106,6 +106,7 @@ void GameScene::Initialize(){
 	followCamera_->SetTarget(&player_->GetWorldTransform());
 	player_->SetViewProjection(&followCamera_->GetViewProjection());
 	protectPlayer_->SetViewProjection(&followCamera_->GetViewProjection());
+	CameraManager::GetInstance()->SetActiveCamera(followCamera_.get());
 
 	//======================================================
 	//		ロックオン
@@ -126,59 +127,60 @@ void GameScene::Initialize(){
 }
 
 void GameScene::Update(){
-	//プレイヤーの更新
-	player_->Update();
+	// 操作キャラクターの切り替え処理
+	if (input_->TriggerKey(DIK_R)){
+		characterManager_->SwitchCharacter((characterManager_->GetCurrentCharacterIndex() + 1) % 2);
+	}
 
+	// プレイヤーの更新
+	player_->Update();
 	protectPlayer_->Update();
 
-	//操作キャラの管理
-	characterManager_->Update();
-
-	//敵の更新
+	// 敵の更新
 	enemyManager_->Update();
 
-	//敵拠点の更新
+	// 敵拠点の更新
 	for (size_t i = 0; i < 3; i++){
 		enemyStronghold_[i]->Update();
 	}
 
-	//総当たりでオブジェクトの衝突判定
+	// 総当たりでオブジェクトの衝突判定
 	CheckAllCollision();
 
 #ifdef _DEBUG 
-	//判定の可視化のtransformの更新
+	// 判定の可視化のtransformの更新
 	collisionManager_->UpdateWorldTransform();
 #endif // _DEBUG
 
-	//ロックオン機能の更新
+	// ロックオン機能の更新
 	lockOn_->Update(enemyManager_->GetAllEnemies(), viewProjection_);
 
 #ifdef _DEBUG
 	// デバッグ用のカメラ
-	followCamera_->Update();
+	CameraManager* camManager = CameraManager::GetInstance();
+	camManager->GetFollowCamera()->Update();
 	if (isDebugCameraActive_){
 		// デバッグ用のカメラ
 		debugCamera_->Update();
-		//情報の受け渡し
+		// 情報の受け渡し
 		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
 	} else{
-		//情報の受け渡し
-		viewProjection_.matView = followCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = followCamera_->GetViewProjection().matProjection;
-		//更新と転送
+		// 情報の受け渡し
+		viewProjection_.matView = camManager->GetFollowCamera()->GetViewProjection().matView;
+		viewProjection_.matProjection = camManager->GetFollowCamera()->GetViewProjection().matProjection;
+		// 更新と転送
 	}
 	viewProjection_.TransferMatrix();
 
-	//カメラの切り替え
+	// カメラの切り替え
 	if (input_->TriggerKey(DIK_RETURN)){
 		isDebugCameraActive_ = !isDebugCameraActive_;
 	}
 
 #endif // _DEBUG
-
-
 }
+
 
 void GameScene::Draw(){
 

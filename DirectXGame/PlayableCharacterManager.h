@@ -30,6 +30,12 @@ public:
 	Player* GetCurrentCharacter();
 
 	/// <summary>
+	/// 現在の操作キャラのインデックス
+	/// </summary>
+	/// <returns></returns>
+	int GetCurrentCharacterIndex();
+
+	/// <summary>
 	/// 操作キャラクターの変更
 	/// </summary>
 	/// <param name="newIndex"></param>

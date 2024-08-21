@@ -36,3 +36,7 @@ void PlayableCharacterManager::SwitchCharacter(int newCharacterIndex){
         }
     }
 }
+
+int PlayableCharacterManager::GetCurrentCharacterIndex(){
+    return currentCharacterIndex_;
+}
