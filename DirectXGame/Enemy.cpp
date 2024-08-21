@@ -15,7 +15,6 @@ Enemy::Enemy(){
 	partsTransform_[static_cast< int >(Parts::arm)] = std::make_unique<WorldTransform>();
 }
 
-Enemy::~Enemy(){}
 
 void Enemy::Initialize(const std::vector<Model*>& models){
 	Actor::Initialize(models);

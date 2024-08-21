@@ -13,9 +13,13 @@
 #include"DebugCamera.h"
 #include"FollowCamera.h"
 #include"LockOn.h"
-#include"Enemy.h"
 #include"CollisionManager.h"
 #include"WeaponManager.h"
+#include"EnemyStronghold.h"
+#include"EnemyManager.h"
+#include"IScene.h"
+#include"PlayableCharacterManager.h"
+
 
 #include<stdint.h>
 #include<memory>
@@ -24,7 +28,8 @@
 /// <summary>
 /// ゲームシーン
 /// </summary>
-class GameScene {
+class GameScene 
+	:public IScene{
 
 public: // メンバ関数
 	/// <summary>
@@ -35,22 +40,27 @@ public: // メンバ関数
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~GameScene();
+	~GameScene()override;
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize()override;
 
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void Update();
+	void Update()override;
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void Draw()override;
+
+	/// <summary>
+	/// 終了処理
+	/// </summary>
+	void Finalize()override;
 
 private:
 	/// <summary>
@@ -71,18 +81,27 @@ private: // メンバ変数
 	std::unique_ptr<Model> moedlSkydome_ = nullptr;
 	std::unique_ptr<Model> modelGround_ = nullptr;
 	std::unique_ptr<WeaponManager>weaponManager_ = nullptr;
+	std::unique_ptr<Model>modelStrongHold_ = nullptr;
+
 
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>	
 	ViewProjection viewProjection_;
 	std::unique_ptr<Player>player_ = nullptr;
-	std::list<std::unique_ptr<Enemy>>enemies_;
+	std::unique_ptr<Player>protectPlayer_ = nullptr;
+	std::unique_ptr<EnemyManager> enemyManager_ = nullptr;
 	std::unique_ptr<Skydome>skydome_ = nullptr;
 	std::unique_ptr<Ground>ground_ = nullptr;
-	std::unique_ptr<WeaponBase>weapon_ = nullptr;
 
+	//敵の拠点
+	std::vector<std::shared_ptr<EnemyStronghold>>enemyStronghold_;
+
+	//衝突判定管理クラス
 	std::unique_ptr<CollisionManager>collisionManager_ = nullptr;
+
+	//操作キャラーの管理クラス
+	std::unique_ptr<PlayableCharacterManager> characterManager_ = nullptr;
 	
 
 	/// <summary>

@@ -19,6 +19,8 @@ public:
 	virtual void Draw(const ViewProjection& viewProjection);
 	virtual Vector3 GetCenterPos()const override;
 
+	void UpdateMatrix();
+
 	///================================
 	///	アクセッサ
 	///================================

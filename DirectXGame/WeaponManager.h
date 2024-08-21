@@ -11,6 +11,7 @@
 /// </summary>
 enum WeaponName{
 	hammer,
+	gun,
 	weaponCount
 };
 

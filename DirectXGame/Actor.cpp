@@ -27,11 +27,16 @@ Vector3 Actor::GetCenterPos()const{
 	return worldPos;
 }
 
+void Actor::UpdateMatrix(){
+	worldTransform_.UpdateMatrix();
+}
+
 
 ///================================
 ///	アクセッサ
 ///================================
 const WorldTransform& Actor::GetWorldTransform(){ return worldTransform_; }
+
 Vector3 Actor::GetWorldPosition()const{
 	Vector3 wPos;
 	wPos.x = worldTransform_.matWorld_.m[3][0];

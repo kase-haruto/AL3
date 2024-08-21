@@ -1,6 +1,7 @@
 #include "GameScene.h"
 #include "TextureManager.h"
 #include"Hammer.h"
+#include"CameraManager.h"
 
 #include <cassert>
 
@@ -42,26 +43,51 @@ void GameScene::Initialize(){
 	playerModels_.push_back(std::unique_ptr<Model>(Model::CreateFromOBJ("player_R_arm", true)));
 	player_ = std::make_unique<Player>();
 	std::vector<Model*> modelPointers;
+
 	for (const auto& model : playerModels_){
 		modelPointers.push_back(model.get());
 	}
+
 	// プレイヤークラスを初期化
 	player_->Initialize(modelPointers);
+	player_->SetIsActive(true);
+
+	//拠点を守るキャラクター
+	protectPlayer_ = std::make_unique<Player>();
+	protectPlayer_->Initialize(modelPointers);
+	protectPlayer_->SetPos({10.0f,0.0f,0.0f});
+
+	//操作キャラの管理クラス
+	characterManager_ = std::make_unique<PlayableCharacterManager>();
+	//操作キャラの追加
+	characterManager_->AddCharacters(player_.get());
+	characterManager_->AddCharacters(protectPlayer_.get());
+
+
+	///=====================================================
+	//		敵拠点
+	modelStrongHold_.reset(Model::CreateFromOBJ("cube", true));
+	const int kNumEnemyStronghold = 3;
+	for (size_t i = 0; i < kNumEnemyStronghold; i++){
+		auto stronghold = std::make_shared<EnemyStronghold>();
+		stronghold->Initialize(modelStrongHold_.get());
+
+		// 各拠点のx座標はそのまま、z座標を設定
+		float zPosition = 150.0f + (i * 50.0f);
+		if (i == 1){ // 中央の拠点
+			zPosition += 80.0f;
+		}
+
+		stronghold->SetTranslation({-50 + (i * 50.0f), 1.0f, zPosition});
+		enemyStronghold_.push_back(stronghold);
+	}
 
 	///=====================================================
 	//		敵
-	enemyModels_.push_back(std::unique_ptr<Model>(Model::CreateFromOBJ("enemy", true)));
-	enemyModels_.push_back(std::unique_ptr<Model>(Model::CreateFromOBJ("enemy_arm", true)));
-	for (int i = 0; i < 3; i++){
-		auto enemy = std::make_unique<Enemy>();
-		std::vector<Model*>enemyModelPtr;
-		for (const auto& model : enemyModels_){
-			enemyModelPtr.push_back(model.get());
-		}
-		enemy->Initialize(enemyModelPtr);
-		enemy->SetPos({10.0f + (i * 20.0f),0.0f,20.0f});
-			enemies_.push_back(std::move(enemy));
-	}
+	enemyManager_ = std::make_unique<EnemyManager>();
+	enemyManager_->SetStronghold(enemyStronghold_);
+	enemyManager_->Initialize();
+
 
 	//=======================================================
 	//		武器
@@ -70,6 +96,7 @@ void GameScene::Initialize(){
 
 	//プレイヤーに初期武器をセット
 	player_->SetWeapon(weaponManager_->GetWeapon(WeaponName::hammer));
+	protectPlayer_->SetWeapon(weaponManager_->GetWeapon(WeaponName::gun));
 
 
 	///=====================================================
@@ -78,6 +105,7 @@ void GameScene::Initialize(){
 	followCamera_->Initialize();
 	followCamera_->SetTarget(&player_->GetWorldTransform());
 	player_->SetViewProjection(&followCamera_->GetViewProjection());
+	protectPlayer_->SetViewProjection(&followCamera_->GetViewProjection());
 
 	//======================================================
 	//		ロックオン
@@ -100,19 +128,30 @@ void GameScene::Initialize(){
 void GameScene::Update(){
 	//プレイヤーの更新
 	player_->Update();
+
+	protectPlayer_->Update();
+
+	//操作キャラの管理
+	characterManager_->Update();
+
 	//敵の更新
-	for (const auto& enemy : enemies_){
-		enemy->Update();
+	enemyManager_->Update();
+
+	//敵拠点の更新
+	for (size_t i = 0; i < 3; i++){
+		enemyStronghold_[i]->Update();
 	}
 
+	//総当たりでオブジェクトの衝突判定
 	CheckAllCollision();
 
 #ifdef _DEBUG 
+	//判定の可視化のtransformの更新
 	collisionManager_->UpdateWorldTransform();
 #endif // _DEBUG
 
-
-	lockOn_->Update(enemies_, viewProjection_);
+	//ロックオン機能の更新
+	lockOn_->Update(enemyManager_->GetAllEnemies(), viewProjection_);
 
 #ifdef _DEBUG
 	// デバッグ用のカメラ
@@ -192,15 +231,19 @@ void GameScene::Draw(){
 	//	プレイヤーの描画
 	//=========================================================
 	player_->Draw(viewProjection_);
+	protectPlayer_->Draw(viewProjection_);
 
 	//=========================================================
 	//	敵の描画
 	//=========================================================
-	for (const auto& enemy : enemies_){
-		enemy->Draw(viewProjection_);
+	enemyManager_->Draw(viewProjection_);
+
+	//=========================================================
+	//	敵の拠点の描画
+	//=========================================================
+	for (size_t i = 0; i < 3; i++){
+		enemyStronghold_[i]->Draw(viewProjection_);
 	}
-
-
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
@@ -234,12 +277,14 @@ void GameScene::CheckAllCollision(){
 
 	//プレイヤー
 	collisionManager_->AddCollider(player_.get());
+	collisionManager_->AddCollider(protectPlayer_.get());
 
 	//武器
 	collisionManager_->AddCollider(weaponManager_->GetWeapon(WeaponName::hammer));
+	collisionManager_->AddCollider(weaponManager_->GetWeapon(WeaponName::gun));
 
 	//敵すべてについて
-	for (const std::unique_ptr<Enemy>& enemy:enemies_){
+	for (const auto& enemy:enemyManager_->GetAllEnemies()){
 		collisionManager_->AddCollider(enemy.get());
 	}
 
@@ -249,4 +294,8 @@ void GameScene::CheckAllCollision(){
 	//=============================================================
 	
 	collisionManager_->CheckAllCollidion();
+}
+
+void GameScene::Finalize(){
+
 }

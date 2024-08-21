@@ -47,26 +47,33 @@ void PlayerRootBehavior::Update(){
     // 調整項目の適用
     ApplyGlobalVariables();
 
-    if (dwResult == ERROR_SUCCESS){
-        if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_X){
-            player_->ChangeState(std::make_unique<PlayerAttackBehavior>(player_));
-            return;
+    if (player_->GetIsActive()){ //操作可能なら
+
+        if (dwResult == ERROR_SUCCESS){
+            if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_X){
+                player_->ChangeState(std::make_unique<PlayerAttackBehavior>(player_));
+                return;
+            }
+
+            if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER){
+                player_->ChangeState(std::make_unique<PlayerDashBehavior>(player_));
+                return;
+            }
+
+            // ジャンプボタンを押したら
+            if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_A){
+                player_->ChangeState(std::make_unique<PlayerJumpBehavior>(player_));
+                return;
+            }
         }
 
-        if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER){
-            player_->ChangeState(std::make_unique<PlayerDashBehavior>(player_));
-            return;
-        }
+        // 移動処理
+        Move();
 
-        // ジャンプボタンを押したら
-        if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_A){
-            player_->ChangeState(std::make_unique<PlayerJumpBehavior>(player_));
-            return;
-        }
     }
 
-    // 移動処理
-    Move();
+
+
     // 浮遊ギミックの処理
     UpdateFloatingAction();
 }

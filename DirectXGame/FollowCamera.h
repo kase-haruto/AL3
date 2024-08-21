@@ -46,7 +46,6 @@ public:
 	/// <param name="lockOn"></param>
 	void SetLockOn(const LockOn* lockOn);
 
-private:
 	/// <summary>
 	/// 旋回
 	/// </summary>

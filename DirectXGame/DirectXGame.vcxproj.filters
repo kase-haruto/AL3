@@ -100,6 +100,18 @@
     <Filter Include="Game\Effect">
       <UniqueIdentifier>{9dd464ea-9c4f-4a57-89ac-77035ee9a2a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Object\Stronghold">
+      <UniqueIdentifier>{41a1b734-426d-4710-825d-d873d519ce8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Object\Actor\Enemy\EnemyManager">
+      <UniqueIdentifier>{c23b2515-f43a-4f9c-b278-056ca04513a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Object\Button">
+      <UniqueIdentifier>{aaf10a2a-8431-4bb2-933e-c7c0f3e17f96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Object\Actor\Player\PlayableCharacterManager">
+      <UniqueIdentifier>{fcbb8474-cdf3-4dcd-a3b5-ec23841669dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -201,6 +213,42 @@
     <ClCompile Include="AttackEffectParticle.cpp">
       <Filter>Game\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="ContactRecord.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyStronghold.cpp">
+      <Filter>Game\Object\Stronghold</Filter>
+    </ClCompile>
+    <ClCompile Include="StrongholdManager.cpp">
+      <Filter>Game\Object\Stronghold</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseStronghold.cpp">
+      <Filter>Game\Object\Stronghold</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>Game\Object\Actor\Enemy\EnemyManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ProtectEnemy.cpp">
+      <Filter>Game\Object\Actor\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="IScene.cpp">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Game\Object\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayableCharacterManager.cpp">
+      <Filter>Game\Object\Actor\Player\PlayableCharacterManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraManager.cpp">
+      <Filter>Game\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\ViewProjection.h">
@@ -250,9 +298,6 @@
     </ClInclude>
     <ClInclude Include="base\WinApp.h">
       <Filter>ヘッダー ファイル\base</Filter>
-    </ClInclude>
-    <ClInclude Include="scene\GameScene.h">
-      <Filter>ヘッダー ファイル\scene</Filter>
     </ClInclude>
     <ClInclude Include="input\Input.h">
       <Filter>ヘッダー ファイル\input</Filter>
@@ -335,9 +380,6 @@
     <ClInclude Include="PlayerMowDown.h">
       <Filter>Game\Object\Actor\Player\PlayerAttack</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerSpinAttack.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="FollowCamera.h">
       <Filter>Game\Camera</Filter>
     </ClInclude>
@@ -367,6 +409,48 @@
     </ClInclude>
     <ClInclude Include="AttackEffectParticle.h">
       <Filter>Game\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="ContactRecord.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyStronghold.h">
+      <Filter>Game\Object\Stronghold</Filter>
+    </ClInclude>
+    <ClInclude Include="StrongholdManager.h">
+      <Filter>Game\Object\Stronghold</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseStronghold.h">
+      <Filter>Game\Object\Stronghold</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyManager.h">
+      <Filter>Game\Object\Actor\Enemy\EnemyManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtectEnemy.h">
+      <Filter>Game\Object\Actor\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="IScene.h">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\GameScene.h">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Game\Object\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerSpinAttack.h">
+      <Filter>Game\Object\Actor\Player\PlayerAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayableCharacterManager.h">
+      <Filter>Game\Object\Actor\Player\PlayableCharacterManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraManager.h">
+      <Filter>Game\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

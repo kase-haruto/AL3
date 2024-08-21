@@ -18,6 +18,13 @@ void WeaponManager::Initialize(){
 	auto hammer = std::make_unique<Hammer>();
 	hammer->Initialize(weaponModels_[WeaponName::hammer].get());
 	weapons_.emplace(WeaponName::hammer, std::move(hammer));
+
+	//=================================================================
+	//				銃
+	//=================================================================
+	auto gun = std::make_unique<Hammer>();
+	gun->Initialize(weaponModels_[WeaponName::hammer].get());
+	weapons_.emplace(WeaponName::gun, std::move(gun));
 }
 
 void WeaponManager::ModelInitialize(){
