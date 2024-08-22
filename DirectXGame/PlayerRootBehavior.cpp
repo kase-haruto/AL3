@@ -79,8 +79,8 @@ void PlayerRootBehavior::Update(){
 }
 
 void PlayerRootBehavior::Move(){
-    if (Input::GetInstance()->PushKey(DIK_A)){
-        Vector3 vel {player_->GetWorldPosition().x + 0.5f,0.0f,0.0f};
+    if (Input::GetInstance()->PushKey(DIK_W)){
+        Vector3 vel {0.0f,0.0f,player_->GetWorldPosition().z+ 0.5f};
         player_->SetPos(vel);
     }
 

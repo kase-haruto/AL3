@@ -36,17 +36,23 @@ public:
 	/// <param name="viewProjection"></param>
 	virtual void Draw(const ViewProjection& viewProjection);
 
+	void ReduceLife();
+
 	//======================================================
 	//	アクセッサ
 	//======================================================
 	uint32_t GetLife()const;
 	const WorldTransform& GetWorldTransform()const;
 	Vector3 GetCenterPos()const;
+	float GetRadius()const;
+	Vector3 GetWorldPosition()const;
+	bool GetIsTaked()const;
 
 	void SetLife(const uint32_t life);
 	void SetTranslation(const Vector3& translate);
 	void SetRotate(const Vector3& rotate);
 	void SetScale(const Vector3& scale);
+	void SetIsTaked(bool isTaked);
 
 protected:
 	//使用するモデル
@@ -63,5 +69,12 @@ protected:
 
 	//拠点の範囲の半径
 	float rangeRadius_;
+
+	//拠点がとられたかどうか
+	bool isTaked_ = false;
+
+	//ゲットカウント
+	uint32_t holdTimer_ = 0;
+
 };
 

@@ -296,6 +296,11 @@ void GameScene::CheckAllCollision(){
 	//=============================================================
 	
 	collisionManager_->CheckAllCollidion();
+
+	//playerと敵の拠点の判定と応答
+	for (const auto& enemyStronghold:enemyStronghold_){
+		collisionManager_->Character2Stronghold(player_.get(), enemyStronghold.get());
+	}
 }
 
 void GameScene::Finalize(){

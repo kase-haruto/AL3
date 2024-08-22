@@ -17,6 +17,20 @@ void CollisionManager::ApplyGlobalVariables(){
 	isDrawCollider_ = globalVariables->GetValue<bool>(groupName, "isDrawCollider");
 }
 
+void CollisionManager::Character2Stronghold(Actor* character, BaseStronghold* stronghold){
+	Vector3 charcterPos = character->GetCenterPos();
+	Vector3 strongholdPos = stronghold->GetCenterPos();
+	float characterRadius = character->GetRadius();
+	float strongholdRadius = stronghold->GetRadius();
+
+	Vector3 sub = charcterPos - strongholdPos;
+	float distance = Length(sub);
+
+	if (distance <= strongholdRadius + characterRadius){
+		stronghold->ReduceLife();
+	}
+}
+
 void CollisionManager::Initialize(){
 	debugModel_.reset(Model::CreateFromOBJ("collider", true));
 

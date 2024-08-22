@@ -1,6 +1,8 @@
 #pragma once
 #include"Collider.h"
 #include"Model.h"
+#include"Actor.h"
+#include"BaseStronghold.h"
 
 #include<list>
 
@@ -56,12 +58,18 @@ public:
 	/// </summary>
 	void ApplyGlobalVariables();
 
+	/// <summary>
+	/// プレイヤーと敵の拠点の判定
+	/// </summary>
+	/// <returns></returns>
+	void Character2Stronghold(Actor* character,BaseStronghold* stronghold);
+
 private:
 	//コライダー
 	std::list<Collider*> colliders_;
+
 	//デバッグ表示用モデル
 	std::unique_ptr<Model> debugModel_;
 
 	bool isDrawCollider_ = false;
 };
-

@@ -101,9 +101,23 @@ const ViewProjection& FollowCamera::GetViewProjection(){ return viewProjection_;
 
 void FollowCamera::SetTarget(const WorldTransform* target){
 	target_ = target;
-	Reset();
+	destination_ = target_->translation_;  // 目標位置を設定
 }
 
 void FollowCamera::SetLockOn(const LockOn* lockOn){
 	lockOn_ = lockOn;
+}
+
+void FollowCamera::SmoothTransition(){
+	if (target_){
+		// 現在のカメラ位置と目標位置を補間する
+		interTarget_ = Lerp(interTarget_, destination_, transitionSpeed_);
+
+		// オフセットを計算して新しいカメラ位置を設定
+		Vector3 offset = CalculateOffset();
+		viewProjection_.translation_ = interTarget_ + offset;
+
+		// ビュー行列の更新
+		viewProjection_.UpdateMatrix();
+	}
 }
