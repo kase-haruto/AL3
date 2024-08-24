@@ -32,7 +32,7 @@ void GameScene::Initialize(){
 	//		地面
 	modelGround_.reset(Model::CreateFromOBJ("ground", true));
 	ground_ = std::make_unique<Ground>(modelGround_.get());
-	ground_->Initialize(skydome_->GetScale());
+	ground_->Initialize(skydome_->GetScale()*1.3f);
 
 
 	///=====================================================
