@@ -32,6 +32,7 @@ void Player::Initialize(const std::vector<Model*>& models){
 	Actor::Initialize(models);
 	//各パーツのtransformの初期化
 	PartsTransformInit();
+
 	//通常行動をセットしておく
 	ChangeState(std::make_unique<PlayerRootBehavior>(this));
 	//衝突判定の識別id
@@ -52,12 +53,17 @@ void Player::PartsTransformInit(){
 	partsTransform_[static_cast< int >(Parts::head)]->parent_ = body;
 	partsTransform_[static_cast< int >(Parts::L_arm)]->parent_ = body;
 	partsTransform_[static_cast< int >(Parts::R_arm)]->parent_ = body;
+
+	for (const auto& transform : partsTransform_){
+		transform->UpdateMatrix();
+	}
 }
 
 void Player::Update(){
 
 #ifdef _DEBUG
 	ImGui::Begin("player");
+
 	if (weapon_){
 
 		auto weaponRotate = weapon_->GetRotation();
@@ -69,6 +75,7 @@ void Player::Update(){
 		weapon_->SetTranslation(weaponTranslation);
 	}
 	ImGui::DragFloat3("playerTranslation", &worldTransform_.translation_.x, 0.01f);
+	ImGui::DragFloat3("playerRotation", &worldTransform_.rotation_.x, 0.01f);
 
 	ImGui::End();
 #endif // _DEBUG

@@ -8,6 +8,13 @@
 #include"ViewProjection.h"
 #include"IScene.h"
 #include"DebugCamera.h"
+#include"Button.h"
+#include"Player.h"
+#include"WeaponManager.h"
+#include"Ground.h"
+#include"Skydome.h"
+
+
 
 #include<stdint.h>
 #include<memory>
@@ -60,13 +67,32 @@ private: // メンバ変数
 	/// <summary>
 	/// 3dモデル
 	/// </summary>
-
+	std::vector<std::unique_ptr<Model>> playerModels_;
+	std::unique_ptr<Model> modelGround_ = nullptr;
+	std::unique_ptr<Model> modelSkydome_ = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>	
+	ViewProjection viewProjection_;
 
+	//地面
+	std::unique_ptr<Ground> ground_ = nullptr;
 
+	//天球
+	std::unique_ptr<Skydome> skydome_ = nullptr;
+
+	//ゲームスタートボタン
+	std::unique_ptr<Button> gameStartButton_ = nullptr;
+
+	//ゲーム終了ボタン
+	std::unique_ptr<Button> exitButton_ = nullptr;
+
+	//プレイヤー
+	std::unique_ptr<Player> player_ = nullptr;
+
+	//武器
+	std::unique_ptr<WeaponManager>weaponManager_ = nullptr;
 
 	/// <summary>
 	/// カメラ
