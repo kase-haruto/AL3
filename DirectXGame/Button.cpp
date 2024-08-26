@@ -15,13 +15,6 @@ void Button::Initialize(const Vector3& pos, const Vector3& scale, const std::str
 
 void Button::Update(){
 
-#ifdef _DEBUG
-	ImGui::Begin("button");
-	ImGui::Checkbox("isSelected", &isSelected_);
-	ImGui::End();
-#endif // _DEBUG
-
-
 	if (isSelected_){
 		sprite_->SetSize({100.0f,100.0f});
 	} else{
@@ -31,4 +24,8 @@ void Button::Update(){
 
 void Button::Draw(){
 	sprite_->Draw();
+}
+
+void Button::SetIsSelected(bool isSelect){
+	isSelected_ = isSelect;
 }

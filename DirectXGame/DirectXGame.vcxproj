@@ -146,7 +146,9 @@
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="Skydome.cpp" />
     <ClCompile Include="StrongholdManager.cpp" />
+    <ClCompile Include="TitleButtonManager.cpp" />
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="TransitionSelectCube.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="WeaponBase.cpp" />
     <ClCompile Include="WeaponManager.cpp" />
@@ -217,7 +219,9 @@
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="Skydome.h" />
     <ClInclude Include="StrongholdManager.h" />
+    <ClInclude Include="TitleButtonManager.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="TransitionSelectCube.h" />
     <ClInclude Include="WeaponBase.h" />
     <ClInclude Include="WeaponManager.h" />
   </ItemGroup>

@@ -32,15 +32,23 @@ void TitleScene::Initialize(){
 	ground_->Initialize(skydome_->GetScale() * 1.3f);
 
 
+	///=====================================================
 	//ゲームスタートボタン
 	gameStartButton_ = std::make_unique<Button>();
 	Vector3 pos = {150.0f,500.0f,0.0f};
 	gameStartButton_->Initialize(pos, {1,1,1});
 
+	///=====================================================
 	//ゲーム終了ボタン
 	exitButton_ = std::make_unique<Button>();
 	pos.y += 100.0f;
 	exitButton_->Initialize(pos, {1,1,1});
+
+	///=====================================================
+	//		シーンキューブ
+	cube_ = std::make_unique<TransitionSelectCube>();
+	Vector3 cubePos = {-2.5f,4.0f,-42.0f};
+	cube_->Initialize(cubePos);
 
 	///=====================================================
 	//		プレイヤー
@@ -57,7 +65,7 @@ void TitleScene::Initialize(){
 
 	// プレイヤークラスを初期化
 	player_->Initialize(modelPointers);
-	player_->SetPos({0.0f,0.0f,-37.0f});
+	player_->SetPos({3.0f,0.0f,-37.0f});
 	player_->SetIsActive(true);
 
 	//=======================================================
@@ -74,6 +82,8 @@ void TitleScene::Update(){
 
 	player_->Update();
 	player_->SetRotationY(3.2f);
+
+	cube_->Update();
 
 	if (Input::GetInstance()->TriggerKey(DIK_SPACE)){
 		SceneManager::GetInstance()->ChangeScene(std::make_unique<GameScene>());
@@ -122,6 +132,8 @@ void TitleScene::Draw(){
 	//=========================================================
 	ground_->Draw(viewProjection_);
 
+	cube_->Draw(viewProjection_);
+
 
 	//プレイヤーの描画
 	player_->Draw(viewProjection_);
@@ -138,8 +150,8 @@ void TitleScene::Draw(){
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 	
-	gameStartButton_->Draw();
-	exitButton_->Draw();
+	/*gameStartButton_->Draw();
+	exitButton_->Draw();*/
 
 	// スプライト描画後処理
 	Sprite::PostDraw();

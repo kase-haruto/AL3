@@ -13,7 +13,7 @@
 #include"WeaponManager.h"
 #include"Ground.h"
 #include"Skydome.h"
-
+#include"TransitionSelectCube.h"
 
 
 #include<stdint.h>
@@ -81,6 +81,9 @@ private: // メンバ変数
 
 	//天球
 	std::unique_ptr<Skydome> skydome_ = nullptr;
+
+	//キューブ
+	std::unique_ptr<TransitionSelectCube> cube_ = nullptr;
 
 	//ゲームスタートボタン
 	std::unique_ptr<Button> gameStartButton_ = nullptr;

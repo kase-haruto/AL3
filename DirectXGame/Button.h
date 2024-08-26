@@ -29,6 +29,8 @@ public:
 	/// </summary>
 	void Draw();
 
+	void SetIsSelected(bool isSelect);
+
 private:
 	//transform
 	WorldTransform worldTransform_;
