@@ -52,74 +52,14 @@
     <Filter Include="ソース ファイル\2d">
       <UniqueIdentifier>{814a0f6d-f847-4c45-856d-4688fa4c9e6c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game">
-      <UniqueIdentifier>{05a6e30c-10ab-4bf2-994e-8bec6da63c27}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Object">
-      <UniqueIdentifier>{009d2caf-e620-4c5d-8193-e9978b519892}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Object\Actor">
-      <UniqueIdentifier>{07052595-a67c-495f-8801-be80a4bc47dd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Object\Actor\Player">
-      <UniqueIdentifier>{242aba13-f5d5-4db0-aaa0-30a271b91269}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\3d">
       <UniqueIdentifier>{f7c82396-2f6c-4a56-b490-d1bb362b968d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Object\Actor\Enemy">
-      <UniqueIdentifier>{488f09ec-4840-4d3f-8fe7-2147b61f2d87}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Object\Nature">
-      <UniqueIdentifier>{698abed2-f913-4cb8-8153-d68f97572b41}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Object\Nature\Skydome">
-      <UniqueIdentifier>{987a9f3b-ff55-4ec5-a199-de026bd7b5e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Object\Nature\Ground">
-      <UniqueIdentifier>{8b6014f2-bc53-40b8-8284-4e5ef5edff7d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Variables">
-      <UniqueIdentifier>{2253f520-b5b8-4cdc-b222-dd36c16f7463}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Object\Actor\Player\PlayerState">
-      <UniqueIdentifier>{3ce8185c-3067-4818-a7b7-3db7b2e5af12}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Object\Actor\Player\PlayerAttack">
-      <UniqueIdentifier>{66cc395b-c049-42c3-b4bb-56399530943c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Camera">
-      <UniqueIdentifier>{51f14a5e-b160-4fff-8eab-c7627a4190e3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Object\Weapon">
-      <UniqueIdentifier>{a6232241-0312-4f04-872d-09b2a00e4ff1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Collision">
-      <UniqueIdentifier>{e1d64cdd-01c4-4eb8-8e63-7781cf8c9b40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Effect">
-      <UniqueIdentifier>{9dd464ea-9c4f-4a57-89ac-77035ee9a2a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Object\Stronghold">
-      <UniqueIdentifier>{41a1b734-426d-4710-825d-d873d519ce8f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Object\Actor\Enemy\EnemyManager">
-      <UniqueIdentifier>{c23b2515-f43a-4f9c-b278-056ca04513a9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Object\Button">
-      <UniqueIdentifier>{aaf10a2a-8431-4bb2-933e-c7c0f3e17f96}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Object\Actor\Player\PlayableCharacterManager">
-      <UniqueIdentifier>{fcbb8474-cdf3-4dcd-a3b5-ec23841669dc}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\scene\TitleScene">
       <UniqueIdentifier>{e4a0d11b-1db2-44cb-8cf7-5df0aab5ac55}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="base\DirectXCommon.cpp">
       <Filter>ソース ファイル\base</Filter>
     </ClCompile>
@@ -132,131 +72,152 @@
     <ClCompile Include="2d\ImGuiManager.cpp">
       <Filter>ソース ファイル\2d</Filter>
     </ClCompile>
-    <ClCompile Include="Actor.cpp">
-      <Filter>Game\Object\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Game\Object\Actor\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Skydome.cpp">
-      <Filter>Game\Object\Nature\Skydome</Filter>
-    </ClCompile>
-    <ClCompile Include="Matrix4x4.cpp">
-      <Filter>ソース ファイル\math</Filter>
-    </ClCompile>
-    <ClCompile Include="WorldTransformPlas.cpp">
-      <Filter>ソース ファイル\3d</Filter>
-    </ClCompile>
-    <ClCompile Include="Ground.cpp">
-      <Filter>Game\Object\Nature\Ground</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector3.cpp">
-      <Filter>ソース ファイル\math</Filter>
-    </ClCompile>
-    <ClCompile Include="MyFunc.cpp">
-      <Filter>ソース ファイル\base</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Game\Object\Actor\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="GlobalVariables.cpp">
-      <Filter>Game\Variables</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerBaseBehavior.cpp">
-      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerRootBehavior.cpp">
-      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerAttackBehavior.cpp">
-      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerDashBehavior.cpp">
-      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerJumpBehavior.cpp">
-      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerAttackCommand.cpp">
-      <Filter>Game\Object\Actor\Player\PlayerAttack</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerWeaponSwingDown.cpp">
-      <Filter>Game\Object\Actor\Player\PlayerAttack</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerMowDown.cpp">
-      <Filter>Game\Object\Actor\Player\PlayerAttack</Filter>
-    </ClCompile>
-    <ClCompile Include="FollowCamera.cpp">
-      <Filter>Game\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerSpinAttack.cpp">
-      <Filter>Game\Object\Actor\Player\PlayerAttack</Filter>
-    </ClCompile>
-    <ClCompile Include="LockOn.cpp">
-      <Filter>Game\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Collider.cpp">
-      <Filter>Game\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Hammer.cpp">
-      <Filter>Game\Object\Weapon</Filter>
-    </ClCompile>
-    <ClCompile Include="WeaponBase.cpp">
-      <Filter>Game\Object\Weapon</Filter>
-    </ClCompile>
-    <ClCompile Include="WeaponManager.cpp">
+    <ClCompile Include="src\core\GlobalVariables.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionManager.cpp">
-      <Filter>Game\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="ParticleEffectManager.cpp">
-      <Filter>Game\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="AttackEffectParticle.cpp">
-      <Filter>Game\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="ContactRecord.cpp">
+    <ClCompile Include="src\entities\Actor.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyStronghold.cpp">
-      <Filter>Game\Object\Stronghold</Filter>
+    <ClCompile Include="src\entities\AttackEnemy.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="StrongholdManager.cpp">
-      <Filter>Game\Object\Stronghold</Filter>
+    <ClCompile Include="src\entities\BaseStronghold.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="BaseStronghold.cpp">
-      <Filter>Game\Object\Stronghold</Filter>
+    <ClCompile Include="src\entities\Enemy.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyManager.cpp">
-      <Filter>Game\Object\Actor\Enemy\EnemyManager</Filter>
+    <ClCompile Include="src\entities\EnemyStation.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="ProtectEnemy.cpp">
-      <Filter>Game\Object\Actor\Enemy</Filter>
+    <ClCompile Include="src\entities\EnemyStronghold.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="IScene.cpp">
-      <Filter>ソース ファイル\scene</Filter>
+    <ClCompile Include="src\entities\Ground.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>ソース ファイル\scene</Filter>
+    <ClCompile Include="src\entities\LockOn.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TitleScene.cpp">
-      <Filter>ソース ファイル\scene</Filter>
+    <ClCompile Include="src\entities\Player.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Game\Object\Button</Filter>
+    <ClCompile Include="src\entities\PlayerAttackBehavior.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="PlayableCharacterManager.cpp">
-      <Filter>Game\Object\Actor\Player\PlayableCharacterManager</Filter>
+    <ClCompile Include="src\entities\PlayerAttackCommand.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="CameraManager.cpp">
-      <Filter>Game\Camera</Filter>
+    <ClCompile Include="src\entities\PlayerBaseBehavior.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TransitionSelectCube.cpp">
-      <Filter>ソース ファイル\scene\TitleScene</Filter>
+    <ClCompile Include="src\entities\PlayerDashBehavior.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TitleButtonManager.cpp">
-      <Filter>ソース ファイル\scene\TitleScene</Filter>
+    <ClCompile Include="src\entities\PlayerJumpBehavior.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\PlayerMowDown.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\PlayerRootBehavior.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\PlayerSpinAttack.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\PlayerStronghold.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\PlayerWeaponSwingDown.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\ProtectEnemy.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Skydome.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\TransitionSelectCube.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\AttackEffectParticle.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\FollowCamera.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\managers\CameraManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\managers\EnemyManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\managers\ParticleEffectManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\managers\PlayableCharacterManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\managers\StrongholdManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\physics\Collider.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\physics\CollisionManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\physics\ContactRecord.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\Button.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\TitleButtonManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\Matrix4x4.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\MyFunc.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\Vector3.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\WorldTransformPlas.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\weapons\Hammer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\weapons\WeaponBase.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\weapons\WeaponManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\IScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\ResultScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\SceneManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\TitleScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\ProtectPlayer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackPlayer.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -344,128 +305,146 @@
     <ClInclude Include="3d\ObjectColor.h">
       <Filter>ヘッダー ファイル\3d</Filter>
     </ClInclude>
-    <ClInclude Include="Skydome.h">
-      <Filter>Game\Object\Nature\Skydome</Filter>
-    </ClInclude>
-    <ClInclude Include="Actor.h">
-      <Filter>Game\Object\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Game\Object\Actor\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Ground.h">
-      <Filter>Game\Object\Nature\Ground</Filter>
-    </ClInclude>
-    <ClInclude Include="MyFunc.h">
-      <Filter>ヘッダー ファイル\base</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Game\Object\Actor\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="GlobalVariables.h">
-      <Filter>Game\Variables</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerBaseBehavior.h">
-      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerRootBehavior.h">
-      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerAttackBehavior.h">
-      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerDashBehavior.h">
-      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerJumpBehavior.h">
-      <Filter>Game\Object\Actor\Player\PlayerState</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerAttackCommand.h">
-      <Filter>Game\Object\Actor\Player\PlayerAttack</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerWeaponSwingDown.h">
-      <Filter>Game\Object\Actor\Player\PlayerAttack</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerMowDown.h">
-      <Filter>Game\Object\Actor\Player\PlayerAttack</Filter>
-    </ClInclude>
-    <ClInclude Include="FollowCamera.h">
-      <Filter>Game\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="LockOn.h">
-      <Filter>Game\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider.h">
-      <Filter>Game\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Hammer.h">
-      <Filter>Game\Object\Weapon</Filter>
-    </ClInclude>
-    <ClInclude Include="WeaponBase.h">
-      <Filter>Game\Object\Weapon</Filter>
-    </ClInclude>
-    <ClInclude Include="WeaponManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionManager.h">
-      <Filter>Game\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionTypeIdDef.h">
-      <Filter>Game\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="ParticleEffectManager.h">
-      <Filter>Game\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="AttackEffectParticle.h">
-      <Filter>Game\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="ContactRecord.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyStronghold.h">
-      <Filter>Game\Object\Stronghold</Filter>
-    </ClInclude>
-    <ClInclude Include="StrongholdManager.h">
-      <Filter>Game\Object\Stronghold</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseStronghold.h">
-      <Filter>Game\Object\Stronghold</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyManager.h">
-      <Filter>Game\Object\Actor\Enemy\EnemyManager</Filter>
-    </ClInclude>
-    <ClInclude Include="ProtectEnemy.h">
-      <Filter>Game\Object\Actor\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="IScene.h">
-      <Filter>ソース ファイル\scene</Filter>
-    </ClInclude>
     <ClInclude Include="scene\GameScene.h">
       <Filter>ソース ファイル\scene</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>ソース ファイル\scene</Filter>
+    <ClInclude Include="src\core\GlobalVariables.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TitleScene.h">
-      <Filter>ソース ファイル\scene</Filter>
+    <ClInclude Include="src\entities\Actor.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Game\Object\Button</Filter>
+    <ClInclude Include="src\entities\AttackEnemy.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerSpinAttack.h">
-      <Filter>Game\Object\Actor\Player\PlayerAttack</Filter>
+    <ClInclude Include="src\entities\BaseStronghold.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="PlayableCharacterManager.h">
-      <Filter>Game\Object\Actor\Player\PlayableCharacterManager</Filter>
+    <ClInclude Include="src\entities\Enemy.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="CameraManager.h">
-      <Filter>Game\Camera</Filter>
+    <ClInclude Include="src\entities\EnemyStation.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TransitionSelectCube.h">
-      <Filter>ソース ファイル\scene\TitleScene</Filter>
+    <ClInclude Include="src\entities\EnemyStronghold.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TitleButtonManager.h">
-      <Filter>ソース ファイル\scene\TitleScene</Filter>
+    <ClInclude Include="src\entities\Ground.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\LockOn.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\Player.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\PlayerAttackBehavior.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\PlayerAttackCommand.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\PlayerBaseBehavior.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\PlayerDashBehavior.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\PlayerJumpBehavior.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\PlayerMowDown.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\PlayerRootBehavior.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\PlayerSpinAttack.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\PlayerStronghold.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\PlayerWeaponSwingDown.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\ProtectEnemy.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\Skydome.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\TransitionSelectCube.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\AttackEffectParticle.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\FollowCamera.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\managers\CameraManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\managers\EnemyManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\managers\ParticleEffectManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\managers\PlayableCharacterManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\managers\StrongholdManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\physics\Collider.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\physics\CollisionManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\physics\CollisionTypeIdDef.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\physics\ContactRecord.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\Button.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\TitleButtonManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\MyFunc.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\weapons\Hammer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\weapons\WeaponBase.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\weapons\WeaponManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\IScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\ResultScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\SceneManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\TitleScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\ProtectPlayer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackPlayer.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

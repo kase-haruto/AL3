@@ -6,7 +6,12 @@
 #include "PrimitiveDrawer.h"
 #include "TextureManager.h"
 #include "WinApp.h"
+
+#ifdef _DEBUG
 #include"GlobalVariables.h"
+
+#endif // _DEBUG
+
 
 #include"SceneManager.h"
 
@@ -61,8 +66,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	primitiveDrawer->Initialize();
 #pragma endregion
 
+#ifdef _DEBUG
 	//グローバル変数の読み込み
 	GlobalVariables::GetInstance()->LoadFiles();
+#endif // _DEBUG
+
+
 
 
 	// メインループ
@@ -76,8 +85,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		imguiManager->Begin();
 		// 入力関連の毎フレーム処理
 		input->Update();
+	#ifdef _DEBUG
 		//グローバル変数の更新
 		GlobalVariables::GetInstance()->Update();
+	#endif // _DEBUG
 		//シーンの更新
 		SceneManager::GetInstance()->Update();
 		// 軸表示の更新
@@ -97,11 +108,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		imguiManager->Draw();
 		// 描画終了
 		dxCommon->PostDraw();
+
+		//ゲーム終了ボタンで終了
+		if (SceneManager::GetInstance()->CheckIsExit() ||
+			Input::GetInstance()->TriggerKey(DIK_ESCAPE)){
+			break;
+		}
 	}
 
 	// 3Dモデル解放
 	Model::StaticFinalize();
 	audio->Finalize();
+
 	// ImGui解放
 	imguiManager->Finalize();
 

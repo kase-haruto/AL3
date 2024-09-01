@@ -63,7 +63,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)audio;$(ProjectDir)base;$(ProjectDir)input;$(ProjectDir)scene;$(ProjectDir)math;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)audio;$(ProjectDir)base;$(ProjectDir)input;$(ProjectDir)scene;$(ProjectDir)math;$(ProjectDir)src;$(ProjectDir)src/core;$(ProjectDir)src/entities;$(ProjectDir)src/graphics;$(ProjectDir)src/managers;$(ProjectDir)src/physics;$(ProjectDir)src/ui;$(ProjectDir)src/utils;$(ProjectDir)src/weapons;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
@@ -86,7 +86,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)audio;$(ProjectDir)base;$(ProjectDir)input;$(ProjectDir)scene;$(ProjectDir)math;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)audio;$(ProjectDir)base;$(ProjectDir)input;$(ProjectDir)scene;$(ProjectDir)math;$(ProjectDir)src;$(ProjectDir)src/core;$(ProjectDir)src/entities;$(ProjectDir)src/graphics;$(ProjectDir)src/managers;$(ProjectDir)src/physics;$(ProjectDir)src/ui;$(ProjectDir)src/utils;$(ProjectDir)src/weapons;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <Optimization>MinSpace</Optimization>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -107,52 +107,58 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="2d\ImGuiManager.cpp" />
-    <ClCompile Include="Actor.cpp" />
-    <ClCompile Include="AttackEffectParticle.cpp" />
-    <ClCompile Include="BaseStronghold.cpp" />
+    <ClCompile Include="AttackPlayer.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
-    <ClCompile Include="Button.cpp" />
-    <ClCompile Include="CameraManager.cpp" />
-    <ClCompile Include="Collider.cpp" />
-    <ClCompile Include="CollisionManager.cpp" />
-    <ClCompile Include="ContactRecord.cpp" />
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="EnemyManager.cpp" />
-    <ClCompile Include="EnemyStronghold.cpp" />
-    <ClCompile Include="FollowCamera.cpp" />
-    <ClCompile Include="GlobalVariables.cpp" />
-    <ClCompile Include="Ground.cpp" />
-    <ClCompile Include="Hammer.cpp" />
-    <ClCompile Include="IScene.cpp" />
-    <ClCompile Include="LockOn.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Matrix4x4.cpp" />
-    <ClCompile Include="MyFunc.cpp" />
-    <ClCompile Include="ParticleEffectManager.cpp" />
-    <ClCompile Include="PlayableCharacterManager.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayerAttackBehavior.cpp" />
-    <ClCompile Include="PlayerAttackCommand.cpp" />
-    <ClCompile Include="PlayerBaseBehavior.cpp" />
-    <ClCompile Include="PlayerDashBehavior.cpp" />
-    <ClCompile Include="PlayerJumpBehavior.cpp" />
-    <ClCompile Include="PlayerMowDown.cpp" />
-    <ClCompile Include="PlayerRootBehavior.cpp" />
-    <ClCompile Include="PlayerSpinAttack.cpp" />
-    <ClCompile Include="PlayerWeaponSwingDown.cpp" />
-    <ClCompile Include="ProtectEnemy.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
-    <ClCompile Include="Skydome.cpp" />
-    <ClCompile Include="StrongholdManager.cpp" />
-    <ClCompile Include="TitleButtonManager.cpp" />
-    <ClCompile Include="TitleScene.cpp" />
-    <ClCompile Include="TransitionSelectCube.cpp" />
-    <ClCompile Include="Vector3.cpp" />
-    <ClCompile Include="WeaponBase.cpp" />
-    <ClCompile Include="WeaponManager.cpp" />
-    <ClCompile Include="WorldTransformPlas.cpp" />
+    <ClCompile Include="scene\IScene.cpp" />
+    <ClCompile Include="scene\ResultScene.cpp" />
+    <ClCompile Include="scene\SceneManager.cpp" />
+    <ClCompile Include="scene\TitleScene.cpp" />
+    <ClCompile Include="src\core\GlobalVariables.cpp" />
+    <ClCompile Include="src\entities\Actor.cpp" />
+    <ClCompile Include="src\entities\AttackEnemy.cpp" />
+    <ClCompile Include="src\entities\BaseStronghold.cpp" />
+    <ClCompile Include="src\entities\Enemy.cpp" />
+    <ClCompile Include="src\entities\EnemyStation.cpp" />
+    <ClCompile Include="src\entities\EnemyStronghold.cpp" />
+    <ClCompile Include="src\entities\Ground.cpp" />
+    <ClCompile Include="src\entities\LockOn.cpp" />
+    <ClCompile Include="src\entities\Player.cpp" />
+    <ClCompile Include="src\entities\PlayerAttackBehavior.cpp" />
+    <ClCompile Include="src\entities\PlayerAttackCommand.cpp" />
+    <ClCompile Include="src\entities\PlayerBaseBehavior.cpp" />
+    <ClCompile Include="src\entities\PlayerDashBehavior.cpp" />
+    <ClCompile Include="src\entities\PlayerJumpBehavior.cpp" />
+    <ClCompile Include="src\entities\PlayerMowDown.cpp" />
+    <ClCompile Include="src\entities\PlayerRootBehavior.cpp" />
+    <ClCompile Include="src\entities\PlayerSpinAttack.cpp" />
+    <ClCompile Include="src\entities\PlayerStronghold.cpp" />
+    <ClCompile Include="src\entities\PlayerWeaponSwingDown.cpp" />
+    <ClCompile Include="src\entities\ProtectEnemy.cpp" />
+    <ClCompile Include="src\entities\ProtectPlayer.cpp" />
+    <ClCompile Include="src\entities\Skydome.cpp" />
+    <ClCompile Include="src\entities\TransitionSelectCube.cpp" />
+    <ClCompile Include="src\graphics\AttackEffectParticle.cpp" />
+    <ClCompile Include="src\graphics\FollowCamera.cpp" />
+    <ClCompile Include="src\managers\CameraManager.cpp" />
+    <ClCompile Include="src\managers\EnemyManager.cpp" />
+    <ClCompile Include="src\managers\ParticleEffectManager.cpp" />
+    <ClCompile Include="src\managers\PlayableCharacterManager.cpp" />
+    <ClCompile Include="src\managers\StrongholdManager.cpp" />
+    <ClCompile Include="src\physics\Collider.cpp" />
+    <ClCompile Include="src\physics\CollisionManager.cpp" />
+    <ClCompile Include="src\physics\ContactRecord.cpp" />
+    <ClCompile Include="src\ui\Button.cpp" />
+    <ClCompile Include="src\ui\TitleButtonManager.cpp" />
+    <ClCompile Include="src\utils\Matrix4x4.cpp" />
+    <ClCompile Include="src\utils\MyFunc.cpp" />
+    <ClCompile Include="src\utils\Vector3.cpp" />
+    <ClCompile Include="src\utils\WorldTransformPlas.cpp" />
+    <ClCompile Include="src\weapons\Hammer.cpp" />
+    <ClCompile Include="src\weapons\WeaponBase.cpp" />
+    <ClCompile Include="src\weapons\WeaponManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\ImGuiManager.h" />
@@ -173,57 +179,63 @@
     <ClInclude Include="3d\TerrainCommon.h" />
     <ClInclude Include="3d\ViewProjection.h" />
     <ClInclude Include="3d\WorldTransform.h" />
-    <ClInclude Include="Actor.h" />
-    <ClInclude Include="AttackEffectParticle.h" />
+    <ClInclude Include="AttackPlayer.h" />
     <ClInclude Include="audio\Audio.h" />
-    <ClInclude Include="BaseStronghold.h" />
     <ClInclude Include="base\DirectXCommon.h" />
     <ClInclude Include="base\StringUtility.h" />
     <ClInclude Include="base\TextureManager.h" />
     <ClInclude Include="base\WinApp.h" />
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="CameraManager.h" />
-    <ClInclude Include="Collider.h" />
-    <ClInclude Include="CollisionManager.h" />
-    <ClInclude Include="CollisionTypeIdDef.h" />
-    <ClInclude Include="ContactRecord.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="EnemyManager.h" />
-    <ClInclude Include="EnemyStronghold.h" />
-    <ClInclude Include="FollowCamera.h" />
-    <ClInclude Include="GlobalVariables.h" />
-    <ClInclude Include="Ground.h" />
-    <ClInclude Include="Hammer.h" />
     <ClInclude Include="input\Input.h" />
-    <ClInclude Include="IScene.h" />
-    <ClInclude Include="LockOn.h" />
     <ClInclude Include="math\Matrix4x4.h" />
     <ClInclude Include="math\Vector2.h" />
     <ClInclude Include="math\Vector3.h" />
     <ClInclude Include="math\Vector4.h" />
-    <ClInclude Include="MyFunc.h" />
-    <ClInclude Include="ParticleEffectManager.h" />
-    <ClInclude Include="PlayableCharacterManager.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="PlayerAttackBehavior.h" />
-    <ClInclude Include="PlayerAttackCommand.h" />
-    <ClInclude Include="PlayerBaseBehavior.h" />
-    <ClInclude Include="PlayerDashBehavior.h" />
-    <ClInclude Include="PlayerJumpBehavior.h" />
-    <ClInclude Include="PlayerMowDown.h" />
-    <ClInclude Include="PlayerRootBehavior.h" />
-    <ClInclude Include="PlayerSpinAttack.h" />
-    <ClInclude Include="PlayerWeaponSwingDown.h" />
-    <ClInclude Include="ProtectEnemy.h" />
-    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="scene\GameScene.h" />
-    <ClInclude Include="Skydome.h" />
-    <ClInclude Include="StrongholdManager.h" />
-    <ClInclude Include="TitleButtonManager.h" />
-    <ClInclude Include="TitleScene.h" />
-    <ClInclude Include="TransitionSelectCube.h" />
-    <ClInclude Include="WeaponBase.h" />
-    <ClInclude Include="WeaponManager.h" />
+    <ClInclude Include="scene\IScene.h" />
+    <ClInclude Include="scene\ResultScene.h" />
+    <ClInclude Include="scene\SceneManager.h" />
+    <ClInclude Include="scene\TitleScene.h" />
+    <ClInclude Include="src\core\GlobalVariables.h" />
+    <ClInclude Include="src\entities\Actor.h" />
+    <ClInclude Include="src\entities\AttackEnemy.h" />
+    <ClInclude Include="src\entities\BaseStronghold.h" />
+    <ClInclude Include="src\entities\Enemy.h" />
+    <ClInclude Include="src\entities\EnemyStation.h" />
+    <ClInclude Include="src\entities\EnemyStronghold.h" />
+    <ClInclude Include="src\entities\Ground.h" />
+    <ClInclude Include="src\entities\LockOn.h" />
+    <ClInclude Include="src\entities\Player.h" />
+    <ClInclude Include="src\entities\PlayerAttackBehavior.h" />
+    <ClInclude Include="src\entities\PlayerAttackCommand.h" />
+    <ClInclude Include="src\entities\PlayerBaseBehavior.h" />
+    <ClInclude Include="src\entities\PlayerDashBehavior.h" />
+    <ClInclude Include="src\entities\PlayerJumpBehavior.h" />
+    <ClInclude Include="src\entities\PlayerMowDown.h" />
+    <ClInclude Include="src\entities\PlayerRootBehavior.h" />
+    <ClInclude Include="src\entities\PlayerSpinAttack.h" />
+    <ClInclude Include="src\entities\PlayerStronghold.h" />
+    <ClInclude Include="src\entities\PlayerWeaponSwingDown.h" />
+    <ClInclude Include="src\entities\ProtectEnemy.h" />
+    <ClInclude Include="src\entities\ProtectPlayer.h" />
+    <ClInclude Include="src\entities\Skydome.h" />
+    <ClInclude Include="src\entities\TransitionSelectCube.h" />
+    <ClInclude Include="src\graphics\AttackEffectParticle.h" />
+    <ClInclude Include="src\graphics\FollowCamera.h" />
+    <ClInclude Include="src\managers\CameraManager.h" />
+    <ClInclude Include="src\managers\EnemyManager.h" />
+    <ClInclude Include="src\managers\ParticleEffectManager.h" />
+    <ClInclude Include="src\managers\PlayableCharacterManager.h" />
+    <ClInclude Include="src\managers\StrongholdManager.h" />
+    <ClInclude Include="src\physics\Collider.h" />
+    <ClInclude Include="src\physics\CollisionManager.h" />
+    <ClInclude Include="src\physics\CollisionTypeIdDef.h" />
+    <ClInclude Include="src\physics\ContactRecord.h" />
+    <ClInclude Include="src\ui\Button.h" />
+    <ClInclude Include="src\ui\TitleButtonManager.h" />
+    <ClInclude Include="src\utils\MyFunc.h" />
+    <ClInclude Include="src\weapons\Hammer.h" />
+    <ClInclude Include="src\weapons\WeaponBase.h" />
+    <ClInclude Include="src\weapons\WeaponManager.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\TerrainPS.hlsl">

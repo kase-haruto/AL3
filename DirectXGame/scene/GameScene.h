@@ -13,12 +13,15 @@
 #include"DebugCamera.h"
 #include"FollowCamera.h"
 #include"LockOn.h"
-#include"CollisionManager.h"
 #include"WeaponManager.h"
 #include"EnemyStronghold.h"
 #include"EnemyManager.h"
 #include"IScene.h"
 #include"PlayableCharacterManager.h"
+#include"PlayerStronghold.h"
+#include"EnemyStation.h"
+#include"ProtectPlayer.h"
+#include"AttackPlayer.h"
 
 
 #include<stdint.h>
@@ -62,6 +65,8 @@ public: // メンバ関数
 	/// </summary>
 	void Finalize()override;
 
+	
+
 private:
 	/// <summary>
 	/// 衝突判定と応答
@@ -82,27 +87,39 @@ private: // メンバ変数
 	std::unique_ptr<Model> modelGround_ = nullptr;
 	std::unique_ptr<WeaponManager>weaponManager_ = nullptr;
 	std::unique_ptr<Model>modelStrongHold_ = nullptr;
+	std::unique_ptr<Model>modelEnemyStrongholdShield_ = nullptr;
+	std::unique_ptr<Model>modelPlayerStrongholdShield_ = nullptr;
 
 
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>	
 	ViewProjection viewProjection_;
-	std::unique_ptr<Player>player_ = nullptr;
-	std::unique_ptr<Player>protectPlayer_ = nullptr;
+	std::unique_ptr<AttackPlayer>player_ = nullptr;
+	std::unique_ptr<ProtectPlayer>protectPlayer_ = nullptr;
 	std::unique_ptr<EnemyManager> enemyManager_ = nullptr;
 	std::unique_ptr<Skydome>skydome_ = nullptr;
 	std::unique_ptr<Ground>ground_ = nullptr;
 
+	//とった旗のスプライト
+	std::vector<std::unique_ptr<Sprite>>flagSprite_;
+
 	//敵の拠点
 	std::vector<std::shared_ptr<EnemyStronghold>>enemyStronghold_;
-
-	//衝突判定管理クラス
-	std::unique_ptr<CollisionManager>collisionManager_ = nullptr;
+	std::unique_ptr<PlayerStronghold> playerStronghold_ = nullptr;
+	std::unique_ptr<EnemyStation> enemyStation_ = nullptr;
+	std::unique_ptr<EnemyStation> enemyStation2_ = nullptr;
 
 	//操作キャラーの管理クラス
 	std::unique_ptr<PlayableCharacterManager> characterManager_ = nullptr;
 	
+
+	XINPUT_STATE padState = {};
+	XINPUT_STATE prePadState = {};
+
+	
+	std::vector<bool> flagTaken_;
+	int flagCount_ = 0;
 
 	/// <summary>
 	/// カメラ
