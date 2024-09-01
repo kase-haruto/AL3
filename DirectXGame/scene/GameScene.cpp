@@ -59,7 +59,7 @@ void GameScene::Initialize(){
 	protectPlayer_ = std::make_unique<ProtectPlayer>();
 	protectPlayer_->Initialize(modelPointers);
 	protectPlayer_->SetPos({10.0f, 0.0f, 50.0f});
-	protectPlayer_->SetMaxLife(120);
+	protectPlayer_->SetMaxLife(70);
 	protectPlayer_->UpdateMatrix();
 
 	// 操作キャラの管理クラスの初期化
@@ -78,6 +78,8 @@ void GameScene::Initialize(){
 	playerStronghold_->SetTranslation({0.0f,0.0f,40.0f});
 	playerStronghold_->SetProtectPlayer(protectPlayer_.get());
 	playerStronghold_->SetRangeModel(modelPlayerStrongholdShield_.get());
+
+	protectPlayer_->SetStrongholdPtr(playerStronghold_.get());
 
 	///=====================================================
 	//		敵拠点
@@ -106,6 +108,8 @@ void GameScene::Initialize(){
 	//		敵
 	enemyManager_ = std::make_unique<EnemyManager>();
 	enemyManager_->SetStronghold(enemyStronghold_);
+	enemyManager_->SetPlayer(player_.get());
+
 	enemyManager_->Initialize();
 
 	enemyStation_ = std::make_unique<EnemyStation>();
@@ -171,6 +175,24 @@ void GameScene::Initialize(){
 		flagSpritePos.x += 100;
 		flagSprite_.push_back(std::move(flag));
 	}
+
+	Vector2 ctrlUi_pos {flagSpritePos.x + 100.0f,WinApp::kWindowHeight - 100.0f};
+	int uiTexture = TextureManager::Load("./Resources/control_ui.png");
+	ctrlUI_.reset(Sprite::Create(uiTexture, ctrlUi_pos, {1,1,1,1}, {0.5f,0.5f}));
+
+	Vector2 ctrlUi_pos2 {(flagSpritePos.x + 100.0f) - 500,WinApp::kWindowHeight - 100.0f};
+	int uiTexture2 = TextureManager::Load("./Resources/ctrl_ui.png");
+	ctrlUI2_.reset(Sprite::Create(uiTexture2, ctrlUi_pos2, {1,1,1,1}, {0.5f,0.5f}));
+	ctrlUI2_->SetSize({200.0f,200.0f});
+
+	//=======================================================
+	//		音源
+	 //サウンドデータの読み込み
+	playSoundHandle_ = Audio::GetInstance()->LoadWave("playBGM.mp3");
+	playVoiceHandle_ = Audio::GetInstance()->PlayWave(playSoundHandle_, true);
+	Audio::GetInstance()->SetVolume(playVoiceHandle_, 0.05f);
+
+
 }
 
 void GameScene::Update(){
@@ -190,13 +212,16 @@ void GameScene::Update(){
 
 	if (isXButtonJustPressed){
 		// キャラクターを切り替える
-		characterManager_->SwitchCharacter((characterManager_->GetCurrentCharacterIndex() + 1) % 2);
+		characterManager_->Update();
 	}
 
 
 	// プレイヤーの更新
 	player_->Update();
 	protectPlayer_->Update();
+
+	player_->SetEnemyLists(enemyManager_->GetAllEnemies());
+	protectPlayer_->SetEnemyLists(enemyManager_->GetAllEnemies());
 
 	playerStronghold_->Update();
 
@@ -219,7 +244,6 @@ void GameScene::Update(){
 
 	// 総当たりでオブジェクトの衝突判定
 	CheckAllCollision();
-
 
 
 #ifdef _DEBUG 
@@ -254,7 +278,15 @@ void GameScene::Update(){
 	}
 #endif // _DEBUG
 
-	if (flagCount_ >= enemyStronghold_.size() || playerStronghold_->GetIsTaked()){
+	if (flagCount_ >= enemyStronghold_.size()){
+		Audio::GetInstance()->StopWave(playVoiceHandle_);
+		SceneManager::GetInstance()->isClear_ = true;
+		SceneManager::GetInstance()->ChangeScene(std::make_unique<ResultScene>());
+	}
+
+	if (playerStronghold_->GetIsTaked()||!player_->GetIsAlive()){
+		Audio::GetInstance()->StopWave(playVoiceHandle_);
+		SceneManager::GetInstance()->isFailure_ = true;
 		SceneManager::GetInstance()->ChangeScene(std::make_unique<ResultScene>());
 	}
 }
@@ -345,14 +377,20 @@ void GameScene::Draw(){
 		}
 	}
 
+	ctrlUI_->Draw();
+	ctrlUI2_->Draw();
+
 	//ロックオンスプライト描画
 	lockOn_->Draw();
 
 	player_->DrawUiSprite();
 	protectPlayer_->DrawUiSprite();
 
+
+
 	// スプライト描画後処理
 	Sprite::PostDraw();
+
 
 #pragma endregion
 }

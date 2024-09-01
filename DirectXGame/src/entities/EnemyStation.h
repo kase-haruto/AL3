@@ -70,7 +70,7 @@ private:
 	//敵のスポーン
 	int spawnTimer_;
 
-	const int kLimitTime_ = 480;//7秒ごとにスポーン
+	const int kLimitTime_ = 360;//7秒ごとにスポーン
 
 	//プレイヤー側の拠点のポインタ
 	PlayerStronghold* playerStrongholdPtr_ = nullptr;

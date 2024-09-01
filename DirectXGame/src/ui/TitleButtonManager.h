@@ -43,5 +43,10 @@ private:
 
 	XINPUT_STATE padState = {};
 	XINPUT_STATE prePadState = {};
+
+	//サウンドデータ
+	uint32_t selectSoundHandle_ = 0;
+	uint32_t selectVoiceHandle_ = 0;
+
 };
 

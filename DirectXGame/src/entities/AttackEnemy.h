@@ -76,8 +76,8 @@ public:
 private:
     Player* target_ = nullptr;  // 追従対象
     PlayerStronghold* strongholdPtr = nullptr;
-    float speed_ = 0.2f;  // 移動速度
-    int coolTime_ = 180;  // 3秒に一回攻撃
+    float speed_ = 0.3f;  // 移動速度
+    int coolTime_ = 150;  // 3秒に一回攻撃
     bool isAttack_ = false;
     Vector3 velocity_ {};
 

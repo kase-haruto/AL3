@@ -1,5 +1,6 @@
 #include "EnemyManager.h"
 #include "EnemyStronghold.h"
+#include"Player.h"
 
 void EnemyManager::Initialize(){
     ////////////////////////////////////////////////////////////////////
@@ -30,6 +31,10 @@ void EnemyManager::Initialize(){
 
         // トランスフォームの更新
         protectEnemy->UpdateMatrix();
+
+        protectEnemy->SetPlayer(player_);
+
+        protectEnemy->SetStronghold(stronghold_[i].get());
 
         // protectEnemies_ ベクターに追加
         protectEnemies_.push_back(std::move(protectEnemy));
@@ -65,4 +70,8 @@ void EnemyManager::SetStronghold(const std::vector<std::shared_ptr<EnemyStrongho
 
 void EnemyManager::AddEnemy(std::unique_ptr<Enemy>&& enemy){
     allEnemies_.push_back(std::move(enemy));
+}
+
+void EnemyManager::SetPlayer(Player* player){
+    player_ = player;
 }

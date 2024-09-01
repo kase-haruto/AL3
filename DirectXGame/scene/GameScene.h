@@ -104,6 +104,9 @@ private: // メンバ変数
 	//とった旗のスプライト
 	std::vector<std::unique_ptr<Sprite>>flagSprite_;
 
+	std::unique_ptr<Sprite> ctrlUI_ = nullptr;
+	std::unique_ptr<Sprite> ctrlUI2_ = nullptr;
+
 	//敵の拠点
 	std::vector<std::shared_ptr<EnemyStronghold>>enemyStronghold_;
 	std::unique_ptr<PlayerStronghold> playerStronghold_ = nullptr;
@@ -116,6 +119,10 @@ private: // メンバ変数
 
 	XINPUT_STATE padState = {};
 	XINPUT_STATE prePadState = {};
+
+	//サウンドデータ
+	uint32_t playSoundHandle_ = 0;
+	uint32_t playVoiceHandle_ = 0;
 
 	
 	std::vector<bool> flagTaken_;

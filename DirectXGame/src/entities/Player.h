@@ -38,6 +38,7 @@ namespace PlayerDetails{
 
 class LockOn;
 class WeaponBase;
+class Enemy;
 
 using PlayerDetails::Behavior;
 using PlayerDetails::Parts;
@@ -101,6 +102,14 @@ public:
     /// </summary>
     /// <param name="max">初期化後に使用</param>
     void SetMaxLife(int max);
+
+    // 敵のリストを設定するメソッド
+    void SetEnemyLists(const std::list<std::unique_ptr<Enemy>>& allEnemies);
+
+    /// <summary>
+    /// 操作されていない時の自動の動き
+    /// </summary>
+    void UpdateAutoMode();
 
 #pragma region Getter Functions
 
@@ -212,8 +221,6 @@ private:
     //パーツごとのトランスフォーム
     std::vector<std::unique_ptr<WorldTransform>> partsTransform_;
    
-    //攻撃しているか
-    bool isAttack_ = false;
 
     //旋回する際の目標角度
     float targetAngle = 0.0f;
@@ -224,8 +231,7 @@ private:
     //武器
     WeaponBase* weapon_ = nullptr;
 
-    //操作可能かどうか
-    bool isActive_ = false;
+   
 
 
 protected:
@@ -240,4 +246,23 @@ protected:
     uint32_t hpSpriteHandle_;
 
     uint32_t iconSpriteHandle_;
+
+    //操作可能かどうか
+    bool isActive_ = false;
+
+    //攻撃しているか
+    bool isAttack_ = false;
+
+
+    //攻撃用クールタイム
+    int coolTime_ = 420; //7秒ごとに自動で攻撃をするようにする
+
+    const int coolTimeLimit_ = 420;
+
+    // 敵のリスト
+    std::list<Enemy*> enemies_;
+
+    //サウンドデータ
+    uint32_t hitSoundHandle_ = 0;
+    uint32_t hitVoiceHandle_ = 0;
 };

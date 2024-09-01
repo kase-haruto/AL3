@@ -1,5 +1,9 @@
 #pragma once
 #include "Player.h"
+
+
+class PlayerStronghold;
+
 class ProtectPlayer :
     public Player{
 public:
@@ -32,5 +36,18 @@ public:
     /// 衝突時の反応
     /// </summary>
     void OnCollision([[maybe_unused]] Collider* other) override;
+
+    void SetStrongholdPtr(PlayerStronghold* stronghold);
+
+private:
+    PlayerStronghold* strongholdPtr_ = nullptr;
+
+    //プレイヤー移動制限用モデル
+    std::unique_ptr<Model>moveRangeModel_ = nullptr;
+
+    //モデル用transform
+    WorldTransform rangeTransform_;
+
+
 };
 

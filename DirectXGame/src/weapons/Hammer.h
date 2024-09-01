@@ -47,5 +47,9 @@ private:
 
     //攻撃ヒット時のエフェクト
     std::vector<std::unique_ptr<AttackEffectParticle>> activeEffects;
+
+    //サウンドデータ
+    uint32_t hitSoundHandle_ = 0;
+    uint32_t hitVoiceHandle_ = 0;
 };
 

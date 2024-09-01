@@ -84,19 +84,9 @@ void PlayerRootBehavior::HandleLockOnMovement(){
     Vector3 lockOnTargetPos = player_->GetLockOn()->GetTargetPosition();
     Vector3 sub = lockOnTargetPos - player_->GetWorldPosition();
 
-    float distance = Length(sub);
-    const float moveThreshold = 0.2f;
-
-    if (distance > moveThreshold){
-        Vector3 newRotate {player_->GetRotation().x, std::atan2(sub.x, sub.z), player_->GetRotation().z};
-        player_->SetRotation(newRotate);
-
-        if (speed_ > distance - moveThreshold){
-            speed_ = distance - moveThreshold;
-        }
-
-        player_->MoveInDirection(speed_);
-    }
+    // 敵に向かって回転する
+    Vector3 newRotate {player_->GetRotation().x, std::atan2(sub.x, sub.z), player_->GetRotation().z};
+    player_->SetRotation(newRotate);
 }
 
 void PlayerRootBehavior::UpdateFloatingAction(){
@@ -108,11 +98,11 @@ void PlayerRootBehavior::UpdateFloatingAction(){
 }
 
 void PlayerRootBehavior::ApplyGlobalVariables(){
-//#ifdef _DEBUG
-//    GlobalVariables* globalVariables = GlobalVariables::GetInstance();
-//    const char* groupName = "Player";
-//    speed_ = globalVariables->GetValue<float>(groupName, "moveSpeed");
-//    cycle_ = globalVariables->GetValue<float>(groupName, "floatingCycle");
-//    floatingAmplitude_ = globalVariables->GetValue<float>(groupName, "floatingAmplitude");
-//#endif // _DEBUG
+#ifdef _DEBUG
+    //GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+    //const char* groupName = "Player";
+    //speed_ = globalVariables->GetValue<float>(groupName, "moveSpeed");
+    //cycle_ = globalVariables->GetValue<float>(groupName, "floatingCycle");
+    //floatingAmplitude_ = globalVariables->GetValue<float>(groupName, "floatingAmplitude");
+#endif // _DEBUG
 }

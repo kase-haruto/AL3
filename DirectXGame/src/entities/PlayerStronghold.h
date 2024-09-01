@@ -29,6 +29,8 @@ public:
 	/// <param name="viewProjection"></param>
 	void Draw(const ViewProjection& viewProjection)override;
 
+	void ExtinctionCharacter();
+
 	void SetProtectPlayer(Player* player){ protectPlayer_ = player; }
 
 	Player* GetPlayerPtr()const{ return protectPlayer_; }

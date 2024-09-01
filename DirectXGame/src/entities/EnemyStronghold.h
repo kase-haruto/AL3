@@ -52,6 +52,12 @@ public:
 	/// <param name="enemy"></param>
 	void SetProtectEnemy(ProtectEnemy* enemy);
 
+
+	/// <summary>
+	/// 守るキャラが消えたときの処理
+	/// </summary>
+	void ExtinctionCharacter();
+
 	ProtectEnemy* GetProtectEnemy()const{ return protectEnemy_; }
 private:
 

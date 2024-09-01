@@ -4,6 +4,10 @@ void BaseStronghold::Initialize(Model* model){
 	model_ = model;
 	worldTransform_.Initialize();
 	worldTransform_.UpdateMatrix();
+
+	domeTransform_.Initialize();
+	domeTransform_.UpdateMatrix();
+
 	rangeRadius_ = 1.0f;
 	life_ = 5;
 }
@@ -11,9 +15,12 @@ void BaseStronghold::Initialize(Model* model){
 void BaseStronghold::Draw(const ViewProjection& viewProjection){
 	if (!isTaked_){
 		model_->Draw(worldTransform_, viewProjection);
-		if (rangeModel_){
-			rangeModel_->Draw(worldTransform_, viewProjection);
-		}
+	}
+}
+
+void BaseStronghold::DrawDome(const ViewProjection& viewProjection){
+	if (rangeModel_){
+		rangeModel_->Draw(domeTransform_, viewProjection);
 	}
 }
 

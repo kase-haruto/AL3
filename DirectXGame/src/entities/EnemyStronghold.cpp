@@ -8,13 +8,15 @@ void EnemyStronghold::Initialize(Model* model){
 }
 
 void EnemyStronghold::Update(){
-
-
+	ExtinctionCharacter();
+	domeTransform_.translation_ = worldTransform_.translation_;
 	worldTransform_.UpdateMatrix();
 }
 
 void EnemyStronghold::Draw(const ViewProjection& viewProjection){
 	BaseStronghold::Draw(viewProjection);
+
+	BaseStronghold::DrawDome(viewProjection);
 }
 
 void EnemyStronghold::SetEnemyManager(const std::unique_ptr<EnemyManager>& manager){
@@ -27,4 +29,14 @@ void EnemyStronghold::SetPlayerPtr(const std::unique_ptr<AttackPlayer>& player){
 
 void EnemyStronghold::SetProtectEnemy(ProtectEnemy* enemy){
 	protectEnemy_ = enemy;
+}
+
+void EnemyStronghold::ExtinctionCharacter(){
+	if (!protectEnemy_->GetIsAlive()){
+		// 線形補完を使ってサイズを徐々に小さくする
+
+		domeTransform_.scale_ = Lerp(domeTransform_.scale_, {0.0f, 0.0f, 0.0f}, 0.04f);
+
+	}
+	domeTransform_.UpdateMatrix();
 }

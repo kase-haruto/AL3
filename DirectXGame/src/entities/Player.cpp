@@ -5,15 +5,15 @@
 #include "PlayerDashBehavior.h"
 #include <cmath>
 #include"TextureManager.h"
-
 #ifdef _DEBUG
 #include <imgui.h>
 #endif // _DEBUG
-
+#include"Enemy.h"
 #include "GlobalVariables.h"
 #include "LockOn.h"
 #include "WeaponBase.h"
 #include <iostream>
+#include"Audio.h"
 
 #pragma optimize("", off) // 最適化を抑制
 
@@ -49,6 +49,9 @@ void Player::Initialize(const std::vector<Model*>& models){
 
     maxLife_ = 15;
     life_ = maxLife_;
+
+    //サウンドデータの読み込み
+    hitSoundHandle_ = Audio::GetInstance()->LoadWave("hit.mp3");
 
     // 通常行動をセットしておく
     ChangeState(std::make_unique<PlayerRootBehavior>(this));
@@ -119,6 +122,11 @@ void Player::Update(){
 
 
     UpdateHPBar();
+
+    //操作されていなければ自動
+    if (!isActive_){
+        UpdateAutoMode();
+    }
     
     //======================================
     //      武器の更新
@@ -259,6 +267,7 @@ void Player::SetViewProjection(const ViewProjection* viewProjection){ viewPorjec
 bool Player::HasLockOnTarget()const{ return lockOn_->ExistTarget() ? true : false; }
 
 void Player::OnCollision([[maybe_unused]] Collider* other){
+
     // 衝突相手の種別IDを取得
     uint32_t typeID = other->GetTypeID();
     if (typeID == static_cast< uint32_t >(CollisionTypeIdDef::kPlayerWeapon)){
@@ -267,14 +276,63 @@ void Player::OnCollision([[maybe_unused]] Collider* other){
 
 	Actor::OnCollision(other);
    
+
     // 衝突相手のActorを取得
     if (typeID == static_cast< uint32_t >(CollisionTypeIdDef::kEnemy)){
         Enemy* enemy = static_cast< Enemy* >(other);
         if (enemy->GetIsAlive()){
+            if (isActive_){
+                hitVoiceHandle_ = Audio::GetInstance()->PlayWave(hitSoundHandle_, false);
+            }
             life_--;
         }
     }
 }
+
+
+void Player::UpdateAutoMode(){
+    if (enemies_.empty()){
+        return; // 敵がいない場合は処理を終了
+    }
+
+    Enemy* nearestEnemy = nullptr;
+    float minDistance = 10000.0f; // 大きな固定値で初期化
+
+    // 自分の現在位置を取得
+    Vector3 playerPosition = worldTransform_.translation_;
+
+    // 敵のリストをループして、一番近い敵を探す
+    for (Enemy* enemy : enemies_){
+        if (!enemy->GetIsAlive()){
+            continue; // 生きていない敵はスキップ
+        }
+
+        // 敵との距離を計算
+        Vector3 enemyPosition = enemy->GetWorldPosition();
+        float distance = Length(enemyPosition - playerPosition);
+
+        // 最も近い敵を更新
+        if (distance < minDistance){
+            minDistance = distance;
+            nearestEnemy = enemy;
+        }
+    }
+
+    // 一番近い敵が見つかり、距離が20以下かつ5以上であれば追跡する
+    if (nearestEnemy && minDistance > 5.0f && minDistance <= 20.0f){
+        Vector3 directionToEnemy = (nearestEnemy->GetWorldPosition() - playerPosition).Normalize();
+        float trackingSpeed = 0.2f; // 追跡の速度を設定（適宜調整してください）
+        worldTransform_.translation_ += directionToEnemy * trackingSpeed;
+
+        // 追跡対象に向かって回転する
+        targetAngle = std::atan2(directionToEnemy.x, directionToEnemy.z);
+    }
+}
+
+
+
+
+
 
 ///==========================================================
 ///ゲッター/セッター
@@ -291,6 +349,16 @@ void Player::SetMaxLife(int max){
     maxLife_ = max;
     life_ = maxLife_;
 }
+
+void Player::SetEnemyLists(const std::list<std::unique_ptr<Enemy>>& allEnemies){
+    enemies_.clear();  // 既存のリストをクリア
+
+    // unique_ptrから生ポインタを取り出して enemies_ に追加
+    for (const auto& enemy : allEnemies){
+        enemies_.push_back(enemy.get());
+    }
+}
+
 
 bool Player::GetIsAttack()const{ return isAttack_; }
 Vector3 Player::GetVelocity()const{ return velocity_; }

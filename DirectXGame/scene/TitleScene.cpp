@@ -16,6 +16,8 @@ void TitleScene::Initialize(){
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
+	padState = {};
+	prePadState = {};
 
 	viewProjection_.Initialize();
 
@@ -68,14 +70,23 @@ void TitleScene::Initialize(){
 	//		タイトルスプライトの初期化
 	int32_t titleHandle = TextureManager::Load("./Resources/titleTexture.png");
 	titleSprite_.reset(Sprite::Create(titleHandle, {100,40}));
+
+	//=======================================================
+	//		音声の初期化
+	 //サウンドデータの読み込み
+	selectSoundHandle_ = Audio::GetInstance()->LoadWave("isSelect.mp3");
+
+	titleSoundHandle_ = Audio::GetInstance()->LoadWave("titleBGM.mp3");
+	titleVoiceHandle_ = Audio::GetInstance()->PlayWave(titleSoundHandle_, true);
+	Audio::GetInstance()->SetVolume(titleVoiceHandle_, 0.05f);
 }
 
 void TitleScene::Update(){
-	
+
 
 	//プレイヤーの更新
 	player_->Update();
-	
+
 	//タイトルでのプレイヤーの向きは固定
 	player_->SetRotationY(3.2f);
 
@@ -148,6 +159,7 @@ void TitleScene::Draw(){
 	buttonManager_->Draw();
 	titleSprite_->Draw();
 
+
 	// スプライト描画後処理
 	Sprite::PostDraw();
 
@@ -176,24 +188,24 @@ void TitleScene::TransitionScene(){
 	// 'A' ボタンが今押されたかどうかを確認
 	bool isXButtonJustPressed = isXButtonPressed && !wasXButtonPressed;
 
+	// シーン開始後の最初のフレームではボタン入力を無視
+	static bool firstFrame = true;
+	if (firstFrame){
+		firstFrame = false;
+		return;
+	}
 
 	if (isXButtonJustPressed){
-
+		selectVoiceHandle_ = Audio::GetInstance()->PlayWave(selectSoundHandle_, false);
+		Audio::GetInstance()->StopWave(titleVoiceHandle_);
 		switch (buttonManager_->GetCurrentSelectButton()){
-
-			//ゲームシーンに遷移
 			case Play:
 				SceneManager::GetInstance()->ChangeScene(std::make_unique<GameScene>());
 				return;
-
-				//ゲーム終了
 			case Exit:
 				SceneManager::GetInstance()->SetIsExit();
 				return;
-
 		}
-
 	}
-
-
 }
+

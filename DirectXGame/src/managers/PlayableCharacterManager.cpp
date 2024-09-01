@@ -1,26 +1,42 @@
 #include "PlayableCharacterManager.h"
-#include"Input.h"
-#include"CameraManager.h"
-#include"FollowCamera.h"
-#include"Input.h"
+#include "Input.h"
+#include "CameraManager.h"
+#include "FollowCamera.h"
 
 void PlayableCharacterManager::Update(){
     XINPUT_STATE padState = {};
+    XInputGetState(0, &padState);  // padStateを正しく取得
 
-	    // 'X' が押されたときにキャラクターを切り替え
-        if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_B){
-		// 現在のキャラクターインデックスを切り替え
-		int newCharacterIndex = (currentCharacterIndex_ == 0) ? 1 : 0;
-		SwitchCharacter(newCharacterIndex);
-	}
+    // 現在のキャラクターが生きているかチェック
+    if (!characters_[currentCharacterIndex_]->GetIsAlive()){
+        // 生きているキャラクターを探して切り替え
+        for (int i = 0; i < characters_.size(); ++i){
+            if (characters_[i]->GetIsAlive()){
+                SwitchCharacter(i);
+                break;
+            }
+        }
+        // 両方とも死んでいる場合、何もしない
+        return;
+    }
+
+    // 'B' が押されたときにキャラクターを切り替え
+    if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_B){
+        int newCharacterIndex = (currentCharacterIndex_ == 0) ? 1 : 0;
+
+        // 新しいキャラクターが生きている場合のみ切り替え
+        if (characters_[newCharacterIndex]->GetIsAlive()){
+            SwitchCharacter(newCharacterIndex);
+        }
+    }
 }
 
 void PlayableCharacterManager::AddCharacters(Player* player){
-	characters_.push_back(player);
+    characters_.push_back(player);
 }
 
 Player* PlayableCharacterManager::GetCurrentCharacter(){
-	return characters_[currentCharacterIndex_];
+    return characters_[currentCharacterIndex_];
 }
 
 void PlayableCharacterManager::SwitchCharacter(int newCharacterIndex){

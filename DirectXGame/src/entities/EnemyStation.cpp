@@ -4,7 +4,7 @@
 #include <vector>
 
 void EnemyStation::Initialize(){
-    modelStation_.reset(Model::CreateFromOBJ("cube", false));
+    modelStation_.reset(Model::CreateFromOBJ("enemyStation", false));
     worldTransform_.Initialize();
 
     spawnTimer_ = kLimitTime_; // 初期化時にタイマーをリセット

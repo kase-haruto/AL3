@@ -10,10 +10,13 @@
 #include"AttackEffectParticle.h"
 #include"MyFunc.h"
 
+#include"Audio.h"
+
 void Hammer::Initialize(Model* model){
     WeaponBase::Initialize(model);
     Collider::SetRadius(4.0f);
-
+    //サウンドデータの読み込み
+    hitSoundHandle_ = Audio::GetInstance()->LoadWave("hit.mp3");
     Collider::SetTypeID(static_cast< uint32_t >(CollisionTypeIdDef::kPlayerWeapon));
 
 }
@@ -73,6 +76,7 @@ void Hammer::OnCollision([[maybe_unused]] Collider* other){
             // エフェクトをリストに追加して管理
             activeEffects.push_back(std::move(effect));
             enemy->SetLife(enemy->GetLife() - 1);
+            hitVoiceHandle_ = Audio::GetInstance()->PlayWave(hitSoundHandle_, false);
         }
     }
 }

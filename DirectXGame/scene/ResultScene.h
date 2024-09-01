@@ -16,6 +16,7 @@
 #include"TransitionSelectCube.h"
 #include"Enemy.h"
 #include"TitleButtonManager.h"
+#include"ProtectEnemy.h"
 
 
 #include<stdint.h>
@@ -75,8 +76,14 @@ private: // メンバ変数
 	/// 3dモデル
 	/// </summary>
 	std::vector<std::unique_ptr<Model>> playerModels_;
+	std::vector < std::unique_ptr<Model>>modelEnemy_;
 	std::unique_ptr<Model> modelGround_ = nullptr;
 	std::unique_ptr<Model> modelSkydome_ = nullptr;
+	std::unique_ptr<Model> modelFlag_ = nullptr;
+
+	//スプライト
+	std::unique_ptr<Sprite>failureSprite_ = nullptr;
+	std::unique_ptr<Sprite>successSprite_ = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用
@@ -96,10 +103,16 @@ private: // メンバ変数
 	std::unique_ptr<Player> player_ = nullptr;
 
 	//敵
-	//std::unique_ptr<ProtectEnemy> protectEnemy_ = nullptr;
+	std::unique_ptr<ProtectEnemy> protectEnemy_ = nullptr;
 
 	//武器
 	std::unique_ptr<WeaponManager>weaponManager_ = nullptr;
+
+	WorldTransform flagTransform_;
+
+	//サウンドデータ
+	uint32_t resultSoundHandle_ = 0;
+	uint32_t resultVoiceHandle_ = 0;
 
 	/// <summary>
 	/// カメラ

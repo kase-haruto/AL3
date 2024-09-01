@@ -17,7 +17,10 @@ void TitleButtonManager::Initialize(){
 	}
 
 	currentSelectButton_ = Play;
-
+	//=======================================================
+	//		音声の初期化
+	 //サウンドデータの読み込み
+	selectSoundHandle_ = Audio::GetInstance()->LoadWave("moveButton.mp3");
 }
 
 void TitleButtonManager::Update(){
@@ -70,12 +73,14 @@ void TitleButtonManager::Update(){
 
 	// 下キーが押された場合
 	if (isDownButtonJustPressed){
+		selectVoiceHandle_ = Audio::GetInstance()->PlayWave(selectSoundHandle_, false);
 		if (currentSelectButton_ < buttons_.size() - 1){ // 範囲内でインクリメント
 			currentSelectButton_++;
 		}
 	}
 	// 上キーが押された場合
 	else if (isUpButtonJustPressed){
+		selectVoiceHandle_ = Audio::GetInstance()->PlayWave(selectSoundHandle_, false);
 		if (currentSelectButton_ > 0){ // 範囲内でデクリメント
 			currentSelectButton_--;
 		}

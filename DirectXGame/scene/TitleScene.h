@@ -106,6 +106,13 @@ private: // メンバ変数
 	//タイトルのスプライト
 	std::unique_ptr<Sprite> titleSprite_ = nullptr;
 
+	//サウンドデータ
+	uint32_t selectSoundHandle_ = 0;
+	uint32_t selectVoiceHandle_ = 0;
+
+	uint32_t titleSoundHandle_ = 0;
+	uint32_t titleVoiceHandle_ = 0;
+
 	/// <summary>
 	/// カメラ
 	/// </summary>

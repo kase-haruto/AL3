@@ -36,9 +36,12 @@ public:
 	/// <param name="viewProjection"></param>
 	virtual void Draw(const ViewProjection& viewProjection);
 
+	void DrawDome(const ViewProjection& viewProjection);
+
 	void ReduceLife();
 
 	void UpdateMatrix();
+
 
 	//======================================================
 	//	アクセッサ
@@ -69,6 +72,8 @@ protected:
 
 	//拠点のtransform
 	WorldTransform worldTransform_;
+
+	WorldTransform domeTransform_;
 
 	//拠点の範囲の半径
 	float rangeRadius_;

@@ -67,6 +67,7 @@ public:
 	/// <param name="enemy"></param>
 	void AddEnemy(std::unique_ptr<Enemy>&& enemy);
 
+	void SetPlayer(Player* player);
 
 private:
 
@@ -86,6 +87,8 @@ private:
 
 	//すべての敵のリスト
 	std::list<std::unique_ptr<Enemy>> allEnemies_;
+
+	Player* player_ = nullptr;
 
 	///===================================
 	///	敵拠点
